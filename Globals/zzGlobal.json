@@ -23,12 +23,12 @@
                       "zzGlobal-AutomationAccountName":  {
                                                            "isEncrypted":  false,
                                                            "Description":  "name of the automation account",
-                                                           "Value":  "SCOrchDev-Staging"
+                                                           "Value":  "demorandorfer"
                                                        },
                       "zzGlobal-StorageAccountName":  {
                                                         "isEncrypted":  false,
                                                         "Description":  "Name of a storage account for storing PSModules during import",
-                                                        "Value":  "scodev"
+                                                        "Value":  "demorandorfer"
                                                     },
                       "zzGlobal-HybridWorkerGroup":  {
                                                        "isEncrypted":  false,
@@ -38,12 +38,12 @@
                       "zzGlobal-ResourceGroupName":  {
                                                        "isEncrypted":  false,
                                                        "Description":  "resource group that the target automation account is stored in",
-                                                       "Value":  "SCOrchDev"
+                                                       "Value":  "demorandorfer"
                                                    },
                       "zzGlobal-GitRepository":  {
                                                     "isEncrypted":  false,
                                                     "Description":  "a key value pair of repositories and their respective branches to sync into this automation account",
-                                                    "Value":  "{\"https://github.com/randorfer/SCOrchDev\":\"master\"}"
+                                                    "Value":  "{\"https://github.com/devrandorfer/SCOrchDev\":\"master\"}"
                                                 },
                       "zzGlobal-GitRepositoryCurrentCommit":  {
                                                                 "isEncrypted":  false,
