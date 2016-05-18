@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "HelloWorld-Message":  {
+                                                 "isEncrypted":  false,
+                                                 "Description":  "",
+                                                 "Value":  "Use Source Control"
+                                             },
+                      "HelloWorld-Audience":  {
+                                                  "isEncrypted":  false,
+                                                  "Description":  "",
+                                                  "Value":  "MMS 2016"
+                                              }
+                  }
+}

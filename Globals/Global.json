@@ -1,0 +1,9 @@
+﻿{
+    "Variables":  {
+                      "Global-DomainCredentialName":  {
+                                                          "isEncrypted":  false,
+                                                          "Description":  "",
+                                                          "Value":  "ryan"
+                                                      }
+                  }
+}
