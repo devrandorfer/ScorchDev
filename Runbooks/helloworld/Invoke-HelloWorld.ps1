@@ -25,7 +25,9 @@ $Credential = Get-AutomationPSCredential -Name $GlobalVars.DomainCredentialName
 
 Try
 {
-    Write-Verbose -Message "Hello $($Vars.Audience) $($Vars.Message)!"
+    $message = "Hello $($Vars.Audience) $($Vars.Message)!"
+    Write-Verbose -Message $message
+    $message
 }
 Catch
 {
@@ -40,4 +42,4 @@ Catch
     }
 }
 
-Write-CompletedMessage @CompletedParameters
+Write-CompletedMessage @CompletedParameters -Status $message
