@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "RyanEmail-WebserviceURL":  {
+                                                      "isEncrypted":  false,
+                                                      "Description":  "",
+                                                      "Value":  "https://outlook.office365.com/EWS/Exchange.asmx"
+                                                  },
+                      "RyanEmail-AccessCredentialName":  {
+                                                             "isEncrypted":  false,
+                                                             "Description":  "",
+                                                             "Value":  "Ryan@Microsoft.com"
+                                                         }
+                  }
+}
