@@ -40,7 +40,7 @@ Try
     
 
     if(-not (Test-Path -Path $Vars.LogPath)) { $Null = New-Item -ItemType Directory -Path $Vars.LogPath }
-    Get-ChildItem -Path $Vars.LogPath | Foeach-Object { if($_.CreationTime -lt (Get-Date).AddDays(-1)) { Remove-Item } }
+    Get-ChildItem -Path $Vars.LogPath | ForEach-Object { if($_.CreationTime -lt (Get-Date).AddDays(-1)) { Remove-Item } }
     
     $LogName = "$($Vars.LogPath)\AzureRMLog.$(Get-Date -f 'yyyy-MM-dd-hh-mm-ss').txt"
     foreach($Event in $Log)
