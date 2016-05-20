@@ -48,7 +48,7 @@ Try
         Add-Content -Value "$((Get-Date $Event.EventTimestamp -Format 'yyyy-MM-dd HH:mm:ss')) : $($Event | ConvertTo-JSON -Depth 2 -Compress)" -Path $LogName
     }
 
-    Set-AutomationVariable -Name 'AzureRMLog-LastSaveDateTime' -Value ($CurrentSaveTime | ConvertTo-JSON)
+    Set-AutomationVariable -Name 'AzureRMLog-LastSaveDateTime' -Value (($CurrentSaveTime | ConvertTo-JSON) -as [string])
 }
 Catch
 {
