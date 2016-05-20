@@ -45,10 +45,10 @@ Try
     $LogName = "$($Vars.LogPath)\AzureRMLog.$(Get-Date -f 'yyyy-MM-dd-hh-mm-ss').txt"
     foreach($Event in $Log)
     {
-        Add-Content -Value ($Event | ConvertTo-JSON -Depth 2 -Compress) -Path $LogName
+        Add-Content -Value "$((Get-Date $Event.EventTimestamp -Format 'yyyy-MM-dd HH:mm:ss')) : $($Event | ConvertTo-JSON -Depth 2 -Compress)" -Path $LogName
     }
 
-    Set-AutomationVariable -Name 'AzureRMLog-LastSaveDateTime' -Value ($CurrentSaveTime | ConvertTo-JSON)
+    #Set-AutomationVariable -Name 'AzureRMLog-LastSaveDateTime' -Value ($CurrentSaveTime | ConvertTo-JSON)
 }
 Catch
 {
