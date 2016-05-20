@@ -38,9 +38,10 @@ Try
     if(($CurrentSaveTime - $LastSaveTime).Days -gt 15) { $LastSaveTime = $CurrentSaveTime.AddDays(-15) }
     $Log = Get-AzureRmLog -StartTime $LastSaveTime -EndTime $CurrentSaveTime
     
-    Get-ChildItem -Path $Vars.LogPath | Remove-Item
 
     if(-not (Test-Path -Path $Vars.LogPath)) { $Null = New-Item -ItemType Directory -Path $Vars.LogPath }
+    Get-ChildItem -Path $Vars.LogPath | Remove-Item
+    
     $LogName = "$($Vars.LogPath)\AzureRMLog.$(Get-Date -f 'yyyy-MM-dd-hh-mm-ss').txt"
     foreach($Event in $Log)
     {
