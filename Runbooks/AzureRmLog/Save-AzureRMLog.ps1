@@ -36,7 +36,10 @@ Try
     $LastSaveTime = ($Vars.LastSaveDateTime | ConvertFrom-Json).DateTime -as [datetime]
     $CurrentSaveTime = Get-Date
     if(($CurrentSaveTime - $LastSaveTime).Days -gt 15) { $LastSaveTime = $CurrentSaveTime.AddDays(-15) }
-    $Log = Get-AzureRmLog -StartTime $LastSaveTime -EndTime $CurrentSaveTime
+    $Log = Get-AzureRmLog -StartTime $LastSaveTime -EndTime $CurrentSaveTime -DetailedOutput `
+        | ForEach-Object -Process { 
+            Select-Object -InputObject $_ -Property * -ExcludeProperty Claims 
+        }
     
 
     if(-not (Test-Path -Path $Vars.LogPath)) { $Null = New-Item -ItemType Directory -Path $Vars.LogPath }
@@ -45,7 +48,7 @@ Try
     $LogName = "$($Vars.LogPath)\AzureRMLog.$(Get-Date -f 'yyyy-MM-dd-hh-mm-ss').txt"
     foreach($Event in $Log)
     {
-        Add-Content -Value "$((Get-Date $Event.EventTimestamp -Format 'yyyy-MM-dd HH:mm:ss')) : $($Event | ConvertTo-JSON -Depth 2 -Compress)" -Path $LogName
+        Add-Content -Value "$((Get-Date $Event.EventTimestamp -Format 'yyyy-MM-dd HH:mm:ss')) : $($Event | ConvertTo-JSON -Compress)" -Path $LogName
     }
 
     Set-AutomationVariable -Name 'AzureRMLog-LastSaveDateTime' -Value (($CurrentSaveTime | ConvertTo-JSON -Compress) -as [string])
