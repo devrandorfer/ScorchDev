@@ -12,10 +12,10 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '0.1.3'
+ModuleVersion = '0.1.4'
 
 # ID used to uniquely identify this module
-GUID = '3b672dc1-ce1e-4b04-90e5-0def652ad379'
+GUID = '3b672dc1-ce1e-4b04-90e5-0def652ad380'
 
 # Author of this module
 Author = 'Ryan Andorfer'
@@ -78,7 +78,7 @@ VariablesToExport = '*'
 AliasesToExport = '*'
 
 # DSC resources to export from this module
-DscResourcesToExport = @('cGitRepository', 'cGitRepositoryBranch', 'cGitRespoitoryUpdate')
+DscResourcesToExport = @('cDemoResource')
 
 # List of all modules packaged with this module
 # ModuleList = @()
