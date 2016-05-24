@@ -3,14 +3,15 @@
     Param(
     )
 
-    
+    Import-DscResource -ModuleName cDemo
+
     Node HybridRunbookWorker
     {
-        File SourceFolder
-        {
-            DestinationPath = 'c:\git'
-            Type = 'Directory'
+       cDemoResource Demo
+       {
+            Repository = 'https://github.com/randorfer/ScorchDev'
+            BaseDirectory = 'c:\git'
             Ensure = 'Present'
-        }
+       }
     }
 }
