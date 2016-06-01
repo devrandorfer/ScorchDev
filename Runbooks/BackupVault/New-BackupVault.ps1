@@ -26,7 +26,7 @@ Try
                            -SubscriptionName $GlobalVars.SubscriptionName `
                            -Tenant $GlobalVars.SubscriptionAccessTenant
 
-    $ResourceGroupName = 'AUtomationDemo'
+    $ResourceGroupName = 'AUtomationDemo2'
     $VaultName = 'scorchDemoVault'
     $PolicyName = 'Weekly'
     New-AzureRmResourcegroup -Name $ResourceGroupName `

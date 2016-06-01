@@ -30,7 +30,7 @@ Try
                            -Tenant $GlobalVars.SubscriptionAccessTenant
 
     $VMName = "$(New-RandomString -MinLength 5 -MaxLength 5 -InputString 'abcdefghijklmnopqrstuvwxyz')"
-    $ResourceGroupName = 'AUtomationDemo'
+    $ResourceGroupName = 'AUtomationDemo2'
 
     New-AzureRmResourcegroup -Name $ResourceGroupName `
                              -Location 'EastUS' `

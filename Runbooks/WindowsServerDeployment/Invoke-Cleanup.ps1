@@ -29,7 +29,7 @@ Try
                            -SubscriptionName $GlobalVars.SubscriptionName `
                            -Tenant $GlobalVars.SubscriptionAccessTenant
 
-    Remove-AzureRmResourceGroup -Name 'AutomationDemo' -Force
+    Remove-AzureRmResourceGroup -Name 'AutomationDemo2' -Force
 }
 Catch
 {
