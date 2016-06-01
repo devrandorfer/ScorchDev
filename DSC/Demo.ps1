@@ -9,7 +9,7 @@
     {
        cDemoResource Demo
        {
-            Repository = 'https://github.com/randorfer/ScorchDev'
+            Repository = 'https://github.com/devrandorfer/ScorchDev'
             BaseDirectory = 'c:\git'
             Ensure = 'Present'
        }
