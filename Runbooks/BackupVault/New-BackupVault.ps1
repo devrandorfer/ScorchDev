@@ -34,9 +34,9 @@ Try
                              -Verbose `
                              -Force
 
-    New-AzureRmResourceGroupDeployment -Name InitialDeployment `
+    New-AzureRmResourceGroupDeployment -Name CreateVault `
                                        -TemplateFile 'C:\git\ScorchDev\ARM\101-recovery-services-vault-create\azuredeploy.json' `
-                                       -vaultName 'scorchDemoVault' `
+                                       -vaultName $VaultName `
                                        -ResourceGroupName $ResourceGroupName `
                                        -Verbose
 
