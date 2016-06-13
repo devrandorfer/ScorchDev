@@ -33,7 +33,7 @@
                       "zzGlobal-RunbookWorkerAccessCredentialName":  {
                                                                          "isEncrypted":  false,
                                                                          "Description":  "The credential name for accessing runbook workers",
-                                                                         "Value":  "ryan"
+                                                                         "Value":  "randorfer@scorchdev.com"
                                                                      },
                       "zzGlobal-AutomationAccountName":  {
                                                              "isEncrypted":  false,
