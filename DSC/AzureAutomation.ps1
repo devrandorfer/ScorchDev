@@ -44,6 +44,12 @@
         "OPINSIGHTS_WORKSPACE_ID=$($GlobalVars.WorkspaceID) " +
         "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
 
+    $ADMVersion = '8.2.2'
+    $ADMRemotSetupExeURI = 'https://go.microsoft.com/fwlink/?LinkId=698625'
+    $ADMSetupExe = 'ADM-Agent-Windows.exe'
+    
+    $ADMCommandLineArguments = '/S'
+
     $GITVersion = '2.8.1'
     $GITRemotSetupExeURI = "https://github.com/git-for-windows/git/releases/download/v$($GITVersion).windows.1/Git-$($GITVersion)-64-bit.exe"
     $GITSetupExe = "Git-$($GITVersion)-64-bit.exe"
@@ -159,6 +165,25 @@
              InstalledCheckRegKey = 'SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup'
              InstalledCheckRegValueName = 'Product'
              InstalledCheckRegValueData = 'Microsoft Monitoring Agent'
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
+        }
+
+        xRemoteFile DownloadAppDependencyMonitor
+        {
+            Uri = $ADMRemotSetupExeURI
+            DestinationPath = "$($SourceDir)\$($ADMSetupExe)"
+            MatchSource = $False
+        }
+        xPackage InstallAppDependencyMonitor
+        {
+             Name = "Application Dependency Monitor"
+             Path = "$($SourceDir)\$($ADMSetupExE)" 
+             Arguments = $MMACommandLineArguments 
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Wow6432\Microsoft\Windows\CurrentVersion\Uninstall\BlueStripeCollector'
+             InstalledCheckRegValueName = 'DisplayVersion'
+             InstalledCheckRegValueData = $ADMVersion
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
