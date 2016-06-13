@@ -1,64 +1,74 @@
 ﻿{
     "Variables":  {
-                      "zzGlobal-RunbookWorkerAccessCredentialName":  {
-                                                                       "isEncrypted":  false,
-                                                                       "Description":  "The credential name for accessing runbook workers",
-                                                                       "Value":  "ryan"
-                                                                   },
-                      "zzGlobal-SubscriptionAccessCredentialName":  {
-                                                                      "isEncrypted":  false,
-                                                                      "Description":  "Name of the credential to be used for authenticating to the subscription",
-                                                                      "Value":  "scorchd@microsoft.com"
-                                                                  },
-                      "zzGlobal-WorkspaceID":  {
-                                                 "isEncrypted":  false,
-                                                 "Description":  "the workspace ID of the Log Analytics account with the automation solution deployed to it",
-                                                 "Value":  "0f571d2d-a13b-4778-a1df-31fe982ab344"
-                                             },
-                      "zzGlobal-SubscriptionName":  {
-                                                      "isEncrypted":  false,
-                                                      "Description":  "",
-                                                      "Value":  "Microsoft Azure Internal Consumption"
-                                                  },
-                      "zzGlobal-AutomationAccountName":  {
-                                                           "isEncrypted":  false,
-                                                           "Description":  "name of the automation account",
-                                                           "Value":  "demorandorfer"
-                                                       },
-                      "zzGlobal-StorageAccountName":  {
-                                                        "isEncrypted":  false,
-                                                        "Description":  "Name of a storage account for storing PSModules during import",
-                                                        "Value":  "demorandorfer"
-                                                    },
-                      "zzGlobal-HybridWorkerGroup":  {
-                                                       "isEncrypted":  false,
-                                                       "Description":  "name of the hybrid worker group for starting sync job on",
-                                                       "Value":  "Hybrid"
-                                                   },
-                      "zzGlobal-ResourceGroupName":  {
-                                                       "isEncrypted":  false,
-                                                       "Description":  "resource group that the target automation account is stored in",
-                                                       "Value":  "demorandorfer"
-                                                   },
-                      "zzGlobal-GitRepository":  {
-                                                    "isEncrypted":  false,
-                                                    "Description":  "a key value pair of repositories and their respective branches to sync into this automation account",
-                                                    "Value":  "{\"https://github.com/devrandorfer/SCOrchDev\":\"master\"}"
-                                                },
-                      "zzGlobal-GitRepositoryCurrentCommit":  {
-                                                                "isEncrypted":  false,
-                                                                "Description":  "a key value pair of repositories and their current commit. -1 for initial",
-                                                                "Value":  "{\"SCOrchDev\":\"-1\"}"
-                                                            },
                       "zzGlobal-LocalGitRepositoryRoot":  {
-                                                            "isEncrypted":  false,
-                                                            "Description":  "the local path to map the git repositories to",
-                                                            "Value":  "c:\\git"
-                                                        },
+                                                              "isEncrypted":  false,
+                                                              "Description":  "the local path to map the git repositories to",
+                                                              "Value":  "c:\\git"
+                                                          },
+                      "zzGlobal-SubscriptionAccessCredentialName":  {
+                                                                        "isEncrypted":  false,
+                                                                        "Description":  "Name of the credential to be used for authenticating to the subscription",
+                                                                        "Value":  "scorchd@microsoft.com"
+                                                                    },
+                      "zzGlobal-WorkspaceID":  {
+                                                   "isEncrypted":  false,
+                                                   "Description":  "the workspace ID of the Log Analytics account with the automation solution deployed to it",
+                                                   "Value":  "0f571d2d-a13b-4778-a1df-31fe982ab344"
+                                               },
+                      "zzGlobal-DomainName":  {
+                                                  "isEncrypted":  false,
+                                                  "Description":  "",
+                                                  "Value":  "scorchdev.com"
+                                              },
                       "zzGlobal-SubscriptionAccessTenant":  {
-                                            "isEncrypted":  false,
-                                            "Description":  "The tenant id for ServicePrincipal type auth. Can be blank",
-                                            "Value":  ""
-                                        }
+                                                                "isEncrypted":  false,
+                                                                "Description":  "The tenant id for ServicePrincipal type auth. Can be blank",
+                                                                "Value":  ""
+                                                            },
+                      "zzGlobal-GitRepository":  {
+                                                     "isEncrypted":  false,
+                                                     "Description":  "a key value pair of repositories and their respective branches to sync into this automation account",
+                                                     "Value":  "{\"https://github.com/devrandorfer/SCOrchDev\":\"master\"}"
+                                                 },
+                      "zzGlobal-RunbookWorkerAccessCredentialName":  {
+                                                                         "isEncrypted":  false,
+                                                                         "Description":  "The credential name for accessing runbook workers",
+                                                                         "Value":  "ryan"
+                                                                     },
+                      "zzGlobal-AutomationAccountName":  {
+                                                             "isEncrypted":  false,
+                                                             "Description":  "name of the automation account",
+                                                             "Value":  "demorandorfer"
+                                                         },
+                      "zzGlobal-HybridWorkerGroup":  {
+                                                         "isEncrypted":  false,
+                                                         "Description":  "name of the hybrid worker group for starting sync job on",
+                                                         "Value":  "Hybrid"
+                                                     },
+                      "zzGlobal-SubscriptionName":  {
+                                                        "isEncrypted":  false,
+                                                        "Description":  "",
+                                                        "Value":  "Microsoft Azure Internal Consumption"
+                                                    },
+                      "zzGlobal-ResourceGroupName":  {
+                                                         "isEncrypted":  false,
+                                                         "Description":  "resource group that the target automation account is stored in",
+                                                         "Value":  "demorandorfer"
+                                                     },
+                      "zzGlobal-DomainJoinCredentialName":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  "randorfer@scorchdev.com"
+                                                            },
+                      "zzGlobal-StorageAccountName":  {
+                                                          "isEncrypted":  false,
+                                                          "Description":  "Name of a storage account for storing PSModules during import",
+                                                          "Value":  "demorandorfer"
+                                                      },
+                      "zzGlobal-GitRepositoryCurrentCommit":  {
+                                                                  "isEncrypted":  false,
+                                                                  "Description":  "a key value pair of repositories and their current commit. -1 for initial",
+                                                                  "Value":  "{\"SCOrchDev\":\"-1\"}"
+                                                              }
                   }
 }

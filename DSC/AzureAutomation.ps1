@@ -9,6 +9,7 @@
     Import-DscResource -Module cGit -ModuleVersion 0.1.3
     Import-DscResource -Module cWindowscomputer
     Import-DscResource -Module cAzureAutomation
+    Import-DscResource -Module xDSCDomainjoin -ModuleVersion 1.1
 
     $SourceDir = 'c:\Source'
 
@@ -21,11 +22,13 @@
         'WorkspaceID',
         'HybridWorkerGroup',
         'GitRepository',
-        'LocalGitRepositoryRoot'
+        'LocalGitRepositoryRoot',
+        'DomainJoinCredentialName',
+        'DomainName'
     )
 
     $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
-    
+    $DomainJoinCredential = Get-AutomationPSCredential -Name $GlobalVars.DomainJoinCredentialName
     
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
                            -SubscriptionName $GlobalVars.SubscriptionName
@@ -188,6 +191,13 @@
         }
         $HybridRunbookWorkerDependency += "[xPackage]InstallMicrosoftManagementAgent"
         
+        xDSCDomainjoin JoinDomain
+        {
+            Domain = $GlobalVars.DomainName
+            Credential = $DomainJoinCredential
+        }
+        $HybridRunbookWorkerDependency += "[xDSCDomainjoin]JoinDomain"
+
         cHybridRunbookWorkerRegistration HybridRegistration
         {
             RunbookWorkerGroup = $GlobalVars.HybridWorkerGroup
