@@ -178,7 +178,7 @@
         {
              Name = "Application Dependency Monitor"
              Path = "$($SourceDir)\$($ADMSetupExE)" 
-             Arguments = $MMACommandLineArguments 
+             Arguments = $ADMCommandLineArguments 
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\Wow6432\Microsoft\Windows\CurrentVersion\Uninstall\BlueStripeCollector'
              InstalledCheckRegValueName = 'DisplayVersion'
