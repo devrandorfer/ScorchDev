@@ -3,7 +3,6 @@
     Param(
     )
 
-    #Import the required DSC Resources
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module cGit -ModuleVersion 0.1.3
