@@ -47,7 +47,6 @@
     $ADMVersion = '8.2.2'
     $ADMRemotSetupExeURI = 'https://go.microsoft.com/fwlink/?LinkId=698625'
     $ADMSetupExe = 'ADM-Agent-Windows.exe'
-    
     $ADMCommandLineArguments = '/S'
 
     $GITVersion = '2.8.1'
