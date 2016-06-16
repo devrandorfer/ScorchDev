@@ -3,7 +3,7 @@
                       "AzureRMLog-LastSaveDateTime":  {
                                                           "isEncrypted":  false,
                                                           "Description":  "",
-                                                          "Value":  "{\r\n    \"value\":  \"\\/Date(1463779127136)\\/\",\r\n    \"DisplayHint\":  2,\r\n    \"DateTime\":  \"Friday, May 20, 2016 4:18:47 PM\"\r\n}"
+                                                          "Value":  "{\"value\":\"\\/Date(1465935261625)\\/\",\"DisplayHint\":2,\"DateTime\":\"Tuesday, June 14, 2016 3:14:21 PM\"}"
                                                       },
                       "AzureRMLog-LogPath":  {
                                                  "isEncrypted":  false,
