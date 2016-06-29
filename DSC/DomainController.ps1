@@ -17,8 +17,6 @@ configuration DomainController
         'WorkspaceID'
     )
 
-    $DomainJoinCredential = Get-AutomationPSCredential -Name $zzGlobalVars.DomainJoinCredentialName
-    
     $WorkspaceCredential = Get-AutomationPSCredential -Name $zzGlobalVars.WorkspaceID
     $WorkspaceKey = $WorkspaceCredential.GetNetworkCredential().Password
 
