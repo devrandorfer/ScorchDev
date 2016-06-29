@@ -26,7 +26,7 @@ $ADDomainDeployVars = Get-BatchAutomationVariable -Prefix 'ADDomainDeploy' `
                                                         'subnetName'
 
 $DefaultDomainVars = Get-BatchAutomationVariable -Prefix 'Global' `
-                                                 -Name 'DomainCredentialName'
+                                                 -Name 'LocalCredentialName'
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
 $DomainCredential = Get-AutomationPSCredential -Name $DefaultDomainVars.DomainCredentialName

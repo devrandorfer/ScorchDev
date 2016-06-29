@@ -1,9 +1,19 @@
 ﻿{
     "Variables":  {
+                      "Global-DomainName":  {
+                                                "isEncrypted":  false,
+                                                "Description":  "",
+                                                "Value":  "scorchdev.com"
+                                            },
+                      "Global-LocalCredentialName":  {
+                                                         "isEncrypted":  false,
+                                                         "Description":  "",
+                                                         "Value":  "ryan"
+                                                     },
                       "Global-DomainCredentialName":  {
                                                           "isEncrypted":  false,
                                                           "Description":  "",
-                                                          "Value":  "ryan"
+                                                          "Value":  "omsa@scorchdev.com"
                                                       }
                   }
 }
