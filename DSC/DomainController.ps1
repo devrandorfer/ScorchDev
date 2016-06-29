@@ -5,7 +5,6 @@ configuration DomainController
                                    xNetworking,
                                    xPendingReboot,
                                    cDisk
-
     
     $GlobalVars = Get-BatchAutomationVariable -Prefix 'Global' `
                                               -Name 'DomainCredentialName',
