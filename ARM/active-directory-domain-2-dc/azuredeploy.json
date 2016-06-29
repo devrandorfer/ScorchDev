@@ -168,7 +168,7 @@
   "variables": {
     "VnetID": "[resourceId(parameters('virtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
     "modulesURL": "https://github.com/Azure/azure-quickstart-templates/raw/master/dsc-extension-azure-automation-pullserver/UpdateLCMforAAPull.zip",
-    "configurationFunction": "UpdateLCMforAAPull.ps1\\\\ConfigureLCMforAAPull",
+    "configurationFunction": "UpdateLCMforAAPull.ps1\\ConfigureLCMforAAPull",
     "nodeConfigurationName": "DomainController.BDC",
     "configurationMode": "ApplyAndAutoCorrect",
     "configurationModeFrequencyMins": 15,
