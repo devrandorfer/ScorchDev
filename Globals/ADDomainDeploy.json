@@ -1,0 +1,34 @@
+﻿{
+    "Variables":  {
+                      "ADDomainDeploy-VirtualNetworkResourceGroup":  {
+                                                                         "isEncrypted":  false,
+                                                                         "Description":  "",
+                                                                         "Value":  "SCOrchDev"
+                                                                     },
+                      "ADDomainDeploy-VirtualNetworkName":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  "useast2"
+                                                            },
+                      "ADDomainDeploy-ResourceGroupName":  {
+                                                               "isEncrypted":  false,
+                                                               "Description":  "",
+                                                               "Value":  "DomainController"
+                                                           },
+                      "ADDomainDeploy-ResourceGroupLocation":  {
+                                                                   "isEncrypted":  false,
+                                                                   "Description":  "",
+                                                                   "Value":  "eastus2"
+                                                               },
+                      "ADDomainDeploy-subnetName":  {
+                                                        "isEncrypted":  false,
+                                                        "Description":  "",
+                                                        "Value":  "DomainController"
+                                                    },
+                      "ADDomainDeploy-StorageAccountName":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  "addcdisk4n6jf"
+                                                            }
+                  }
+}
