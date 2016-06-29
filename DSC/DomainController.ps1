@@ -25,7 +25,7 @@ configuration DomainController
     
     $MMACommandLineArguments = 
         '/Q /C:"setup.exe /qn ADD_OPINSIGHTS_WORKSPACE=1 AcceptEndUserLicenseAgreement=1 ' +
-        "OPINSIGHTS_WORKSPACE_ID=$($GlobalVars.WorkspaceID) " +
+        "OPINSIGHTS_WORKSPACE_ID=$($zzGlobalVars.WorkspaceID) " +
         "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
 
     $ADMVersion = '8.2.2'
