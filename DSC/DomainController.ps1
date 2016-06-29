@@ -92,8 +92,12 @@ configuration DomainController
         { 
             Ensure = "Present" 
             Name = "AD-Domain-Services"
-            IncludeAllSubFeature = $True
-        } 
+        }
+        WindowsFeature ADDSTools
+        {
+            Ensure = "Present" 
+            Name = "RSAT-ADDS"
+        }
         xWaitForADDomain DscForestWait 
         { 
             DomainName = $GlobalVars.DomainName
