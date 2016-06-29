@@ -17,7 +17,7 @@ Copyright = '(c) 2014 Microsoft Corporation. All rights reserved.'
 # Description of the functionality provided by this module
 Description = 'This is a modified verion of the xDisk Module to allow reboots to be suppressed'
 
-All of the resources in the DSC Resource Kit are provided AS IS, and are not supported through any Microsoft standard support program or service.'
+# All of the resources in the DSC Resource Kit are provided AS IS, and are not supported through any Microsoft standard support program or service.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '4.0'
