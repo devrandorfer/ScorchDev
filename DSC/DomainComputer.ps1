@@ -1,8 +1,5 @@
 ﻿Configuration DomainComputer
 {
-    Param(
-    )
-
     # Import the required modules
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module PSDesiredStateConfiguration
