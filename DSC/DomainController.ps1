@@ -92,6 +92,7 @@ configuration DomainController
         { 
             Ensure = "Present" 
             Name = "AD-Domain-Services"
+            IncludeAllSubFeature = $True
         } 
         xWaitForADDomain DscForestWait 
         { 
