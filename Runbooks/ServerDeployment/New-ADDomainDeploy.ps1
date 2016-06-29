@@ -12,10 +12,12 @@ Param(
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
 $CompletedParameters = Write-StartingMessage -CommandName New-ADDomainDeploy
 
-$GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
+$zzGlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
                                                 'SubscriptionAccessCredentialName',
-                                                'SubscriptionAccessTenant'
+                                                'SubscriptionAccessTenant',
+                                                'ResourceGroupName',
+                                                'AutomationAccountName'
 
 $ADDomainDeployVars = Get-BatchAutomationVariable -Prefix 'ADDomainDeploy' `
                                                   -Name 'ResourceGroupName',
@@ -28,14 +30,17 @@ $ADDomainDeployVars = Get-BatchAutomationVariable -Prefix 'ADDomainDeploy' `
 $DefaultDomainVars = Get-BatchAutomationVariable -Prefix 'Global' `
                                                  -Name 'LocalCredentialName'
 
-$SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
-$DomainCredential = Get-AutomationPSCredential -Name $DefaultDomainVars.DomainCredentialName
+$SubscriptionAccessCredential = Get-AutomationPSCredential -Name $zzGlobalVars.SubscriptionAccessCredentialName
+$LocalCredential =  Get-AutomationPSCredential -Name $DefaultDomainVars.LocalCredentialName
 
 Try
 {
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                           -SubscriptionName $GlobalVars.SubscriptionName `
-                           -Tenant $GlobalVars.SubscriptionAccessTenant
+                           -SubscriptionName $zzGlobalVars.SubscriptionName `
+                           -Tenant $zzGlobalVars.SubscriptionAccessTenant
+
+    $RegistrationInfo = Get-AzureRmAutomationRegistrationInfo -ResourceGroupName $zzGlobalVars.ResourceGroupName `
+                                                              -AutomationAccountName $zzGlobalVars.AutomationAccountName
 
     New-AzureRmResourcegroup -Name $ADDomainDeployVars.ResourceGroupName `
                              -Location $ADDomainDeployVars.ResourceGroupLocation `
@@ -52,8 +57,10 @@ Try
                                        -subnetName $ADDomainDeployVars.subnetName `
                                        -adPDCNicIPAddress '10.0.0.5' `
                                        -adBDCNicIPAddress '10.0.0.6' `
-                                       -adminUsername $DomainCredential.UserName `
-                                       -adminPassword $DomainCredential.Password `
+                                       -adminUsername $LocalCredential.UserName `
+                                       -adminPassword $LocalCredential.Password `
+                                       -registrationKey ($RegistrationInfo.PrimaryKey | ConvertTo-SecureString -AsPlainText -Force) `
+                                       -registrationUrl $RegistrationInfo.Endpoint `
                                        -Verbose
 }
 Catch
