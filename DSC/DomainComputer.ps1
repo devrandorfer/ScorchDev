@@ -5,6 +5,7 @@
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module cWindowscomputer
     Import-DscResource -Module cAzureAutomation
+    Import-DscResource -Module xPendingReboot
     Import-DscResource -Module xDSCDomainjoin -ModuleVersion 1.1
 
     $SourceDir = 'd:\Source'
@@ -59,6 +60,13 @@
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
+
+        xPendingReboot Reboot1
+        { 
+            Name = "RebootServer"
+            DependsOn = "[xPackage]InstallMicrosoftManagementAgent"
+        }
+
         xRemoteFile DownloadAppDependencyMonitor
         {
             Uri = $ADMRemotSetupExeURI
@@ -76,6 +84,12 @@
              InstalledCheckRegValueData = $ADMVersion
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
+        }
+
+        xPendingReboot Reboot2
+        { 
+            Name = "RebootServer2"
+            DependsOn = "[xPackage]InstallAppDependencyMonitor"
         }
         xDSCDomainjoin JoinDomain
         {
@@ -109,6 +123,11 @@
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
+        xPendingReboot Reboot1
+        { 
+            Name = "RebootServer"
+            DependsOn = "[xPackage]InstallMicrosoftManagementAgent"
+        }
         xRemoteFile DownloadAppDependencyMonitor
         {
             Uri = $ADMRemotSetupExeURI
@@ -126,6 +145,17 @@
              InstalledCheckRegValueData = $ADMVersion
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
+        }
+        xDSCDomainjoin JoinDomain
+        {
+            Domain = $GlobalVars.DomainName
+            Credential = $DomainJoinCredential
+        }
+        
+        xPendingReboot Reboot2
+        { 
+            Name = "RebootServer2"
+            DependsOn = "[xPackage]InstallAppDependencyMonitor"
         }
         xDSCDomainjoin JoinDomain
         {
@@ -159,6 +189,11 @@
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
+        xPendingReboot Reboot1
+        { 
+            Name = "RebootServer"
+            DependsOn = "[xPackage]InstallMicrosoftManagementAgent"
+        }
         xRemoteFile DownloadAppDependencyMonitor
         {
             Uri = $ADMRemotSetupExeURI
@@ -176,6 +211,17 @@
              InstalledCheckRegValueData = $ADMVersion
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
+        }
+        xDSCDomainjoin JoinDomain
+        {
+            Domain = $GlobalVars.DomainName
+            Credential = $DomainJoinCredential
+        }
+        
+        xPendingReboot Reboot2
+        { 
+            Name = "RebootServer2"
+            DependsOn = "[xPackage]InstallAppDependencyMonitor"
         }
         xDSCDomainjoin JoinDomain
         {
