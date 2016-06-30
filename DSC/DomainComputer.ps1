@@ -8,7 +8,6 @@
     Import-DscResource -Module xDSCDomainjoin -ModuleVersion 1.1
 
     $SourceDir = 'd:\Source'
-
     $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                               -Name @(
         'WorkspaceID',
