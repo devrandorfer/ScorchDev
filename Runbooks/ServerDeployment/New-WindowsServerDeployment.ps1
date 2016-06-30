@@ -20,7 +20,7 @@ $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                                 'RunbookWorkerAccessCredentialName'
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
-$RunbookWorkerAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.RunbookWorkerAccessCredentialName
+$RunbookWorkerAccessCredential = Get-AutomationPSCredential -Name 'ryan'
 
 
 Try
@@ -30,18 +30,19 @@ Try
                            -Tenant $GlobalVars.SubscriptionAccessTenant
 
     $VMName = "$(New-RandomString -MinLength 5 -MaxLength 5 -InputString 'abcdefghijklmnopqrstuvwxyz')"
-    $ResourceGroupName = 'AUtomationDemo2'
+    $ResourceGroupName = 'tempserver'
 
     New-AzureRmResourcegroup -Name $ResourceGroupName `
-                             -Location 'EastUS' `
+                             -Location 'eastus2' `
                              -Verbose `
                              -Force
 
     New-AzureRmResourceGroupDeployment -Name InitialDeployment `
-                                       -TemplateFile 'C:\git\ScorchDev\ARM\101-vm-simple-windows\azuredeploy.json' `
+                                       -TemplateFile 'C:\git\ScorchDev\ARM\Iaas-WindowsVM\azuredeploy.json' `
                                        -adminUsername $RunbookWorkerAccessCredential.UserName `
                                        -adminPassword $RunbookWorkerAccessCredential.Password `
-                                       -dnsLabelPrefix $VMName `
+                                       -storageAccountName "$($ResourceGroupName.ToLower())store" `
+                                       -vmName $VMName `
                                        -ResourceGroupName $ResourceGroupName `
                                        -Verbose
 }
