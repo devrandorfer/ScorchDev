@@ -85,7 +85,6 @@
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
-
         xPendingReboot Reboot2
         { 
             Name = "RebootServer2"
@@ -146,12 +145,6 @@
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
-        xDSCDomainjoin JoinDomain
-        {
-            Domain = $GlobalVars.DomainName
-            Credential = $DomainJoinCredential
-        }
-        
         xPendingReboot Reboot2
         { 
             Name = "RebootServer2"
@@ -212,12 +205,6 @@
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
-        xDSCDomainjoin JoinDomain
-        {
-            Domain = $GlobalVars.DomainName
-            Credential = $DomainJoinCredential
-        }
-        
         xPendingReboot Reboot2
         { 
             Name = "RebootServer2"
