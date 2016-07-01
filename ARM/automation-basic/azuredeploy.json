@@ -7,6 +7,25 @@
       "metadata": {
         "description": "The name of the Azure Automation account to deploy to."
       }
+    },
+    "DomainJoinCredentialName": {
+      "type": "string",
+      "defaultValue": "user@domain.com",
+      "metadata": {
+        "description": "The name of the Automation credential used to join machines to the domain"
+      }
+    },
+    "DomainJoinCredentialPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The password for the Azure Automation credential."
+      }
+    },
+    "DefaultDomainName": {
+      "type": "string",
+      "metadata": {
+        "description": "The domain to join with DSC."
+      }
     }
   },
   "variables": {
@@ -40,10 +59,6 @@
       "xDSCDomainjoin": {
         "moduleName": "xDSCDomainjoin",
         "moduleUri": "[concat(variables('baseURI'), 'xDSCDomainjoin.zip')]"
-      },
-      "xJea": {
-        "moduleName": "xJea",
-        "moduleUri": "[concat(variables('baseURI'), 'xJea.zip')]"
       },
       "xNetworking": {
         "moduleName": "xNetworking",
@@ -195,20 +210,6 @@
           }
         },
         {
-          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').xJea.ModuleName)]",
-          "type": "microsoft.automation/automationAccounts/Modules",
-          "apiVersion": "[variables('automationApiVersion')]",
-          "tags": { },
-          "dependsOn": [
-            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
-          ],
-          "properties": {
-            "contentLink": {
-              "uri": "[variables('dscModules').xJea.ModuleUri]"
-            }
-          }
-        },
-        {
           "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').xNetworking.ModuleName)]",
           "type": "microsoft.automation/automationAccounts/Modules",
           "apiVersion": "[variables('automationApiVersion')]",
@@ -328,6 +329,52 @@
             "contentLink": {
               "uri": "[variables('psModules').SCOrchDevAzureAutomationIntegration.ModuleUri]"
             }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', 'zzGlobal-DomainJoinCredentialName')]",
+          "type": "microsoft.automation/automationAccounts/Variables",
+          "apiVersion": "2015-01-01-preview",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('AutomationAccountName'))]"
+          ],
+          "tags": { },
+          "properties": {
+            "description": " ",
+            "isEncrypted": "false",
+            "type": "string",
+            "value": "[concat('\"', parameters('DomainJoinCredentialName'),'\"')]"
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', 'zzGlobal-DefaultDomainName')]",
+          "type": "microsoft.automation/automationAccounts/Variables",
+          "apiVersion": "2015-01-01-preview",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('AutomationAccountName'))]"
+          ],
+          "tags": { },
+          "properties": {
+            "description": " ",
+            "isEncrypted": "false",
+            "type": "string",
+            "value": "[concat('\"', parameters('DefaultDomainName'),'\"')]"
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', parameters('DomainJoinCredentialName'))]",
+          "type": "microsoft.automation/automationAccounts/Credentials",
+          "apiVersion": "2015-01-01-preview",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('AutomationAccountName'))]"
+          ],
+          "tags": { },
+          "properties": {
+            "userName": "[parameters('DomainJoinCredentialName')]",
+            "password": "[parameters('DomainJoinCredentialPassword')]"
           }
         }
       ]
