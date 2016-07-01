@@ -10,7 +10,7 @@
     }
   },
   "variables": {
-    "baseURI": "https: //github.com/devrandorfer/ScorchDev/raw/master/ARM/automation-basic",
+    "baseURI": "https://github.com/devrandorfer/ScorchDev/raw/master/ARM/automation-basic/",
     "sku": "Free",
     "dscModules": {
       "xPSDesiredStateConfiguration": {
