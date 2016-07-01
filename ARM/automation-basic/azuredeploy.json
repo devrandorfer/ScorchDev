@@ -1,0 +1,337 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "automationAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Azure Automation account to deploy to."
+      }
+    }
+  },
+  "variables": {
+    "baseURI": "https: //github.com/devrandorfer/ScorchDev/raw/master/ARM/automation-basic",
+    "sku": "Free",
+    "dscModules": {
+      "xPSDesiredStateConfiguration": {
+        "moduleName": "xPSDesiredStateConfiguration",
+        "moduleUri": "[concat(variables('baseURI'), 'xPSDesiredStateConfiguration.zip')]"
+      },
+      "cGit": {
+        "moduleName": "cGit",
+        "moduleUri": "[concat(variables('baseURI'), 'cGit.zip')]"
+      },
+      "cWindowscomputer": {
+        "moduleName": "cWindowscomputer",
+        "moduleUri": "[concat(variables('baseURI'), 'cWindowsComputer.zip')]"
+      },
+      "cAzureAutomation": {
+        "moduleName": "cAzureAutomation",
+        "moduleUri": "[concat(variables('baseURI'), 'cAzureAutomation.zip')]"
+      },
+      "xActiveDirectory": {
+        "moduleName": "xActiveDirectory",
+        "moduleUri": "[concat(variables('baseURI'), 'xActiveDirectory.zip')]"
+      },
+      "xDisk": {
+        "moduleName": "xDisk",
+        "moduleUri": "[concat(variables('baseURI'), 'xDisk.zip')]"
+      },
+      "xDSCDomainjoin": {
+        "moduleName": "xDSCDomainjoin",
+        "moduleUri": "[concat(variables('baseURI'), 'xDSCDomainjoin.zip')]"
+      },
+      "xJea": {
+        "moduleName": "xJea",
+        "moduleUri": "[concat(variables('baseURI'), 'xJea.zip')]"
+      },
+      "xNetworking": {
+        "moduleName": "xNetworking",
+        "moduleUri": "[concat(variables('baseURI'), 'xNetworking.zip')]"
+      },
+      "xPendingReboot": {
+        "moduleName": "xPendingReboot",
+        "moduleUri": "[concat(variables('baseURI'), 'xPendingReboot.zip')]"
+      },
+      "xSQLServer": {
+        "moduleName": "xSQLServer",
+        "moduleUri": "[concat(variables('baseURI'), 'xSQLServer.zip')]"
+      }
+    },
+    "psModules": {
+      "SCOrchDevAzureAutomationIntegration": {
+        "moduleName": "SCOrchDev-AzureAutomationIntegration",
+        "moduleUri": "https://github.com/randorfer/ScorchDev/raw/master/ARM/automation-sourcecontrol/SCOrchDev-AzureAutomationIntegration.zip"
+      },
+      "SCOrchDevException": {
+        "moduleName": "SCOrchDev-Exception",
+        "moduleUri": "https://github.com/randorfer/ScorchDev/raw/master/ARM/automation-sourcecontrol/SCOrchDev-Exception.zip"
+      },
+      "SCOrchDevFile": {
+        "moduleName": "SCOrchDev-File",
+        "moduleUri": "https://github.com/randorfer/ScorchDev/raw/master/ARM/automation-sourcecontrol/SCOrchDev-File.zip"
+      },
+      "SCOrchDevGitIntegration": {
+        "moduleName": "SCOrchDev-GitIntegration",
+        "moduleUri": "https://github.com/randorfer/ScorchDev/raw/master/ARM/automation-sourcecontrol/SCOrchDev-GitIntegration.zip"
+      },
+      "SCOrchDevUtility": {
+        "moduleName": "SCOrchDev-Utility",
+        "moduleUri": "https://github.com/randorfer/ScorchDev/raw/master/ARM/automation-sourcecontrol/SCOrchDev-Utility.zip"
+      }
+    },
+    "automationApiVersion": "2015-10-31"
+  },
+  "resources": [
+    {
+      "name": "[parameters('automationAccountName')]",
+      "type": "Microsoft.Automation/automationAccounts",
+      "apiVersion": "2015-01-01-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [ ],
+      "tags": { },
+      "properties": {
+        "sku": {
+          "name": "[variables('sku')]"
+        }
+      },
+      "resources": [
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').xPSDesiredStateConfiguration.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('dscModules').xPSDesiredStateConfiguration.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').cGit.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('dscModules').cGit.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').cWindowscomputer.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('dscModules').cWindowscomputer.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').cAzureAutomation.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('dscModules').cAzureAutomation.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').xActiveDirectory.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('dscModules').xActiveDirectory.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').xDisk.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('dscModules').xDisk.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').xDSCDomainjoin.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('dscModules').xDSCDomainjoin.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').xJea.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('dscModules').xJea.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').xNetworking.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('dscModules').xNetworking.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').xPendingReboot.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('dscModules').xPendingReboot.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('dscModules').xSQLServer.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('dscModules').xSQLServer.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('psModules').SCOrchDevUtility.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('psModules').SCOrchDevUtility.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('psModules').SCOrchDevException.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]",
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'),'/Modules/',variables('psModules').SCOrchDevUtility.ModuleName)]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('psModules').SCOrchDevException.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('psModules').SCOrchDevFile.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]",
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'),'/Modules/',variables('psModules').SCOrchDevUtility.ModuleName)]",
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'),'/Modules/',variables('psModules').SCOrchDevException.ModuleName)]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('psModules').SCOrchDevFile.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('psModules').SCOrchDevGitIntegration.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]",
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'),'/Modules/',variables('psModules').SCOrchDevUtility.ModuleName)]",
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'),'/Modules/',variables('psModules').SCOrchDevException.ModuleName)]",
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'),'/Modules/',variables('psModules').SCOrchDevFile.ModuleName)]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('psModules').SCOrchDevGitIntegration.ModuleUri]"
+            }
+          }
+        },
+        {
+          "name": "[concat(parameters('automationAccountName'), '/', variables('psModules').SCOrchDevAzureAutomationIntegration.ModuleName)]",
+          "type": "microsoft.automation/automationAccounts/Modules",
+          "apiVersion": "[variables('automationApiVersion')]",
+          "tags": { },
+          "dependsOn": [
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'))]",
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'),'/Modules/',variables('psModules').SCOrchDevUtility.ModuleName)]",
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'),'/Modules/',variables('psModules').SCOrchDevException.ModuleName)]",
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'),'/Modules/',variables('psModules').SCOrchDevFile.ModuleName)]",
+            "[concat('Microsoft.Automation/automationAccounts/', parameters('automationAccountName'),'/Modules/',variables('psModules').SCOrchDevGitIntegration.ModuleName)]"
+          ],
+          "properties": {
+            "contentLink": {
+              "uri": "[variables('psModules').SCOrchDevAzureAutomationIntegration.ModuleUri]"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": { }
+}
