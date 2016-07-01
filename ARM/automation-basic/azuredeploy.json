@@ -61,23 +61,23 @@
     "psModules": {
       "SCOrchDevAzureAutomationIntegration": {
         "moduleName": "SCOrchDev-AzureAutomationIntegration",
-        "moduleUri": "https://github.com/randorfer/ScorchDev/raw/master/ARM/automation-sourcecontrol/SCOrchDev-AzureAutomationIntegration.zip"
+        "moduleUri": "[concat(variables('baseURI'), 'SCOrchDev-AzureAutomationIntegration.zip')]"
       },
       "SCOrchDevException": {
         "moduleName": "SCOrchDev-Exception",
-        "moduleUri": "https://github.com/randorfer/ScorchDev/raw/master/ARM/automation-sourcecontrol/SCOrchDev-Exception.zip"
+        "moduleUri": "[concat(variables('baseURI'), 'SCOrchDev-Exception.zip')]"
       },
       "SCOrchDevFile": {
         "moduleName": "SCOrchDev-File",
-        "moduleUri": "https://github.com/randorfer/ScorchDev/raw/master/ARM/automation-sourcecontrol/SCOrchDev-File.zip"
+        "moduleUri": "[concat(variables('baseURI'), 'SCOrchDev-File.zip')]"
       },
       "SCOrchDevGitIntegration": {
         "moduleName": "SCOrchDev-GitIntegration",
-        "moduleUri": "https://github.com/randorfer/ScorchDev/raw/master/ARM/automation-sourcecontrol/SCOrchDev-GitIntegration.zip"
+        "moduleUri": "[concat(variables('baseURI'), 'SCOrchDev-GitIntegration.zip')]"
       },
       "SCOrchDevUtility": {
         "moduleName": "SCOrchDev-Utility",
-        "moduleUri": "https://github.com/randorfer/ScorchDev/raw/master/ARM/automation-sourcecontrol/SCOrchDev-Utility.zip"
+        "moduleUri": "[concat(variables('baseURI'), 'SCOrchDev-Utility.zip')]"
       }
     },
     "automationApiVersion": "2015-10-31"
