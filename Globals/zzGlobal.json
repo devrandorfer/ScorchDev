@@ -1,5 +1,10 @@
 ﻿{
     "Variables":  {
+                      "zzGlobal-SubscriptionName":  {
+                                                        "isEncrypted":  false,
+                                                        "Description":  "",
+                                                        "Value":  "Microsoft Azure Internal Consumption"
+                                                    },
                       "zzGlobal-LocalGitRepositoryRoot":  {
                                                               "isEncrypted":  false,
                                                               "Description":  "the local path to map the git repositories to",
@@ -30,6 +35,11 @@
                                                      "Description":  "a key value pair of repositories and their respective branches to sync into this automation account",
                                                      "Value":  "{\"https://github.com/devrandorfer/SCOrchDev\":\"master\"}"
                                                  },
+                      "zzGlobal-DefaultDomainName":  {
+                                                         "isEncrypted":  false,
+                                                         "Description":  "",
+                                                         "Value":  "scorchdev.com"
+                                                     },
                       "zzGlobal-RunbookWorkerAccessCredentialName":  {
                                                                          "isEncrypted":  false,
                                                                          "Description":  "The credential name for accessing runbook workers",
@@ -45,11 +55,6 @@
                                                          "Description":  "name of the hybrid worker group for starting sync job on",
                                                          "Value":  "Hybrid"
                                                      },
-                      "zzGlobal-SubscriptionName":  {
-                                                        "isEncrypted":  false,
-                                                        "Description":  "",
-                                                        "Value":  "Microsoft Azure Internal Consumption"
-                                                    },
                       "zzGlobal-ResourceGroupName":  {
                                                          "isEncrypted":  false,
                                                          "Description":  "resource group that the target automation account is stored in",

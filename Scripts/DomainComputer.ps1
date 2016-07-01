@@ -39,6 +39,28 @@
             Domain = $GlobalVars.DefaultDomainName
             Credential = $DomainJoinCredential
         }
+        File DownloadAutomationBuildInstalls
+        {
+            Ensure = "Present"  # You can also set Ensure to "Absent"
+            Type = "Directory" # Default is "File".
+            Recurse = $true # Ensure presence of subdirectories, too
+            SourcePath = "\\servername\d$\SCORCH_Data\CorpServerAutomatedBuilds\Installs\McAfee5.2"
+            DestinationPath = "$($SourceDir)\McAfee"
+            Credential = $DomainJoinCredential
+            DependsOn = "[xDSCDomainjoin]JoinDomain"
+        }
+        xPackage InstallMcAfee
+        {
+             Name = "McAfee Agent and Client"
+             Path = "$($SourceDir)\McAfee\McAfee5.2\NewFramePkg50.exe" 
+             Arguments = '/Install=Agent /Silent'
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Agent\Applications\EPOAGENT3000'
+             InstalledCheckRegValueName = 'ProductName'
+             InstalledCheckRegValueData = 'McAfee Agent'
+             ProductID = ''
+             DependsOn = "[File]DownloadAutomationBuildInstalls"
+        }
     }
     Node MemberServerQA
     {
