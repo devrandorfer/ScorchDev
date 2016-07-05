@@ -52,7 +52,7 @@
         xPackage InstallMcAfee
         {
              Name = "McAfee Agent and Client"
-             Path = "$($SourceDir)\McAfee\McAfee5.2\NewFramePkg50.exe" 
+             Path = "$($SourceDir)\McAfee\NewFramePkg502.exe" 
              Arguments = '/Install=Agent /Silent'
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\Agent\Applications\EPOAGENT3000'
