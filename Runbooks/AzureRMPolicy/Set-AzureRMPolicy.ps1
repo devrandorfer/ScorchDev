@@ -33,39 +33,14 @@ Try
         "then":{"effect":"deny"}
     }
 '@
-    $PublicDefinition = @'
-    {
-        "if": {
-            "anyOf":[{
-                "source":"action",
-                "like":"Microsoft.Network/publicIPAddresses/*"
-            }]
-        },
-        "then":{"effect":"audit"}
-    }
-'@
     $policydef = New-AzureRmPolicyDefinition -Name NoPubIPPolicyDefinition -Description 'No public IP addresses allowed' -Policy $NoPublicDefinition
-    $PublicIpPolicydef = New-AzureRmPolicyDefinition -Name PubIPPolicyDefinition -Description 'Public IP addresses allowed' -Policy $PublicDefinition
     
     $Subscription = Get-AzureRmSubscription -SubscriptionName $GlobalVars.SubscriptionName
     
     New-AzureRmPolicyAssignment -Name NoPublicIPPolicyAssignment `
-                                -PolicyDefinition $PublicIpPolicydef `
+                                -PolicyDefinition $policydef `
                                 -Scope /Subscriptions/$Subscription
     
-    Foreach($_ResourceGroup in $ResourceGroup)
-    {
-        $NetworkingTag = $_ResourceGroup.Tags | Where-Object { $_.Name -eq 'Networking' }
-        if($NetworkingTag)
-        {
-            if(($_ResourceGroup.Tags | Where-Object { $_.Name -eq 'Networking' }).Value -eq 'Public')
-            {
-                New-AzureRmPolicyAssignment -Name NoPublicIPPolicyAssignment `
-                                            -PolicyDefinition $policydef `
-                                            -Scope $_ResourceGroup.ResourceId
-            }
-        }
-    }
 }
 Catch
 {
