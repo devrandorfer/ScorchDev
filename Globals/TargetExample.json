@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "TargetExample-Audience":  {
+                                                     "isEncrypted":  false,
+                                                     "Description":  "",
+                                                     "Value":  "Target Team"
+                                                 },
+                      "TargetExample-HelloMessage":  {
+                                                         "isEncrypted":  false,
+                                                         "Description":  "",
+                                                         "Value":  "Hello "
+                                                     }
+                  }
+}
