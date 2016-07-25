@@ -1,4 +1,12 @@
 ﻿$Token = '37f5bf608500904513513f1eaeea26ec'
+
+<#
+    Idea for increasing datadump / populating company list
+    
+    $CompanyMegaList = Invoke-WebRequest -Uri "https://my.intricately.com/es?q=a&v=0"
+#>
+
+
 $CompanyList = @(
    '3M'
    'the mosaic company'
