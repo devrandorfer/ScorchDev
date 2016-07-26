@@ -22,7 +22,7 @@ for($i = 0 ; $i -gt -70 ; $i-=1)
                 $_Pokemon | Add-Member NoteProperty 'url' "http://ugc.pokevision.com/images/pokemon/$($_Pokemon.id).png"
                 $_Pokemon | Add-Member NoteProperty 'scan_time' ([datetime]::Now)
                 $_Pokemon | Add-Member NoteProperty 'scan_latitude' $ScanningLat
-                $_Pokemon | Add-Member NoteProperty 'scan_longitude' $ScanningLat
+                $_Pokemon | Add-Member NoteProperty 'scan_longitude' $ScanningLong
                 $ScanTable.Add($_Pokemon.id, $_Pokemon)
                 $Page.Add($_Pokemon) | Out-Null
             }
