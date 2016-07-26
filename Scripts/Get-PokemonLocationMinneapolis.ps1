@@ -31,7 +31,7 @@ for($i = 0 ; $i -gt -70 ; $i-=1)
         {
             if(-not $ScanTable.ContainsKey($_Pokemon.id))
             {
-                $_Pokemon | Add-Member NoteProperty 'url' "http://ugc.pokevision.com/images/pokemon/$($_Pokemon.id).png"
+                $_Pokemon | Add-Member NoteProperty 'url' "http://ugc.pokevision.com/images/pokemon/$($_Pokemon.pokemonId).png"
                 $_Pokemon | Add-Member NoteProperty 'scan_time' ([datetime]::Now)
                 $_Pokemon | Add-Member NoteProperty 'scan_latitude' $ScanningLat
                 $_Pokemon | Add-Member NoteProperty 'scan_longitude' $ScanningLong
@@ -41,5 +41,8 @@ for($i = 0 ; $i -gt -70 ; $i-=1)
             }
         }
     }
-    $Page | ConvertTo-JSON -Depth ([int]::MaxValue) > "~\Desktop\Page$($i).json"
+    @{ 
+        'id' = ($i -as [string]) 
+        'scanValue' = $Page
+    } | ConvertTo-JSON -Depth ([int]::MaxValue) > "~\Desktop\Page$($i).json"
 }
