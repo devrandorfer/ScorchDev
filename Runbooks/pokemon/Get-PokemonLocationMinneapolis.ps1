@@ -7,6 +7,8 @@ $pokemonHT = ConvertFrom-Json $a
 
 $ScanTable = @{}
 
+$DocDBContext = New-DocDBContext -Uri 'https://scopokemongo.documents.azure.com' -Key 'K5cIgBG0rnlFePhIlh5IB8aK5D4bNfAPXXFqiVmHXdKh0OGzOTBhN1KNIJH45zgn82mpMpUFdqQVZ7dgS1qoDg=='
+
 for($i = 0 ; $i -gt -70 ; $i-=1)
 {
     $StartTime = (Get-Date -Format 'MMddyyyyhhmmsstt')
@@ -34,8 +36,12 @@ for($i = 0 ; $i -gt -70 ; $i-=1)
             }
         }
     }
+    $FileName = "C:\Page$($i)-$($StartTime).json"
     @{ 
         'id' = "$($i -as [string])-$($StartTime)"
         'scanValue' = $Page
-    } | ConvertTo-JSON -Depth ([int]::MaxValue) > "~\Desktop\Page$($i)-$($StartTime).json"
+    } | ConvertTo-JSON -Depth ([int]::MaxValue) > $FileName
+
+    Add-DocDBDocument -Path $FileName -DatabaseName 'pokemon_location' -CollectionName 'minneapolis' -Context $DocDBContext | Out-Null
+    Remove-Item $FileName
 }
