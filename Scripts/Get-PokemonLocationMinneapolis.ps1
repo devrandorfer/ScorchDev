@@ -18,12 +18,14 @@ $ScanTable = @{}
 
 for($i = 0 ; $i -gt -70 ; $i-=1)
 {
+    $StartTime = Get-Date (get-date -Format 'MM-dd-yyyy hh:mm:ss tt')
     $Page = new-object -typename system.collections.arraylist
     for($j = 0 ; $j -lt 75; $j++)
     {
         $ScanningLat = $StartingLat + ($Distance * $i)
         $ScanningLong = $StartingLong + ($Distance * $j)
         
+        $ScanTime = (get-date -Format 'MM-dd-yyyy hh:mm:ss tt')
         $Request = invoke-webrequest -uri "https://pokevision.com/map/data/$ScanningLat/$ScanningLong"
         $Pokemon = ($Request.Content | ConvertFrom-JSON).Pokemon
 
@@ -32,7 +34,7 @@ for($i = 0 ; $i -gt -70 ; $i-=1)
             if(-not $ScanTable.ContainsKey($_Pokemon.id))
             {
                 $_Pokemon | Add-Member NoteProperty 'url' "http://ugc.pokevision.com/images/pokemon/$($_Pokemon.pokemonId).png"
-                $_Pokemon | Add-Member NoteProperty 'scan_time' (get-date -Format 'MM-dd-yyyy hh:mm:ss tt')
+                $_Pokemon | Add-Member NoteProperty 'scan_time' $ScanTime
                 $_Pokemon | Add-Member NoteProperty 'scan_latitude' $ScanningLat
                 $_Pokemon | Add-Member NoteProperty 'scan_longitude' $ScanningLong
                 $_Pokemon | Add-Member NoteProperty 'name' $pokemonHT[$_Pokemon.pokemonId]
@@ -42,7 +44,7 @@ for($i = 0 ; $i -gt -70 ; $i-=1)
         }
     }
     @{ 
-        'id' = ($i -as [string]) 
+        'id' = "$($i -as [string])-$($StartTime)"
         'scanValue' = $Page
-    } | ConvertTo-JSON -Depth ([int]::MaxValue) > "~\Desktop\Page$($i).json"
+    } | ConvertTo-JSON -Depth ([int]::MaxValue) > "~\Desktop\Page$($i)-$($StartTime).json"
 }
