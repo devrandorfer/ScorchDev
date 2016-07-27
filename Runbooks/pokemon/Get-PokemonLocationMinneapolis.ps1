@@ -18,7 +18,12 @@ for($i = 0 ; $i -gt -70 ; $i-=1)
         $ScanningLat = $StartingLat + ($Distance * $i)
         $ScanningLong = $StartingLong + ($Distance * $j)
         
-        $ScanTime = (get-date -Format 'MM-dd-yyyy hh:mm:ss tt')
+        $ScanPlace = Invoke-WebRequest -Uri "http://dev.virtualearth.net/REST/v1/Locations/$($ScanningLat),$($ScanningLong)?o=xml&key=Amz0WOZj3_pVHerw3Xnlci4eW5v-ckDAjjW66crtvoREaBbkA93CFXlJnaWt2zaF" -UseBasicParsing
+        if($ScanPlace.Content -as [string] -match '<Name>(.+?)(?=</Name>)') { $ScanAddress = $Matches[1] }
+        else { $ScanAddress = "$ScanningLat,$ScanningLog" }
+
+        $ScanTime = (Get-Date -Format 'MM-dd-yyyy hh:mm:ss tt')
+        $ScanTimeRounded = ([datetime]$ScanTime).Date + (new-object system.timespan ([math]::Round(([datetime]$ScanTime).TimeofDay.TotalHours)),0,0)
         $Request = invoke-webrequest -uri "https://pokevision.com/map/data/$ScanningLat/$ScanningLong" -UseBasicParsing
         $Pokemon = ($Request.Content | ConvertFrom-JSON).Pokemon
 
@@ -26,22 +31,32 @@ for($i = 0 ; $i -gt -70 ; $i-=1)
         {
             if(-not $ScanTable.ContainsKey($_Pokemon.id))
             {
+                $PokemonPlaceRequest = Invoke-WebRequest -Uri "http://dev.virtualearth.net/REST/v1/Locations/$($_Pokemon.Latitude),$($_Pokemon.longitude)?o=xml&key=Amz0WOZj3_pVHerw3Xnlci4eW5v-ckDAjjW66crtvoREaBbkA93CFXlJnaWt2zaF" -UseBasicParsing
+                if($PokemonPlaceRequest.Content -as [string] -match '<Name>(.+?)(?=</Name>)') { $PokemonPlace = $Matches[1] }
+                else { $PokemonPlace = "$($_Pokemon.Latitude),$($_Pokemon.longitude)" }
+
                 $_Pokemon | Add-Member NoteProperty 'url' "http://ugc.pokevision.com/images/pokemon/$($_Pokemon.pokemonId).png"
                 $_Pokemon | Add-Member NoteProperty 'scan_time' $ScanTime
+                $_Pokemon | Add-Member NoteProperty 'scan_TimeRounded' $ScanTimeRounded
                 $_Pokemon | Add-Member NoteProperty 'scan_latitude' $ScanningLat
                 $_Pokemon | Add-Member NoteProperty 'scan_longitude' $ScanningLong
+                $_Pokemon | Add-Member NoteProperty 'scan_place' $ScanAddress
+                $_Pokemon | Add-Member NoteProperty 'place' $PokemonPlace
                 $_Pokemon | Add-Member NoteProperty 'name' $pokemonHT.($_Pokemon.pokemonId)
                 $ScanTable.Add($_Pokemon.id, $_Pokemon)
                 $Page.Add($_Pokemon) | Out-Null
             }
         }
     }
-    $FileName = "C:\Page$($i)-$($StartTime).json"
-    @{ 
-        'id' = "$($i -as [string])-$($StartTime)"
-        'scanValue' = $Page
-    } | ConvertTo-JSON -Depth ([int]::MaxValue) > $FileName
+    if($Page -as [bool])
+    {
+        $FileName = "C:\Page$($i)-$($StartTime).json"
+        @{ 
+            'id' = "$($i -as [string])-$($StartTime)"
+            'scanValue' = $Page
+        } | ConvertTo-JSON -Depth ([int]::MaxValue) > $FileName
 
-    Add-DocDBDocument -Path $FileName -DatabaseName 'pokemon_location' -CollectionName 'minneapolis' -Context $DocDBContext | Out-Null
-    Remove-Item $FileName
+        Add-DocDBDocument -Path $FileName -DatabaseName 'pokemon_location' -CollectionName 'minneapolis' -Context $DocDBContext | Out-Null
+        Remove-Item $FileName
+    }
 }
