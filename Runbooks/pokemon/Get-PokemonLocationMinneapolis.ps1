@@ -19,7 +19,7 @@ for($i = 0 ; $i -gt -70 ; $i-=1)
         $ScanningLong = $StartingLong + ($Distance * $j)
         
         $ScanTime = (get-date -Format 'MM-dd-yyyy hh:mm:ss tt')
-        $Request = invoke-webrequest -uri "https://pokevision.com/map/data/$ScanningLat/$ScanningLong"
+        $Request = invoke-webrequest -uri "https://pokevision.com/map/data/$ScanningLat/$ScanningLong" -UseBasicParsing
         $Pokemon = ($Request.Content | ConvertFrom-JSON).Pokemon
 
         Foreach($_Pokemon in $Pokemon)
