@@ -215,4 +215,64 @@
             Credential = $DomainJoinCredential
         }
     }
+    Node WebServerProd
+    {
+        File SourceFolder
+        {
+            DestinationPath = $($SourceDir)
+            Type = 'Directory'
+            Ensure = 'Present'
+        }
+        xRemoteFile DownloadMicrosoftManagementAgent
+        {
+            Uri = $MMARemotSetupExeURI
+            DestinationPath = "$($SourceDir)\$($MMASetupExe)"
+            MatchSource = $False
+        }
+        xPackage InstallMicrosoftManagementAgent
+        {
+             Name = "Microsoft Monitoring Agent"
+             Path = "$($SourceDir)\$($MMASetupExE)" 
+             Arguments = $MMACommandLineArguments 
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup'
+             InstalledCheckRegValueName = 'Product'
+             InstalledCheckRegValueData = 'Microsoft Monitoring Agent'
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
+        }
+        xPendingReboot Reboot1
+        { 
+            Name = "RebootServer"
+            DependsOn = "[xPackage]InstallMicrosoftManagementAgent"
+        }
+        xRemoteFile DownloadAppDependencyMonitor
+        {
+            Uri = $ADMRemotSetupExeURI
+            DestinationPath = "$($SourceDir)\$($ADMSetupExe)"
+            MatchSource = $False
+        }
+        xPackage InstallAppDependencyMonitor
+        {
+             Name = "Application Dependency Monitor"
+             Path = "$($SourceDir)\$($ADMSetupExE)" 
+             Arguments = $ADMCommandLineArguments 
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\BlueStripeCollector'
+             InstalledCheckRegValueName = 'DisplayVersion'
+             InstalledCheckRegValueData = $ADMVersion
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
+        }
+        xPendingReboot Reboot2
+        { 
+            Name = "RebootServer2"
+            DependsOn = "[xPackage]InstallAppDependencyMonitor"
+        }
+        xDSCDomainjoin JoinDomain
+        {
+            Domain = $GlobalVars.DomainName
+            Credential = $DomainJoinCredential
+        }
+    }
 }
