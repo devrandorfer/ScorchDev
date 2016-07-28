@@ -6,6 +6,7 @@
     Import-DscResource -Module cAzureAutomation
     Import-DscResource -Module xPendingReboot
     Import-DscResource -Module xDSCDomainjoin -ModuleVersion 1.1
+    Import-DscResource -Module xWebAdministration
 
     $SourceDir = 'd:\Source'
     $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
@@ -273,6 +274,29 @@
         {
             Domain = $GlobalVars.DomainName
             Credential = $DomainJoinCredential
+        }
+        # Install the IIS role
+        WindowsFeature IIS
+        {
+            Ensure          = 'Present'
+            Name            = 'Web-Server'
+        }
+
+        # Install the ASP .NET 4.5 role
+        WindowsFeature AspNet45
+        {
+            Ensure          = 'Present'
+            Name            = 'Web-Asp-Net45'
+        }
+
+        # Stop the default website
+        xWebsite DefaultSite 
+        {
+            Ensure          = 'Present'
+            Name            = 'Default Web Site'
+            State           = 'Started'
+            PhysicalPath    = 'C:\inetpub\wwwroot'
+            DependsOn       = '[WindowsFeature]IIS'
         }
     }
 }
