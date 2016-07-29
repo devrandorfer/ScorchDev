@@ -47,13 +47,24 @@ Try
         }
     }
 
+    $NewVault = Get-AzureRmRecoveryServicesVault
+    Foreach($_NewVault in $NewVault)
+    {
+        $VContext = Set-AzureRmRecoveryServicesVaultContext -Vault $_NewVault
+        $Job = Get-AzureRmRecoveryServicesBackupJob -Operation Backup
+        Foreach($_Job in $Job)
+        {
+            $JobDetails += Get-AzureRmRecoveryServicesBackupJobDetails -JobId $_Job.JobId
+        }
+    }
+
     if(-not (Test-Path -Path $Vars.LogPath)) { $Null = New-Item -ItemType Directory -Path $Vars.LogPath }
     Get-ChildItem -Path $Vars.LogPath | ForEach-Object { if($_.CreationTime -lt (Get-Date).AddDays(-1)) { Remove-Item -Path $_.FullName } }
     
     $LogName = "$($Vars.LogPath)\AzureRMBackupLog.$(Get-Date -f 'yyyy-MM-dd-hh-mm-ss').txt"
     foreach($_JobDetails in $JobDetails)
     {
-        Add-Content -Value "$((Get-Date $_JobDetails.StartTime -Format 'yyyy-MM-dd HH:mm:ss')) : $($_JobDetails | ConvertTo-JSON -Compress)" -Path $LogName
+        Add-Content -Value "$((Get-Date $_JobDetails.StartTime -Format 'yyyy-MM-dd HH:mm:ss')) : $($_JobDetails | ConvertTo-JSON -Compress -Depth)" -Path $LogName
     }
 
     Set-AutomationVariable -Name 'AzureRMBackupLog-LastSaveDateTime' -Value (($CurrentSaveTime | ConvertTo-JSON -Compress) -as [string])
