@@ -64,7 +64,7 @@ Try
     $LogName = "$($Vars.LogPath)\AzureRMBackupLog.$(Get-Date -f 'yyyy-MM-dd-hh-mm-ss').txt"
     foreach($_JobDetails in $JobDetails)
     {
-        Add-Content -Value "$((Get-Date $_JobDetails.StartTime -Format 'yyyy-MM-dd HH:mm:ss')) : $($_JobDetails | ConvertTo-JSON -Compress -Depth)" -Path $LogName
+        Add-Content -Value "$((Get-Date $_JobDetails.StartTime -Format 'yyyy-MM-dd HH:mm:ss')) : $($_JobDetails | ConvertTo-JSON -Compress -Depth 10)" -Path $LogName
     }
 
     Set-AutomationVariable -Name 'AzureRMBackupLog-LastSaveDateTime' -Value (($CurrentSaveTime | ConvertTo-JSON -Compress) -as [string])
