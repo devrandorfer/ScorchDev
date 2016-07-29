@@ -18,13 +18,13 @@ for($i = 0 ; $i -gt -70 ; $i-=1)
         $ScanningLat = $StartingLat + ($Distance * $i)
         $ScanningLong = $StartingLong + ($Distance * $j)
         
-        $ScanPlace = Invoke-WebRequest -Uri "http://dev.virtualearth.net/REST/v1/Locations/$($ScanningLat),$($ScanningLong)?&o=xml&key=Amz0WOZj3_pVHerw3Xnlci4eW5v-ckDAjjW66crtvoREaBbkA93CFXlJnaWt2zaF" -UseBasicParsing
-        if($ScanPlace.Content -as [string] -match '<Name>(.+?)(?=</Name>)') { $ScanAddress = $Matches[1] }
-        else { $ScanAddress = "$ScanningLat,$ScanningLog" }
+        #$ScanPlace = Invoke-WebRequest -Uri "http://dev.virtualearth.net/REST/v1/Locations/$($ScanningLat),$($ScanningLong)?&o=xml&key=Amz0WOZj3_pVHerw3Xnlci4eW5v-ckDAjjW66crtvoREaBbkA93CFXlJnaWt2zaF" -UseBasicParsing
+        #if($ScanPlace.Content -as [string] -match '<Name>(.+?)(?=</Name>)') { $ScanAddress = $Matches[1] }
+        #else { $ScanAddress = "$ScanningLat,$ScanningLog" }
 
-        $ScanPlaceNeighborhoodRequest = Invoke-WebRequest -Uri "http://dev.virtualearth.net/REST/v1/Locations/$($ScanningLat),$($ScanningLong)?includeEntityTypes=Neighborhood&o=xml&key=Amz0WOZj3_pVHerw3Xnlci4eW5v-ckDAjjW66crtvoREaBbkA93CFXlJnaWt2zaF" -UseBasicParsing
-        if($ScanPlaceNeighborhoodRequest.Content -as [string] -match '<Name>(.+?)(?=</Name>)') { $ScanNeighborhood = $Matches[1] }
-        else { $ScanNeighborhood = $ScanAddress }
+        #$ScanPlaceNeighborhoodRequest = Invoke-WebRequest -Uri "http://dev.virtualearth.net/REST/v1/Locations/$($ScanningLat),$($ScanningLong)?includeEntityTypes=Neighborhood&o=xml&key=Amz0WOZj3_pVHerw3Xnlci4eW5v-ckDAjjW66crtvoREaBbkA93CFXlJnaWt2zaF" -UseBasicParsing
+        #if($ScanPlaceNeighborhoodRequest.Content -as [string] -match '<Name>(.+?)(?=</Name>)') { $ScanNeighborhood = $Matches[1] }
+        #else { $ScanNeighborhood = $ScanAddress }
 
         $ScanTime = (Get-Date -Format 'MM-dd-yyyy hh:mm:ss tt')
         $ScanTimeRounded = ([datetime]$ScanTime).Date + (new-object system.timespan ([math]::Round(([datetime]$ScanTime).TimeofDay.TotalHours)),0,0)
@@ -35,23 +35,23 @@ for($i = 0 ; $i -gt -70 ; $i-=1)
         {
             if(-not $ScanTable.ContainsKey($_Pokemon.id))
             {
-                $PokemonPlaceRequest = Invoke-WebRequest -Uri "http://dev.virtualearth.net/REST/v1/Locations/$($_Pokemon.Latitude),$($_Pokemon.longitude)?o=xml&key=Amz0WOZj3_pVHerw3Xnlci4eW5v-ckDAjjW66crtvoREaBbkA93CFXlJnaWt2zaF" -UseBasicParsing
-                if($PokemonPlaceRequest.Content -as [string] -match '<Name>(.+?)(?=</Name>)') { $PokemonPlace = $Matches[1] }
-                else { $PokemonPlace = "$($_Pokemon.Latitude),$($_Pokemon.longitude)" }
+                #$PokemonPlaceRequest = Invoke-WebRequest -Uri "http://dev.virtualearth.net/REST/v1/Locations/$($_Pokemon.Latitude),$($_Pokemon.longitude)?o=xml&key=Amz0WOZj3_pVHerw3Xnlci4eW5v-ckDAjjW66crtvoREaBbkA93CFXlJnaWt2zaF" -UseBasicParsing
+                #if($PokemonPlaceRequest.Content -as [string] -match '<Name>(.+?)(?=</Name>)') { $PokemonPlace = $Matches[1] }
+                #else { $PokemonPlace = "$($_Pokemon.Latitude),$($_Pokemon.longitude)" }
 
-                $PokemonNeighborhoodRequest = Invoke-WebRequest -Uri "http://dev.virtualearth.net/REST/v1/Locations/$($_Pokemon.latitude),$($_Pokemon.longitude)?includeEntityTypes=Neighborhood&o=xml&key=Amz0WOZj3_pVHerw3Xnlci4eW5v-ckDAjjW66crtvoREaBbkA93CFXlJnaWt2zaF" -UseBasicParsing
-                if($PokemonNeighborhoodRequest.Content -as [string] -match '<Name>(.+?)(?=</Name>)') { $PokemonNeighborhood = $Matches[1] }
-                else { $PokemonNeighborhood = "$PokemonPlace" }
+                #$PokemonNeighborhoodRequest = Invoke-WebRequest -Uri "http://dev.virtualearth.net/REST/v1/Locations/$($_Pokemon.latitude),$($_Pokemon.longitude)?includeEntityTypes=Neighborhood&o=xml&key=Amz0WOZj3_pVHerw3Xnlci4eW5v-ckDAjjW66crtvoREaBbkA93CFXlJnaWt2zaF" -UseBasicParsing
+                #if($PokemonNeighborhoodRequest.Content -as [string] -match '<Name>(.+?)(?=</Name>)') { $PokemonNeighborhood = $Matches[1] }
+                #else { $PokemonNeighborhood = "$PokemonPlace" }
 
                 $_Pokemon | Add-Member NoteProperty 'url' "http://ugc.pokevision.com/images/pokemon/$($_Pokemon.pokemonId).png"
                 $_Pokemon | Add-Member NoteProperty 'scan_time' $ScanTime
                 $_Pokemon | Add-Member NoteProperty 'scan_TimeRounded' $ScanTimeRounded
                 $_Pokemon | Add-Member NoteProperty 'scan_latitude' $ScanningLat
                 $_Pokemon | Add-Member NoteProperty 'scan_longitude' $ScanningLong
-                $_Pokemon | Add-Member NoteProperty 'scan_place' $ScanAddress
-                $_Pokemon | Add-Member NoteProperty 'scan_neighborhood' $ScanNeighborhood
-                $_Pokemon | Add-Member NoteProperty 'neighborhood' $PokemonNeighborhood
-                $_Pokemon | Add-Member NoteProperty 'place' $PokemonPlace
+                #$_Pokemon | Add-Member NoteProperty 'scan_place' $ScanAddress
+                #$_Pokemon | Add-Member NoteProperty 'scan_neighborhood' $ScanNeighborhood
+                #$_Pokemon | Add-Member NoteProperty 'neighborhood' $PokemonNeighborhood
+                #$_Pokemon | Add-Member NoteProperty 'place' $PokemonPlace
                 $_Pokemon | Add-Member NoteProperty 'name' $pokemonHT.($_Pokemon.pokemonId)
                 $ScanTable.Add($_Pokemon.id, $_Pokemon)
                 $Page.Add($_Pokemon) | Out-Null
