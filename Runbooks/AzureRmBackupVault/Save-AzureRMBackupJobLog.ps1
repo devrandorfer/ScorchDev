@@ -51,7 +51,7 @@ Try
     Foreach($_NewVault in $NewVault)
     {
         $VContext = Set-AzureRmRecoveryServicesVaultContext -Vault $_NewVault
-        $Job = Get-AzureRmRecoveryServicesBackupJob -Operation Backup
+        $Job = Get-AzureRmRecoveryServicesBackupJob -Operation Backup -From $LastSaveTime.ToUniversalTime() -To $CurrentSaveTime.ToUniversalTime()
         Foreach($_Job in $Job)
         {
             $JobDetails += Get-AzureRmRecoveryServicesBackupJobDetails -JobId $_Job.JobId
