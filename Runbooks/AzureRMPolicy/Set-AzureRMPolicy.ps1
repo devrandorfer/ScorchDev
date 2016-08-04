@@ -93,6 +93,38 @@ Try
     }
 '@
 
+$WindowsSKU = @'
+    {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/virtualMachines"
+          },
+          {
+            "not": {
+              "allof": [
+                {
+                  "field": "Microsoft.Compute/virtualMachines/sku.name",
+                  "in": [
+                        "2012-R2-Datacenter",
+                        "Windows-Server-Technical-Preview",
+                        "2016-Nano-Server-Technical-Preview",
+                        "2016-Technical-Preview-with-Containers",
+                        "2008-R2-SP1"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+'@
+
     $ComputePolicy = New-AzureRmPolicyDefinition -Name ComputePolicy -Description 'Curated Compute' -Policy $Compute
     $StorageSKUPolicy = New-AzureRmPolicyDefinition -Name StorageSKUPolicy -Description 'Curated Storage SKU' -Policy $StorageSKU
     $WindowsSKUPolicy = New-AzureRmPolicyDefinition -Name WindowsSKUPolicy -Description 'Curated Windows SKU' -Policy $WindowsSKU
