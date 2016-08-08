@@ -7,6 +7,7 @@
     Import-DscResource -Module xPendingReboot
     Import-DscResource -Module xDSCDomainjoin -ModuleVersion 1.1
     Import-DscResource -Module xWebAdministration
+    Import-DscResource -Module cNetworkAdapter
 
     $SourceDir = 'd:\Source'
     $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
@@ -60,13 +61,11 @@
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
-
         xPendingReboot Reboot1
         { 
             Name = "RebootServer"
             DependsOn = "[xPackage]InstallMicrosoftManagementAgent"
         }
-
         xRemoteFile DownloadAppDependencyMonitor
         {
             Uri = $ADMRemotSetupExeURI
@@ -94,6 +93,16 @@
         {
             Domain = $GlobalVars.DomainName
             Credential = $DomainJoinCredential
+        }
+        NetworkAdapterComponent ms_rspndr
+        {
+            ComponentId = 'ms_rspndr'
+            Enabled = $False
+        }
+        NetworkAdapterComponent ms_lltdio
+        {
+            ComponentId = 'ms_lltdio'
+            Enabled = $False
         }
     }
     Node MemberServerQA

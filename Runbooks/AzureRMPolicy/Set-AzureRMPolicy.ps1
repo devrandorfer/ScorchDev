@@ -19,27 +19,127 @@ Try
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
                            -SubscriptionName $GlobalVars.SubscriptionName
     
-    $ResourceGroup = Get-AzureRmResourceGroup
+    $ResourceGroup = Get-AzureRmResourceGroup -Name 'Lab_Winteam'
 
     # Create the policy definition
-    $NoPublicDefinition = @'
+    $Compute = @'
     {
-        "if": {
-            "anyOf":[{
-                "source":"action",
-                "like":"Microsoft.Network/publicIPAddresses/*"
-            }]
-        },
-        "then":{"effect":"deny"}
+      "if" : {
+        "not" : {
+          "anyOf" : [
+            {
+              "field" : "type",
+              "like" : "Microsoft.Resources/*"
+            },
+            {
+              "field" : "type",
+              "like" : "Microsoft.Compute/*"
+            },
+            {
+              "field" : "type",
+              "like" : "Microsoft.Storage/*"
+            },
+            {
+              "field" : "type",
+              "equals" : "Microsoft.Network/networkInterfaces"
+            },
+            {
+              "field" : "type",
+              "equals" : "Microsoft.Network/applicationGateways"
+            },
+            {
+              "field" : "type",
+              "equals" : "Microsoft.Network/loadBalancers"
+            },
+            {
+              "field" : "type",
+              "equals" : "Microsoft.Network/networkSecurityGroups"
+            },
+            {
+              "field" : "type",
+              "equals" : "Microsoft.Network/trafficmanagerprofiles"
+            }
+          ]
+        }
+      },
+      "then" : {
+        "effect" : "deny"
+      }
     }
 '@
-    $policydef = New-AzureRmPolicyDefinition -Name NoPubIPPolicyDefinition -Description 'No public IP addresses allowed' -Policy $NoPublicDefinition
+    $StorageSKU = @'
+    {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "not": {
+              "allof": [
+                {
+                  "field": "Microsoft.Storage/storageAccounts/sku.name",
+                  "in": ["Standard_LRS", "Standard_ZRS"]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+'@
+
+$WindowsSKU = @'
+    {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/virtualMachines"
+          },
+          {
+            "not": {
+              "allof": [
+                {
+                  "field": "Microsoft.Compute/virtualMachines/sku.name",
+                  "in": [
+                        "2012-R2-Datacenter",
+                        "Windows-Server-Technical-Preview",
+                        "2016-Nano-Server-Technical-Preview",
+                        "2016-Technical-Preview-with-Containers",
+                        "2008-R2-SP1"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+'@
+
+    $ComputePolicy = New-AzureRmPolicyDefinition -Name ComputePolicy -Description 'Curated Compute' -Policy $Compute
+    $StorageSKUPolicy = New-AzureRmPolicyDefinition -Name StorageSKUPolicy -Description 'Curated Storage SKU' -Policy $StorageSKU
+    $WindowsSKUPolicy = New-AzureRmPolicyDefinition -Name WindowsSKUPolicy -Description 'Curated Windows SKU' -Policy $WindowsSKU
     
-    $Subscription = Get-AzureRmSubscription -SubscriptionName $GlobalVars.SubscriptionName
-    
-    New-AzureRmPolicyAssignment -Name NoPublicIPPolicyAssignment `
-                                -PolicyDefinition $policydef `
-                                -Scope /Subscriptions/$Subscription
+    New-AzureRmPolicyAssignment -Name ComputePolicy_Assignment `
+                                -PolicyDefinition $ComputePolicy `
+                                -Scope $ResourceGroup.ResourceId
+
+    New-AzureRmPolicyAssignment -Name StorageSKUPolicy_Assignment `
+                                -PolicyDefinition $StorageSKUPolicy `
+                                -Scope $ResourceGroup.ResourceId
+
+    New-AzureRmPolicyAssignment -Name WindowsSKUPolicy_Assignment `
+                                -PolicyDefinition $WindowsSKUPolicy `
+                                -Scope $ResourceGroup.ResourceId
     
 }
 Catch
