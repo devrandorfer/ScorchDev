@@ -29,7 +29,7 @@
         "OPINSIGHTS_WORKSPACE_ID=$($GlobalVars.WorkspaceID) " +
         "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
 
-    $ADMVersion = '8.2.2'
+    $ADMVersion = '8.2.4'
     $ADMRemotSetupExeURI = 'https://go.microsoft.com/fwlink/?LinkId=698625'
     $ADMSetupExe = 'ADM-Agent-Windows.exe'
     $ADMCommandLineArguments = '/S'
