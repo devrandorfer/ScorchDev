@@ -22,7 +22,7 @@ $SubscriptionAccessCredential = Get-AutomationPSCredential -Name 'ryan'
 
 Try
 {
-    Write-Verbose -Message "$($GlobalVars.HelloMessage)$($GlobalVars.Audience)"
+    Write-Verbose -Message "$($GlobalVars.HelloMessage)$($GlobalVars.Audience) 1"
 }
 Catch
 {
