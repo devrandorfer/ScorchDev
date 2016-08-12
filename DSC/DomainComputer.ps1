@@ -36,7 +36,7 @@
     $ADMCommandLineArguments = '/S'
 
     $MicrosoftAzureSiteRecoveryUnifiedSetupURI = 'http://aka.ms/unifiedinstaller'
-    $ASRSetupEXE = 'MicrosoftAzureSiteRecoveryUnifiedSetup.msi'
+    $ASRSetupEXE = 'MicrosoftAzureSiteRecoveryUnifiedSetup.exe'
 
     Node MemberServerDev
     {
