@@ -9,7 +9,7 @@
     Import-DscResource -Module xWebAdministration
     Import-DscResource -Module cNetworkAdapter
 
-    $SourceDir = 'd:\Source'
+    $SourceDir = 'D:\Source'
     $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                               -Name @(
         'WorkspaceID',
