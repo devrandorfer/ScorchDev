@@ -1,6 +1,6 @@
 ﻿@{
 # Version number of this module.
-ModuleVersion = '1.0.2'
+ModuleVersion = '1.0.3'
 
 # ID used to uniquely identify this module
 GUID = 'b48d235e-3bbb-4f07-a6b7-92aed56c1418'
@@ -30,7 +30,7 @@ FunctionsToExport = '*'
 CmdletsToExport = '*'
 
 # DSC resources to export from this module
-DscResourcesToExport = @('cPathLocation', 'cPSModulePathLocation')
+DscResourcesToExport = @('cPathLocation', 'cPSModulePathLocation', 'cAzureNetworkPerformanceMonitoring')
 
 }
 

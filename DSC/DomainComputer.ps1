@@ -107,6 +107,11 @@
             ComponentId = 'ms_lltdio'
             Enabled = $False
         }
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
+        }
     }
     Node MemberServerQA
     {
@@ -167,6 +172,11 @@
             Domain = $GlobalVars.DomainName
             Credential = $DomainJoinCredential
         }
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
+        }
     }
     Node MemberServerProd
     {
@@ -226,6 +236,11 @@
         {
             Domain = $GlobalVars.DomainName
             Credential = $DomainJoinCredential
+        }
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
         }
     }
     Node WebServerProd
@@ -310,6 +325,11 @@
             PhysicalPath    = 'C:\inetpub\wwwroot'
             DependsOn       = '[WindowsFeature]IIS'
         }
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
+        }
     }
     Node ASR_ManagementServer
     {
@@ -375,6 +395,11 @@
             Uri = $MicrosoftAzureSiteRecoveryUnifiedSetupURI
             DestinationPath = "$($SourceDir)\$($ASRSetupEXE)"
             MatchSource = $False
+        }
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
         }
     }
 }
