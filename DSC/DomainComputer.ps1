@@ -8,6 +8,8 @@
     Import-DscResource -Module xDSCDomainjoin -ModuleVersion 1.1
     Import-DscResource -Module xWebAdministration
     Import-DscResource -Module cNetworkAdapter
+    Import-DscResource -Module cDisk
+    Import-DscResource -Module xDisk
 
     $SourceDir = 'D:\Source'
     $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
@@ -37,6 +39,9 @@
 
     $MicrosoftAzureSiteRecoveryUnifiedSetupURI = 'http://aka.ms/unifiedinstaller'
     $ASRSetupEXE = 'MicrosoftAzureSiteRecoveryUnifiedSetup.exe'
+
+    $RetryCount = 20
+    $RetryIntervalSec = 30
 
     Node MemberServerDev
     {
@@ -400,6 +405,17 @@
         {
             Name = 'EnableNPM'
             Ensure = 'Present'
+        }
+        xWaitforDisk Disk2
+        {
+                DiskNumber = 2
+                RetryIntervalSec =$RetryIntervalSec
+                RetryCount = $RetryCount
+        }
+        cDiskNoRestart ADDataDisk
+        {
+            DiskNumber = 2
+            DriveLetter = 'F'
         }
     }
 }
