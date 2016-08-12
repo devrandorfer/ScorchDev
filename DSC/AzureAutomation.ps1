@@ -211,5 +211,11 @@
             Name = 'DisabledInternetExplorerESC'
             Enabled = $False
         }
+        
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
+        }
     }
 }

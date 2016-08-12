@@ -143,6 +143,12 @@ configuration DomainController
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
+        
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
+        }
     }
     Node BDC
     {
@@ -230,6 +236,12 @@ configuration DomainController
              InstalledCheckRegValueData = $ADMVersion
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
+        }
+        
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
         }
     }
 } 
