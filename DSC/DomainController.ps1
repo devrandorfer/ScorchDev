@@ -137,7 +137,7 @@ configuration DomainController
              Path = "$($SourceDir)\$($ADMSetupExE)" 
              Arguments = $ADMCommandLineArguments 
              Ensure = 'Present'
-             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\BlueStripeCollector'
+             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\DependencyAgent'
              InstalledCheckRegValueName = 'DisplayVersion'
              InstalledCheckRegValueData = $ADMVersion
              ProductID = ''
@@ -225,7 +225,7 @@ configuration DomainController
              Path = "$($SourceDir)\$($ADMSetupExE)" 
              Arguments = $ADMCommandLineArguments 
              Ensure = 'Present'
-             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\BlueStripeCollector'
+             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\DependencyAgent'
              InstalledCheckRegValueName = 'DisplayVersion'
              InstalledCheckRegValueData = $ADMVersion
              ProductID = ''
