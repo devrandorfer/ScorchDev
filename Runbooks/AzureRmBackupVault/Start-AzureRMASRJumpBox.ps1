@@ -15,14 +15,7 @@ $CompletedParameters = Write-StartingMessage -CommandName Start-AzureRMASRJumpBo
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
                                                 'SubscriptionAccessCredentialName',
-                                                'ResourceGroupName',
                                                 'SubscriptionAccessTenant'
-
-$Vars = Get-BatchAutomationVariable -Prefix 'AzureRMBackupLog' `
-                                    -Name @(
-                                        'LastSaveDateTime'
-                                        'LogPath'
-                                    )
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
 
