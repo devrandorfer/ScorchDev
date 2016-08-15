@@ -133,7 +133,7 @@
             Ensure          = 'Present'
             Name            = 'Default Web Site'
             State           = 'Started'
-            PhysicalPath    = 'F:\inetpub\wwwroot'
+            PhysicalPath    = 'C:\inetpub\wwwroot'
             DependsOn       = '[WindowsFeature]IIS'
         }
         cAzureNetworkPerformanceMonitoring EnableAzureNPM
