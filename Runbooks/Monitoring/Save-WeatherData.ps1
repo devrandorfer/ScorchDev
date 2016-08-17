@@ -29,16 +29,16 @@ Try
     {
         $Weather = Get-WeatherCurrentRaw -City $_City -ApiKey $weathervars.APIKey -Units imperial
         $WeatherData = @{
-            'Longitude_s' = $Weather.coord.lon
-            'Latitude_s' = $Weather.coord.lat
-            'Description_s' = $Weather.weather.main
-            'Description_Detail_s' = $Weather.weather.description
-            'Temperature_d' = $Weather.main.temp
-            'Pressure_d' = $Weather.main.pressure
-            'Humidity_d' = $Weather.main.humidity
-            'Wind_Speed_d' = $Weather.wind.speed
-            'Wind_Degree_d' = $Weather.wind.deg
-            'Location_s' = $Weather.name
+            'Longitude' = $Weather.coord.lon
+            'Latitude' = $Weather.coord.lat
+            'Description' = $Weather.weather.main
+            'Description_Detail' = $Weather.weather.description
+            'Temperature' = $Weather.main.temp
+            'Pressure' = $Weather.main.pressure
+            'Humidity' = $Weather.main.humidity
+            'Wind_Speed' = $Weather.wind.speed
+            'Wind_Degree' = $Weather.wind.deg
+            'Location' = $Weather.name
         }
         $DataToSave += $WeatherData
     }
