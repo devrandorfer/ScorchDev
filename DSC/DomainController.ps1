@@ -1,7 +1,6 @@
 configuration DomainController 
 { 
-    Import-DscResource -ModuleName xActiveDirectory, 
-                                   xDisk,
+    Import-DscResource -ModuleName xDisk,
                                    xNetworking,
                                    xPendingReboot,
                                    cDisk,
@@ -9,6 +8,8 @@ configuration DomainController
                                    PSDesiredStateConfiguration,
                                    cWindowscomputer,
                                    cAzureAutomation
+
+    Import-DscResource -ModuleName xActiveDirectory -ModuleVersion 2.13.0.0
 
     $SourceDir = 'd:\Source'
 
