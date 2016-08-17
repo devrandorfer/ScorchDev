@@ -43,7 +43,7 @@ Try
         $DataToSave += $WeatherData
     }
 
-    Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $DataToSave -LogType 'Weather_CL'
+    Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $DataToSave -LogType 'OpenWeather_CL'
 }
 Catch
 {
