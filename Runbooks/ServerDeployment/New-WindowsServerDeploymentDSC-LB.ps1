@@ -47,7 +47,8 @@ Try
                                        -ConfigurationName 'WebApp.FrontEnd' `
                                        -availabilitySetName 'Testing' `
                                        -loadBalancerName 'webLB' `
-                                       -
+                                       -registrationKey $RegistrationInfo.PrimaryKey `
+                                       -registrationUrl $RegistrationInfo.Endpoint `
                                        -Verbose
 }
 Catch
