@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "Weather-LocationsToMonitor":  {
+                                                         "isEncrypted":  false,
+                                                         "Description":  "",
+                                                         "Value":  "[\"Minneapolis\",\"Duluth\",\"Aruba\",\"San Diego\",\"Green Bay\",\"Sturgeon Bay\",\"New York City\",\"Seattle\"]"
+                                                     },
+                      "Weather-APIKey":  {
+                                             "isEncrypted":  false,
+                                             "Description":  "",
+                                             "Value":  "f70faf16ed4484485a101fbbae94bf18"
+                                         }
+                  }
+}

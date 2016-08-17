@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "Nest-ClientID":  {
+                                            "isEncrypted":  false,
+                                            "Description":  "",
+                                            "Value":  "2c56d93e-e3c5-48cc-b610-533c14e4525d"
+                                        },
+                      "Nest-ClientSecret":  {
+                                                "isEncrypted":  false,
+                                                "Description":  "",
+                                                "Value":  "oxSBt8all4QL07vkVeozex4Vk"
+                                            }
+                  }
+}
