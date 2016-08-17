@@ -84,7 +84,7 @@
       "minLength": 1
     },
     "registrationKey": {
-      "type": "securestring",
+      "type": "string",
       "metadata": {
         "description": "Registration key to use to onboard to the Azure Automation DSC pull/reporting server"
       }
@@ -128,7 +128,9 @@
     "actionAfterReboot": "ContinueConfiguration",
     "apiVersion": "2015-06-15",
     "AvailSet-name": "AvailSet",
-    "lbBackendPool": "webserver"
+    "lbBackendPool": "webserver",
+    "ScriptFileName": "UpdateDSC.ps1",
+    "ScriptURI": "[concat('https: //raw.githubusercontent.com/DevRandorfer/ScorchDev/master/Scripts/', variables('ScriptFileName'))]"
   },
   "resources": [
     {
@@ -342,7 +344,29 @@
               ]
             }
           }
+        },
+        {
+          "type": "extensions",
+          "name": "CustomScriptExtension",
+          "apiVersion": "2015-05-01-preview",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('VMName'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.8",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "fileUris": [
+                "[variables('ScriptURI')]"
+              ],
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', './', variables('ScriptFileName'))]"
+            }
+          }
         }
+
       ]
     },
     {
