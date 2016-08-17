@@ -117,7 +117,8 @@
       "allowedValues": [
         "DomainComputer.MemberServerDev",
         "DomainComputer.MemberServerQA",
-        "DomainComputer.MemberServerProd"
+        "DomainComputer.MemberServerProd",
+        "WebApp.FrontEnd",
       ],
       "metadata": {
         "description": "The size of the VM Created"

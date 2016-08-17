@@ -8,8 +8,10 @@
     Import-DscResource -Module xDSCDomainjoin -ModuleVersion 1.1
     Import-DscResource -Module xWebAdministration
     Import-DscResource -Module cNetworkAdapter
+    Import-DscResource -Module cDisk
+    Import-DscResource -Module xDisk
 
-    $SourceDir = 'd:\Source'
+    $SourceDir = 'D:\Source'
     $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                               -Name @(
         'WorkspaceID',
@@ -30,10 +32,16 @@
         "OPINSIGHTS_WORKSPACE_ID=$($GlobalVars.WorkspaceID) " +
         "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
 
-    $ADMVersion = '8.2.2'
+    $ADMVersion = '8.2.4'
     $ADMRemotSetupExeURI = 'https://go.microsoft.com/fwlink/?LinkId=698625'
     $ADMSetupExe = 'ADM-Agent-Windows.exe'
     $ADMCommandLineArguments = '/S'
+
+    $MicrosoftAzureSiteRecoveryUnifiedSetupURI = 'http://aka.ms/unifiedinstaller'
+    $ASRSetupEXE = 'MicrosoftAzureSiteRecoveryUnifiedSetup.exe'
+
+    $RetryCount = 20
+    $RetryIntervalSec = 30
 
     Node MemberServerDev
     {
@@ -78,7 +86,7 @@
              Path = "$($SourceDir)\$($ADMSetupExE)" 
              Arguments = $ADMCommandLineArguments 
              Ensure = 'Present'
-             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\BlueStripeCollector'
+             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\DependencyAgent'
              InstalledCheckRegValueName = 'DisplayVersion'
              InstalledCheckRegValueData = $ADMVersion
              ProductID = ''
@@ -103,6 +111,11 @@
         {
             ComponentId = 'ms_lltdio'
             Enabled = $False
+        }
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
         }
     }
     Node MemberServerQA
@@ -148,7 +161,7 @@
              Path = "$($SourceDir)\$($ADMSetupExE)" 
              Arguments = $ADMCommandLineArguments 
              Ensure = 'Present'
-             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\BlueStripeCollector'
+             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\DependencyAgent'
              InstalledCheckRegValueName = 'DisplayVersion'
              InstalledCheckRegValueData = $ADMVersion
              ProductID = ''
@@ -163,6 +176,11 @@
         {
             Domain = $GlobalVars.DomainName
             Credential = $DomainJoinCredential
+        }
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
         }
     }
     Node MemberServerProd
@@ -208,7 +226,7 @@
              Path = "$($SourceDir)\$($ADMSetupExE)" 
              Arguments = $ADMCommandLineArguments 
              Ensure = 'Present'
-             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\BlueStripeCollector'
+             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\DependencyAgent'
              InstalledCheckRegValueName = 'DisplayVersion'
              InstalledCheckRegValueData = $ADMVersion
              ProductID = ''
@@ -223,6 +241,11 @@
         {
             Domain = $GlobalVars.DomainName
             Credential = $DomainJoinCredential
+        }
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
         }
     }
     Node WebServerProd
@@ -268,7 +291,7 @@
              Path = "$($SourceDir)\$($ADMSetupExE)" 
              Arguments = $ADMCommandLineArguments 
              Ensure = 'Present'
-             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\BlueStripeCollector'
+             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\DependencyAgent'
              InstalledCheckRegValueName = 'DisplayVersion'
              InstalledCheckRegValueData = $ADMVersion
              ProductID = ''
@@ -306,6 +329,93 @@
             State           = 'Started'
             PhysicalPath    = 'C:\inetpub\wwwroot'
             DependsOn       = '[WindowsFeature]IIS'
+        }
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
+        }
+    }
+    Node ASR_ManagementServer
+    {
+        File SourceFolder
+        {
+            DestinationPath = $($SourceDir)
+            Type = 'Directory'
+            Ensure = 'Present'
+        }
+        xRemoteFile DownloadMicrosoftManagementAgent
+        {
+            Uri = $MMARemotSetupExeURI
+            DestinationPath = "$($SourceDir)\$($MMASetupExe)"
+            MatchSource = $False
+        }
+        xPackage InstallMicrosoftManagementAgent
+        {
+             Name = "Microsoft Monitoring Agent"
+             Path = "$($SourceDir)\$($MMASetupExE)" 
+             Arguments = $MMACommandLineArguments 
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup'
+             InstalledCheckRegValueName = 'Product'
+             InstalledCheckRegValueData = 'Microsoft Monitoring Agent'
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
+        }
+        xPendingReboot Reboot1
+        { 
+            Name = "RebootServer"
+            DependsOn = "[xPackage]InstallMicrosoftManagementAgent"
+        }
+        xRemoteFile DownloadAppDependencyMonitor
+        {
+            Uri = $ADMRemotSetupExeURI
+            DestinationPath = "$($SourceDir)\$($ADMSetupExe)"
+            MatchSource = $False
+        }
+        xPackage InstallAppDependencyMonitor
+        {
+             Name = "Application Dependency Monitor"
+             Path = "$($SourceDir)\$($ADMSetupExE)" 
+             Arguments = $ADMCommandLineArguments 
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\DependencyAgent'
+             InstalledCheckRegValueName = 'DisplayVersion'
+             InstalledCheckRegValueData = $ADMVersion
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
+        }
+        xPendingReboot Reboot2
+        { 
+            Name = "RebootServer2"
+            DependsOn = "[xPackage]InstallAppDependencyMonitor"
+        }
+        xDSCDomainjoin JoinDomain
+        {
+            Domain = $GlobalVars.DomainName
+            Credential = $DomainJoinCredential
+        }
+        xRemoteFile DownloadAzureSiteRecoveryUnifiedSetup
+        {
+            Uri = $MicrosoftAzureSiteRecoveryUnifiedSetupURI
+            DestinationPath = "$($SourceDir)\$($ASRSetupEXE)"
+            MatchSource = $False
+        }
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
+        }
+        xWaitforDisk Disk2
+        {
+                DiskNumber = 2
+                RetryIntervalSec =$RetryIntervalSec
+                RetryCount = $RetryCount
+        }
+        cDiskNoRestart ADDataDisk
+        {
+            DiskNumber = 2
+            DriveLetter = 'F'
         }
     }
 }
