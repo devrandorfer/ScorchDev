@@ -344,29 +344,7 @@
               ]
             }
           }
-        },
-        {
-          "type": "extensions",
-          "name": "CustomScriptExtension",
-          "apiVersion": "2015-05-01-preview",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[concat('Microsoft.Compute/virtualMachines/', parameters('VMName'))]"
-          ],
-          "properties": {
-            "publisher": "Microsoft.Compute",
-            "type": "CustomScriptExtension",
-            "typeHandlerVersion": "1.8",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-              "fileUris": [
-                "[variables('ScriptURI')]"
-              ],
-              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', './', variables('ScriptFileName'))]"
-            }
-          }
         }
-
       ]
     },
     {
