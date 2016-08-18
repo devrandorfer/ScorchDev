@@ -64,6 +64,16 @@
     $MSOLSignInAssistantSetup = 'msoidcli_64.msi'
     $MSOLSignInAssistantCommanLineArguments = '/qn'
 
+    
+    $MSOLADURI = 'http://go.microsoft.com/fwlink/p/?linkid=236297'
+    $MSOLADSetup = 'AdministrationConfig-en.msi'
+    $MSOLADCommanLineArguments = '/qn'
+
+    
+    $MSOLSkypeOnlinePowershellURI = 'https://download.microsoft.com/download/2/0/5/2050B39B-4DA5-48E0-B768-583533B42C3B/SkypeOnlinePowershell.exe'
+    $MSOLSkypeOnlinePowershellSetup = 'SkypeOnlinePowershell.exe'
+    $MSOLSkypeOnlinePowershellCommanLineArguments = '/S'
+
     Node HybridRunbookWorker
     {
         File SourceFolder
@@ -236,6 +246,38 @@
              Ensure = 'Present'
              ProductID = 'D8AB93B0-6FBF-44A0-971F-C0669B5AE6DD'
              DependsOn = '[xRemoteFile]Download_msoidcli'
+        }
+
+        xRemoteFile DownloadWindowsAzureActiveDirectoryModuleForWindowsPowerShell
+        {
+            Uri = $MSOLADURI
+            DestinationPath = "$($SourceDir)\$($MSOLADSetup)"
+            MatchSource = $False
+        }
+        xPackage InstallWindowsAzureActiveDirectoryModuleForWindowsPowerShell
+        {
+             Name = 'Windows Azure Active Directory Module for Windows PowerShell'
+             Path = "$($SourceDir)\$($MSOLADSetup)" 
+             Arguments = $MSOLADCommanLineArguments 
+             Ensure = 'Present'
+             ProductID = '43CC9C53-A217-4850-B5B2-8C347920E500'
+             DependsOn = '[xRemoteFile]DownloadWindowsAzureActiveDirectoryModuleForWindowsPowerShell'
+        }
+
+        xRemoteFile DownloadSkypeOnlinePowershell
+        {
+            Uri = $MSOLSkypeOnlinePowershellURI
+            DestinationPath = "$($SourceDir)\$($MSOLSkypeOnlinePowershellSetup)"
+            MatchSource = $False
+        }
+        xPackage InstallSkypeOnlinePowershell
+        {
+             Name = 'Skype for Business Online, Windows PowerShell Module'
+             Path = "$($SourceDir)\$($MSOLSkypeOnlinePowershellSetup)" 
+             Arguments = $MSOLSkypeOnlinePowershellCommanLineArguments 
+             Ensure = 'Present'
+             ProductID = 'D7334D5D-0FA2-4DA9-8D8A-883F8C0BD41B'
+             DependsOn = '[xRemoteFile]DownloadSkypeOnlinePowershell'
         }
     }
 }
