@@ -1,0 +1,24 @@
+﻿{
+    "Variables":  {
+                      "Exchange-WebhookUri":  {
+                                                  "isEncrypted":  false,
+                                                  "Description":  "",
+                                                  "Value":  "http://bogusvalue.com"
+                                              },
+                      "Exchange-WebserviceURL":  {
+                                                     "isEncrypted":  false,
+                                                     "Description":  "",
+                                                     "Value":  "https://outlook.office365.com/EWS/Exchange.asmx"
+                                                 },
+                      "Exchange-CredentialName":  {
+                                                      "isEncrypted":  false,
+                                                      "Description":  "",
+                                                      "Value":  "ryan.andorfer@scorchdev.com"
+                                                  },
+                      "Exchange-SendingCredentialName":  {
+                                                             "isEncrypted":  false,
+                                                             "Description":  "",
+                                                             "Value":  "Ryan@microsoft.com"
+                                                         }
+                  }
+}
