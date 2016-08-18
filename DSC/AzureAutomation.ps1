@@ -60,6 +60,10 @@
         '/VERYSILENT /NORESTART /NOCANCEL /SP- ' +
         '/COMPONENTS="icons,icons\quicklaunch,ext,ext\shellhere,ext\guihere,assoc,assoc_sh" /LOG'
 
+    $MSOLSignInAssistantURI = 'https://download.microsoft.com/download/5/0/1/5017D39B-8E29-48C8-91A8-8D0E4968E6D4/en/msoidcli_64.msi'
+    $MSOLSignInAssistantSetup = 'msoidcli_64.msi'
+    $MSOLSignInAssistantCommanLineArguments = '/qn'
+
     Node HybridRunbookWorker
     {
         File SourceFolder
@@ -216,6 +220,22 @@
         {
             Name = 'EnableNPM'
             Ensure = 'Present'
+        }
+
+        xRemoteFile DownloadMicrosoftOnlineServicesSignInAssistant
+        {
+            Uri = $MSOLSignInAssistantURI
+            DestinationPath = "$($SourceDir)\$($MSOLSignInAssistantSetup)"
+            MatchSource = $False
+        }
+        xPackage InstallMicrosoftOnlineServicesSignInAssistant
+        {
+             Name = 'Microsoft Online Services Sign-in Assistant'
+             Path = "$($SourceDir)\$($MSOLSignInAssistantSetup)" 
+             Arguments = $MSOLSignInAssistantCommanLineArguments 
+             Ensure = 'Present'
+             ProductID = 'D8AB93B0-6FBF-44A0-971F-C0669B5AE6DD'
+             DependsOn = '[xRemoteFile]Download_msoidcli'
         }
     }
 }
