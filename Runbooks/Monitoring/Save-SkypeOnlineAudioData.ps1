@@ -14,17 +14,14 @@ $CompletedParameters = Write-StartingMessage -CommandName Save-SkypeOnlineAudioD
 
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'WorkspaceId'
-
-$Exchange = Get-BatchAutomationVariable -Prefix 'Exchange' `
-                                        -Name 'CredentialName',
-                                              'WebserviceURL',
-                                              'SendingCredentialName'
+                                          
+$SharePointVars = Get-BatchAutomationVariable -Prefix 'SharePoint' `
+                                              -Name 'CredentialName'
 
 $WorkspaceCredential = Get-AutomationPSCredential -Name $GlobalVars.WorkspaceID
 $Key = $WorkspaceCredential.GetNetworkCredential().Password
 
-$ExchangeCredential = Get-AutomationPSCredential -Name $Exchange.CredentialName
-$SendingExchangeCredential = Get-AutomationPSCredential -Name $Exchange.SendingCredentialName
+$Credential = Get-AutomationPSCredential -Name $SharePointVars.CredentialName
 
 $DelayCycle = 300
 $MonitorRefreshTime = ( Get-Date ).AddMinutes(60)
@@ -35,9 +32,8 @@ Try
 {
     $DataToSave = @()
 
-    $Credential = Get-AutomationPSCredential -Name 'ryan.andorfer@scorchdev.com'
     Import-Module 'C:\Program Files\Common Files\Skype for Business Online\Modules\SkypeOnlineConnector'
-    New-CsOnlineSession -Credential $Credential | % { Import-PSSession -Session $_ } | Out-Null
+    New-CsOnlineSession -Credential $Credential | % { Import-PSSession -Session $_ -AllowClobber } | Out-Null
     
     Do
     {
