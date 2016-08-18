@@ -11,6 +11,7 @@
     Import-DscResource -Module cAzureAutomation
     Import-DscResource -Module xDSCDomainjoin -ModuleVersion 1.1
     Import-DscResource -Module cInternetExplorerESC
+
     $SourceDir = 'c:\Source'
 
     $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
