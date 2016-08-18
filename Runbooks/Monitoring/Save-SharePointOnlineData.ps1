@@ -57,7 +57,7 @@ Try
             'SPSite' = $SharePointVars.SPSite
             'SPList' = 'TestList'
             'RequestTotalSeconds' = $TestTime.TotalSeconds
-            'ClientMachine' = $env:ComputeName
+            'ClientMachine' = $env:ComputerName
             'Success' = $ListItem -as [bool]
         }
 
