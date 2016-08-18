@@ -72,7 +72,7 @@ Try
                 'isFromMe' = $ReadMail.isFromMe
                 'ElapsedSeconds' = ($ReadMail.DateTimeReceived - $ReadMail.DateTimeSent).TotalSeconds
                 'Success' = $True
-                'TestTime' = $TestTime
+                'TestTimeTotalSeconds' = $TestTime.TotalSeconds
             }
         }
         else
@@ -85,7 +85,7 @@ Try
                 'isFromMe' = $ReadMail.isFromMe
                 'ElapsedSeconds' = $DelayCycle
                 'Success' = $false
-                'TestTime' = $TestTime
+                'TestTimeTotalSeconds' = $TestTime.TotalSeconds
             }
         }
 
