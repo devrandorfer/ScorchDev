@@ -245,7 +245,7 @@
              Arguments = $MSOLSignInAssistantCommanLineArguments 
              Ensure = 'Present'
              ProductID = 'D8AB93B0-6FBF-44A0-971F-C0669B5AE6DD'
-             DependsOn = '[xRemoteFile]Download_msoidcli'
+             DependsOn = '[xRemoteFile]DownloadMicrosoftOnlineServicesSignInAssistant'
         }
 
         xRemoteFile DownloadWindowsAzureActiveDirectoryModuleForWindowsPowerShell
