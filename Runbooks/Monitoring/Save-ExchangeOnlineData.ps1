@@ -67,6 +67,7 @@ Try
             $DataToSave = @{
                 'Subject' = $ReadMail.Subject
                 'Sender' = $ReadMail.Sender.Address
+                'ReceivedBy' = $ReadMail.ReceivedBy.Address
                 'DateTimeReceived' = $ReadMail.DateTimeReceived
                 'DateTimeSent' = $ReadMail.DateTimeSent
                 'isFromMe' = $ReadMail.isFromMe
@@ -80,6 +81,7 @@ Try
             $DataToSave = @{
                 'Subject' = [string]::Empty
                 'Sender' = [string]::Empty
+                'ReceivedBy' = [string]::Empty
                 'DateTimeReceived' = Get-Date
                 'DateTimeSent' = $StartTime
                 'isFromMe' = $ReadMail.isFromMe
