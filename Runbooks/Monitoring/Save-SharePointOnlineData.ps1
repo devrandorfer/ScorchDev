@@ -74,7 +74,7 @@ Try
     }
     While($MonitorActive)
 
-    Invoke-WebRequest -Method Put -Uri $SharePointVars.WebHookUri
+    Invoke-WebRequest -Method Post -Uri $SharePointVars.WebHookUri
 }
 Catch
 {
