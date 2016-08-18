@@ -104,7 +104,7 @@ Try
     }
     While($MonitorActive)
 
-    Invoke-WebRequest -Method Post -Uri $Exchange.WebHookUri
+    #Invoke-WebRequest -Method Post -Uri $Exchange.WebHookUri
 }
 Catch
 {
