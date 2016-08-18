@@ -1,0 +1,24 @@
+﻿{
+    "Variables":  {
+                      "SharePoint-WebhookURI":  {
+                                                    "isEncrypted":  false,
+                                                    "Description":  "",
+                                                    "Value":  "http://bogus.com"
+                                                },
+                      "SharePoint-CredentialName":  {
+                                                        "isEncrypted":  false,
+                                                        "Description":  "",
+                                                        "Value":  "ryan.andorfer@scorchdev.com"
+                                                    },
+                      "SharePoint-SPFarm":  {
+                                                "isEncrypted":  false,
+                                                "Description":  "",
+                                                "Value":  "scorchdev.sharepoint.com"
+                                            },
+                      "SharePoint-SPSite":  {
+                                                "isEncrypted":  false,
+                                                "Description":  "",
+                                                "Value":  "Test"
+                                            }
+                  }
+}
