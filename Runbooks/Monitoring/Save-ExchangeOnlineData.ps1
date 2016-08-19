@@ -22,7 +22,7 @@ $Exchange = Get-BatchAutomationVariable -Prefix 'Exchange' `
 
 $MailboxPair = @(
     @{ 'ryan@microsoft.com' = 'ryan.andorfer@scorchdev.com' }
-    #@{ 'ryan.andorfer@scorchdev.com' = 'ryan@microsoft.com' }
+    ##@{ 'ryan.andorfer@scorchdev.com' = 'ryan@microsoft.com' }
 )
 
 $WorkspaceCredential = Get-AutomationPSCredential -Name $GlobalVars.WorkspaceID
