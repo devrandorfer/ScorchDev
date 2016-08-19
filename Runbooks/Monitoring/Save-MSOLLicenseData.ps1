@@ -28,7 +28,15 @@ Try
     Connect-MsolService -Credential $Credential
     
     $Sku = Get-MsolAccountSku
-    Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $Sku -LogType 'Office365License_CL'
+
+    Foreach($_Sku in $SKU)
+    {
+        $_Sku = $_Sku | ConvertTo-JSON | ConvertFrom-JSON | ConvertFrom-PSCustomObject
+        $_SKU.Add('AvailableUnits', ($_SKU.ActiveUnits - $_SKU.ConsumedUnits))
+        $DataToSave += $_Sku
+    }
+    
+    Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $DataToSave -LogType 'Office365License_CL'
 }
 Catch
 {
