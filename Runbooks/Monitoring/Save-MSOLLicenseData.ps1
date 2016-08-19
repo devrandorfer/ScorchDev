@@ -31,8 +31,8 @@ Try
 
     Foreach($_Sku in $SKU)
     {
-        $_Sku = $_Sku | ConvertTo-JSON | ConvertFrom-JSON | ConvertFrom-PSCustomObject
-        $_SKU.Add('AvailableUnits', ($_SKU.ActiveUnits - $_SKU.ConsumedUnits))
+        $_Sku = $_Sku | ConvertTo-JSON -Depth ([int]::MaxValue) | ConvertFrom-JSON | ConvertFrom-PSCustomObject
+        $_Sku.Add('AvailableUnits', ($_SKU.ActiveUnits - $_SKU.ConsumedUnits))
         $DataToSave += $_Sku
     }
     
