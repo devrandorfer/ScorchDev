@@ -92,11 +92,11 @@ Try
             {
                 $DataToSave += @{
                     'Subject' = [string]::Empty
-                    'Sender' = [string]::Empty
+                    'Sender' = $SendingExchangeCredentialName
                     'ReceivedBy' = [string]::Empty
                     'DateTimeReceived' = Get-Date
                     'DateTimeSent' = $StartTime
-                    'isFromMe' = $ReadMail.isFromMe
+                    'isFromMe' = $false
                     'ElapsedSeconds' = $DelayCycle
                     'Success' = $false
                     'TestTimeTotalSeconds' = $TestTime.TotalSeconds
