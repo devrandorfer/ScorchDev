@@ -11,7 +11,7 @@ Param(
     $SignInName
 )
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-$CompletedParameters = Write-StartingMessage -CommandName New-ResourceGroup
+$CompletedParameters = Write-StartingMessage -CommandName New-ResourceGroupRoleAssignments
 
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
