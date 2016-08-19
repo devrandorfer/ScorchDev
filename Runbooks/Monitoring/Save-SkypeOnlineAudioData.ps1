@@ -10,23 +10,20 @@ Param(
 
 )
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-$CompletedParameters = Write-StartingMessage -CommandName Save-SharePointOnlineData
+$CompletedParameters = Write-StartingMessage -CommandName Save-SkypeOnlineAudioData
 
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'WorkspaceId'
-
+                                          
 $SharePointVars = Get-BatchAutomationVariable -Prefix 'SharePoint' `
-                                              -Name 'SPFarm',
-                                                    'SPSite',
-                                                    'CredentialName',
-                                                    'WebhookURI'
+                                              -Name 'CredentialName'
 
 $WorkspaceCredential = Get-AutomationPSCredential -Name $GlobalVars.WorkspaceID
 $Key = $WorkspaceCredential.GetNetworkCredential().Password
 
-$SharePointCredential = Get-AutomationPSCredential -Name $SharePointVars.CredentialName
+$Credential = Get-AutomationPSCredential -Name $SharePointVars.CredentialName
 
-$DelayCycle = 30
+$DelayCycle = 300
 $MonitorRefreshTime = ( Get-Date ).AddMinutes(60)
 $MonitorActive      = ( Get-Date ) -lt $MonitorRefreshTime
 Write-Debug -Message "`$MonitorRefreshTime [$MonitorRefreshTime]"
@@ -35,33 +32,33 @@ Try
 {
     $DataToSave = @()
 
+    Import-Module 'C:\Program Files\Common Files\Skype for Business Online\Modules\SkypeOnlineConnector'
+    New-CsOnlineSession -Credential $Credential | % { Import-PSSession -Session $_ -AllowClobber } | Out-Null
+    
     Do
     {
-        $TestTime = Measure-Command {
-            Try
+        $Sessions = Get-CsOnlineUser | % { Get-CsUserSession -User $_.UserPrincipalName -StartTime (Get-Date).AddSeconds(-1*$DelayCycle) | ? { $_.MediaTypesDescription -eq '[Audio]' } }
+    
+        $DataToSave = @()
+        Foreach($Session in $Sessions)
+        {
+            $AudioStreams = $Session.QoEReport.AudioStreams
+
+            Foreach($AudioStream in $AudioStreams)
             {
-                $ListItem = Get-SPOListItem -SPFarm $SharePointVars.SPFarm `
-                                            -SPSite $SharePointVars.SPSite `
-                                            -SPList 'TestList' `
-                                            -Credential $SharePointCredential `
-                                            -TimeOut $DelayCycle
-            }
-            Catch
-            {
-                $ListItem = $false
+                $AudioStreamHT = $audiostream | ConvertTo-Json | ConvertFrom-Json | ConvertFrom-PSCustomObject
+                $AudioStreamHT.Add('StartTime', $Session.StartTime) | Out-Null
+                $AudioStreamHT.Add('EndTime', $Session.StartTime) | Out-Null
+                $AudioStreamHT.Add('FromUri', $Session.FromUri) | Out-Null
+                $AudioStreamHT.Add('ToUri', $Session.ToUri) | Out-Null
+                $DataToSave += $AudioStreamHT
             }
         }
-
-        $DataToSave = @{
-            'SPFarm' = $SharePointVars.SPFarm
-            'SPSite' = $SharePointVars.SPSite
-            'SPList' = 'TestList'
-            'RequestTotalSeconds' = $TestTime.TotalSeconds
-            'ClientMachine' = $env:ComputerName
-            'Success' = $ListItem -as [bool]
+    
+        if($DataToSave -as [bool])
+        {    
+            Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $DataToSave -LogType 'SkypeOnlineAudioStream_CL' -TimeStampField 'StartTime'
         }
-
-        Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $DataToSave -LogType 'SharePointOnlineTest_CL'
         
          # Sleep for the rest of the $DelayCycle, with a checkpoint every $DelayCheckpoint seconds
         [int]$RemainingDelay = $DelayCycle - (Get-Date).TimeOfDay.TotalSeconds % $DelayCycle
@@ -73,8 +70,6 @@ Try
         $MonitorActive = ( Get-Date ) -lt $MonitorRefreshTime
     }
     While($MonitorActive)
-
-   # Invoke-WebRequest -Method Post -Uri $SharePointVars.WebHookUri
 }
 Catch
 {

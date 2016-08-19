@@ -20,11 +20,13 @@ $Exchange = Get-BatchAutomationVariable -Prefix 'Exchange' `
                                               'WebserviceURL',
                                               'SendingCredentialName'
 
+$MailboxPair = @(
+    #@{ 'ryan@microsoft.com' = 'ryan.andorfer@scorchdev.com' }
+    @{ 'ryan.andorfer@scorchdev.com' = 'ryan@microsoft.com' }
+)
+
 $WorkspaceCredential = Get-AutomationPSCredential -Name $GlobalVars.WorkspaceID
 $Key = $WorkspaceCredential.GetNetworkCredential().Password
-
-$ExchangeCredential = Get-AutomationPSCredential -Name $Exchange.CredentialName
-$SendingExchangeCredential = Get-AutomationPSCredential -Name $Exchange.SendingCredentialName
 
 $DelayCycle = 30
 $MonitorRefreshTime = ( Get-Date ).AddMinutes(60)
@@ -33,61 +35,72 @@ Write-Debug -Message "`$MonitorRefreshTime [$MonitorRefreshTime]"
 
 Try
 {
-    $DataToSave = @()
-
     Do
     {
-        $SendingMailboxConnection = New-EWSMailboxConnection -Credential $SendingExchangeCredential `
-                                                      -webserviceURL $Exchange.WebserviceURL
-        $MailboxConnection = New-EWSMailboxConnection -Credential $ExchangeCredential `
-                                                      -webserviceURL $Exchange.WebserviceURL
-        $TestTime = Measure-Command {
-            Try
-            {
-                $StartTime = Get-Date
-                $TimeoutTime = $StartTime.AddSeconds($DelayCycle)
-                $ReadMail = $false
-                $UniqueEmailSubject = ([guid]::NewGuid())
-                $SentMail = $SendingMailboxConnection | Send-EWSEmail -Recipients 'ryan.andorfer@scorchdev.com' -Subject $UniqueEmailSubject -Body 'test'
-                While(-not $ReadMail)
+        $DataToSave = @()
+
+        Foreach($_MailboxPair in $MailboxPair)
+        {
+            $ExchangeCredentialName = ($_MailboxPair.Keys -as [array])[0]
+            $SendingExchangeCredentialName = $_MailboxPair.$ExchangeCredentialName
+
+            $ExchangeCredential = Get-AutomationPSCredential -Name $ExchangeCredentialName
+            $SendingExchangeCredential = Get-AutomationPSCredential -Name $SendingExchangeCredentialName
+
+            $SendingMailboxConnection = New-EWSMailboxConnection -Credential $SendingExchangeCredential `
+                                                                 -webserviceURL $Exchange.WebserviceURL
+            
+            $MailboxConnection = New-EWSMailboxConnection -Credential $ExchangeCredential `
+                                                          -webserviceURL $Exchange.WebserviceURL
+
+            $TestTime = Measure-Command {
+                Try
                 {
-                    $ReadMail = $MailboxConnection | Read-EWSEmail -SearchField Subject -SearchString $UniqueEmailSubject -SearchAlgorithm Equals
-                    if(($TimeoutTime - (Get-Date)).TotalSeconds -le 0) { $Success = $False ; break }
+                    $StartTime = Get-Date
+                    $TimeoutTime = $StartTime.AddSeconds($DelayCycle)
+                    $ReadMail = $false
+                    $UniqueEmailSubject = ([guid]::NewGuid())
+                    $SentMail = $SendingMailboxConnection | Send-EWSEmail -Recipients $ExchangeCredentialName -Subject $UniqueEmailSubject -Body 'test'
+                    While(-not $ReadMail)
+                    {
+                        $ReadMail = $MailboxConnection | Read-EWSEmail -SearchField Subject -SearchString $UniqueEmailSubject -SearchAlgorithm Equals
+                        if(($TimeoutTime - (Get-Date)).TotalSeconds -le 0) { $Success = $False ; break }
+                    }
+                    $ReadMail.Delete([Microsoft.Exchange.WebServices.Data.DeleteMode]::HardDelete)
+                    $Success = $True
                 }
-                $ReadMail.Delete([Microsoft.Exchange.WebServices.Data.DeleteMode]::HardDelete)
-                $Success = $True
+                Catch
+                {
+                    $Success = $false
+                }
             }
-            Catch
+            if($Success)
             {
-                $Success = $false
+                $DataToSave += @{
+                    'Subject' = $ReadMail.Subject
+                    'Sender' = $ReadMail.Sender.Address
+                    'ReceivedBy' = $ReadMail.ReceivedBy.Address
+                    'DateTimeReceived' = $ReadMail.DateTimeReceived
+                    'DateTimeSent' = $ReadMail.DateTimeSent
+                    'isFromMe' = $ReadMail.isFromMe
+                    'ElapsedSeconds' = ($ReadMail.DateTimeReceived - $ReadMail.DateTimeSent).TotalSeconds
+                    'Success' = $True
+                    'TestTimeTotalSeconds' = $TestTime.TotalSeconds
+                }
             }
-        }
-        if($Success)
-        {
-            $DataToSave = @{
-                'Subject' = $ReadMail.Subject
-                'Sender' = $ReadMail.Sender.Address
-                'ReceivedBy' = $ReadMail.ReceivedBy.Address
-                'DateTimeReceived' = $ReadMail.DateTimeReceived
-                'DateTimeSent' = $ReadMail.DateTimeSent
-                'isFromMe' = $ReadMail.isFromMe
-                'ElapsedSeconds' = ($ReadMail.DateTimeReceived - $ReadMail.DateTimeSent).TotalSeconds
-                'Success' = $True
-                'TestTimeTotalSeconds' = $TestTime.TotalSeconds
-            }
-        }
-        else
-        {
-            $DataToSave = @{
-                'Subject' = [string]::Empty
-                'Sender' = [string]::Empty
-                'ReceivedBy' = [string]::Empty
-                'DateTimeReceived' = Get-Date
-                'DateTimeSent' = $StartTime
-                'isFromMe' = $ReadMail.isFromMe
-                'ElapsedSeconds' = $DelayCycle
-                'Success' = $false
-                'TestTimeTotalSeconds' = $TestTime.TotalSeconds
+            else
+            {
+                $DataToSave += @{
+                    'Subject' = [string]::Empty
+                    'Sender' = $SendingExchangeCredentialName
+                    'ReceivedBy' = [string]::Empty
+                    'DateTimeReceived' = Get-Date
+                    'DateTimeSent' = $StartTime
+                    'isFromMe' = $false
+                    'ElapsedSeconds' = $DelayCycle
+                    'Success' = $false
+                    'TestTimeTotalSeconds' = $TestTime.TotalSeconds
+                }
             }
         }
 
@@ -104,7 +117,7 @@ Try
     }
     While($MonitorActive)
 
-    Invoke-WebRequest -Method Post -Uri $Exchange.WebHookUri
+    #Invoke-WebRequest -Method Post -Uri $Exchange.WebHookUri
 }
 Catch
 {
