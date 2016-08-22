@@ -136,6 +136,21 @@
             PhysicalPath    = 'C:\inetpub\wwwroot'
             DependsOn       = '[WindowsFeature]IIS'
         }
+        # Download the default site content
+        xRemoteFile SiteContentZip
+        {
+            Uri = 'https://msdnshared.blob.core.windows.net/media/MSDNBlogsFS/prod.evol.blogs.msdn.com/CommunityServer.Components.PostAttachments/00/07/43/14/54/BuggyBits.zip'
+            DestinationPath = "$($SourceDir)\BuggyBits.zip"
+            MatchSource = $False
+        }
+
+        # Setup the default site content
+        Archive UnpackSiteContent
+        {
+            Path = "$($SourceDir)\BuggyBits.zip"
+            Destination = 'C:\inetpub\wwwroot'
+            Ensure = 'Present'
+        }
         cAzureNetworkPerformanceMonitoring EnableAzureNPM
         {
             Name = 'EnableNPM'
