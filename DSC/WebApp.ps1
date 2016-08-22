@@ -133,7 +133,7 @@
             Ensure          = 'Present'
             Name            = 'Default Web Site'
             State           = 'Started'
-            PhysicalPath    = 'C:\inetpub\wwwroot'
+            PhysicalPath    = 'C:\inetpub\wwwroot\BuggyBits'
             DependsOn       = '[WindowsFeature]IIS'
         }
         # Download the default site content
