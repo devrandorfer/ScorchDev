@@ -130,7 +130,12 @@
     "AvailSet-name": "AvailSet",
     "lbBackendPool": "webserver",
     "ScriptFileName": "UpdateDSC.ps1",
-    "ScriptURI": "[concat('https: //raw.githubusercontent.com/DevRandorfer/ScorchDev/master/Scripts/', variables('ScriptFileName'))]"
+    "ScriptURI": "[concat('https: //raw.githubusercontent.com/DevRandorfer/ScorchDev/master/Scripts/', variables('ScriptFileName'))]",
+    "publicIPAddressName": "MultiTierLB",
+    "lbID": "[resourceId('Microsoft.Network/loadBalancers',parameters('loadBalancerName'))]",
+    "nicId": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]",
+    "frontEndIPConfigID": "[concat(variables('lbID'), '/frontendIPConfigurations/', parameters('loadBalancerName'), 'FrontEnd')]",
+    "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
   },
   "resources": [
     {
@@ -348,18 +353,32 @@
       ]
     },
     {
+      "apiVersion": "2016-03-30",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('publicIPAddressName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "Static",
+        "dnsSettings": {
+          "domainNameLabel": "coolkidsonly"
+        }
+      }
+    },
+    {
       "type": "Microsoft.Network/loadBalancers",
       "name": "[parameters('loadBalancerName')]",
       "apiVersion": "2016-03-30",
       "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"
+      ],
       "properties": {
         "frontendIPConfigurations": [
           {
             "name": "[concat(parameters('loadBalancerName'),'FrontEnd')]",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
-              "subnet": {
-                "id": "[variables('subnetRef')]"
+              "publicIPAddress": {
+                "id": "[variables('publicIPAddressID')]"
               }
             }
           }
@@ -402,12 +421,24 @@
             }
           }
         ],
-        "inboundNatRules": [ ],
+        "inboundNatRules": [
+          {
+            "name": "RDP",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('frontEndIPConfigID')]"
+              },
+              "protocol": "tcp",
+              "frontendPort": 3389,
+              "backendPort": 3389,
+              "enableFloatingIP": false
+            }
+          }
+         ],
         "outboundNatRules": [ ],
         "inboundNatPools": [ ]
       },
-      "resources": [ ],
-      "dependsOn": [ ]
+      "resources": [ ]
     }
   ]
 }
