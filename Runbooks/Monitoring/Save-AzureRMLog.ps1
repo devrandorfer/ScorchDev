@@ -16,16 +16,17 @@ $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
                                                 'SubscriptionAccessCredentialName',
                                                 'ResourceGroupName',
-                                                'SubscriptionAccessTenant'
+                                                'SubscriptionAccessTenant',
+                                                'WorkspaceId'
 
 $Vars = Get-BatchAutomationVariable -Prefix 'AzureRMLog' `
                                     -Name @(
                                         'LastSaveDateTime'
-                                        'LogPath'
                                     )
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
-
+$WorkspaceCredential = Get-AutomationPSCredential -Name $GlobalVars.WorkspaceID
+$Key = $WorkspaceCredential.GetNetworkCredential().Password
 
 Try
 {
@@ -42,14 +43,7 @@ Try
         }
     
 
-    if(-not (Test-Path -Path $Vars.LogPath)) { $Null = New-Item -ItemType Directory -Path $Vars.LogPath }
-    Get-ChildItem -Path $Vars.LogPath | ForEach-Object { if($_.CreationTime -lt (Get-Date).AddDays(-1)) { Remove-Item -Path $_.FullName } }
-    
-    $LogName = "$($Vars.LogPath)\AzureRMLog.$(Get-Date -f 'yyyy-MM-dd-hh-mm-ss').txt"
-    foreach($Event in $Log)
-    {
-        Add-Content -Value "$((Get-Date $Event.EventTimestamp -Format 'yyyy-MM-dd HH:mm:ss')) : $($Event | ConvertTo-JSON -Compress)" -Path $LogName
-    }
+    Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $Log -LogType 'AzureRMAudit_CL' -TimeStampField 'EventTimestamp'
 
     Set-AutomationVariable -Name 'AzureRMLog-LastSaveDateTime' -Value (($CurrentSaveTime | ConvertTo-JSON -Compress) -as [string])
 }
