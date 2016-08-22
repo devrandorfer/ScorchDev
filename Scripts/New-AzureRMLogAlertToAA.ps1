@@ -27,7 +27,7 @@ Try
                            -SubscriptionName $GlobalVars.SubscriptionName `
                            -Tenant $GlobalVars.SubscriptionAccessTenant
 
-    $RG = new-azurermresourcegroup -location 'east us 2' -Name myrg1
+    $Null = new-azurermresourcegroup -location 'east us 2' -Name myrg1
     $actionWebhook = New-AzureRmAlertRuleWebhook -ServiceUri 'https://s1events.azure-automation.net/webhooks?token=5Zi8An8CVuj2CXQ3HcX2u0KFRYZ2KjR1PnZYBq6E7Hs%3d'
     Add-AzureRmLogAlertRule -Name superalert1 -Location "East US 2" -ResourceGroup myrg1 -Actions $actionWebhook -OperationName *
 }
