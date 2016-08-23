@@ -144,7 +144,7 @@
         xWebsite DefaultSite 
         {
             Ensure          = 'Present'
-            Name            = 'DefaultSite'
+            Name            = 'Default Web Site'
             PhysicalPath    = 'C:\inetpub\wwwroot'
             State           = 'Stopped'
             DependsOn       = '[WindowsFeature]IIS'
