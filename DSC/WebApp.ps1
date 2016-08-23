@@ -127,18 +127,19 @@
         # Setup the default website
         xWebsite DefaultSite 
         {
-            Ensure          = 'Present'
-            Name            = 'BuggyBits'
-            State           = 'Started'
+            Ensure          = 'Absent'
+            Name            = 'DefaultSite'
             PhysicalPath    = 'C:\inetpub\wwwroot\BuggyBits'
             DependsOn       = '[WindowsFeature]IIS'
         }
+        
         # Download the default site content
         xRemoteFile SiteContentZip
         {
             Uri = 'https://msdnshared.blob.core.windows.net/media/MSDNBlogsFS/prod.evol.blogs.msdn.com/CommunityServer.Components.PostAttachments/00/07/43/14/54/BuggyBits.zip'
             DestinationPath = "$($SourceDir)\BuggyBits.zip"
             MatchSource = $False
+            DependsOn = '[xWebsite]DefaultSite'
         }
 
         # Setup the default site content
@@ -149,6 +150,16 @@
             Ensure = 'Present'
             DependsOn = '[xRemoteFile]SiteContentZip'
         }
+        
+        xWebsite BuggyBits
+        {
+            Ensure          = 'Present'
+            Name            = 'BuggyBits'
+            State           = 'Started'
+            PhysicalPath    = 'C:\inetpub\wwwroot\BuggyBits'
+            DependsOn       = '[Archive]UnpackSiteContent'
+        }
+        
         cAzureNetworkPerformanceMonitoring EnableAzureNPM
         {
             Name = 'EnableNPM'
@@ -175,7 +186,7 @@
         xRemoteFile PythonDownload
         {
             Uri = 'https://www.python.org/ftp/python/2.7.12/python-2.7.12.msi'
-            DestinationPath = "$($SourceDir)\python-3.5.2.exe"
+            DestinationPath = "$($SourceDir)\python-2.7.12.msi"
             MatchSource = $False
         }
         xPackage InstallPython27
@@ -193,6 +204,16 @@
             Uri = 'https://github.com/tjanczuk/iisnode/releases/download/v0.2.21/iisnode-core-v0.2.21-x64.msi'
             DestinationPath = "$($SourceDir)\iisnode-core-v0.2.21-x64.msi"
             MatchSource = $False
+        }
+
+        xPackage Install-iisnode-core-download
+        {
+             Name = 'iisnode for iis 7.x (x64) core'
+             Path = "$($SourceDir)\iisnode-core-v0.2.21-x64.msi" 
+             Arguments = '/qn' 
+             Ensure = 'Present'
+             ProductID = '93ED58D2-1180-40C2-8E96-B90D57AC3A11'
+             DependsOn = "[xRemoteFile]iisnode-core-download"
         }
     }
     Node SQL
