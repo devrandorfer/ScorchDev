@@ -131,7 +131,7 @@
         xWebsite DefaultSite 
         {
             Ensure          = 'Present'
-            Name            = 'Default Web Site'
+            Name            = 'BuggyBits'
             State           = 'Started'
             PhysicalPath    = 'C:\inetpub\wwwroot\BuggyBits'
             DependsOn       = '[WindowsFeature]IIS'
