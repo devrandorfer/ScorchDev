@@ -46,7 +46,7 @@ Try
                 Find-WindowsUpdate -ComputerName $ComputerName `
                         -Credential $Credential | `
                     Install-WindowsUpdate -ComputerName $ComputerName `
-                                        -Credential $Credential -Force    
+                                          -Credential $Credential -Force    
             }
             Catch
             {
