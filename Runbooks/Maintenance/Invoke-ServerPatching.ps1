@@ -40,10 +40,27 @@ Try
         $ResultValue = $Result.Value | ConvertFrom-JSON
         foreach($ComputerName in $ResultValue.Computer)
         {
-            Find-WindowsUpdate -ComputerName $ComputerName `
+            $CompletedMessage = Write-StartingMessage -CommandName 'PatchComputer' -String $ComputerName -Stream Verbose
+            Try
+            {
+                Find-WindowsUpdate -ComputerName $ComputerName `
                         -Credential $Credential | `
-                Install-WindowsUpdate -ComputerName $ComputerName `
-                                    -Credential $Credential -Force
+                    Install-WindowsUpdate -ComputerName $ComputerName `
+                                        -Credential $Credential -Force    
+            }
+            Catch
+            {
+                $Exception = $_
+                $ExceptionInfo = Get-ExceptionInfo -Exception $Exception
+                Switch ($ExceptionInfo.FullyQualifiedErrorId)
+                {
+                    Default
+                    {
+                        Write-Exception $Exception -Stream Warning
+                    }
+                }
+            }
+            Write-CompletedMessage @CompletedMessage
         }
     }
 }
