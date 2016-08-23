@@ -37,9 +37,6 @@
     $ADMSetupExe = 'ADM-Agent-Windows.exe'
     $ADMCommandLineArguments = '/S'
 
-    $MicrosoftAzureSiteRecoveryUnifiedSetupURI = 'http://aka.ms/unifiedinstaller'
-    $ASRSetupEXE = 'MicrosoftAzureSiteRecoveryUnifiedSetup.exe'
-
     $RetryCount = 20
     $RetryIntervalSec = 30
 
@@ -175,6 +172,28 @@
              DependsOn = "[xRemoteFile]NodeJS"
         }
         
+        xRemoteFile PythonDownload
+        {
+            Uri = 'https://www.python.org/ftp/python/2.7.12/python-2.7.12.msi'
+            DestinationPath = "$($SourceDir)\python-3.5.2.exe"
+            MatchSource = $False
+        }
+        xPackage InstallPython27
+        {
+             Name = "Python 2.7.12"
+             Path = "$($SourceDir)\python-2.7.12.msi" 
+             Arguments = '/qn ALLUSERS=1' 
+             Ensure = 'Present'
+             ProductID = '9DA28CE5-0AA5-429E-86D8-686ED898C665'
+             DependsOn = "[xRemoteFile]NodeJS"
+        }
+
+        xRemoteFile iisnode-core-download
+        {
+            Uri = 'https://github.com/tjanczuk/iisnode/releases/download/v0.2.21/iisnode-core-v0.2.21-x64.msi'
+            DestinationPath = "$($SourceDir)\iisnode-core-v0.2.21-x64.msi"
+            MatchSource = $False
+        }
     }
     Node SQL
     {
