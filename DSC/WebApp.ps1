@@ -226,7 +226,7 @@
         xPackage Install-IIS-URL-ReWrite
         {
              Name = 'rewrite'
-             Path = "$($SourceDir)\rewrite_amd64..msi" 
+             Path = "$($SourceDir)\rewrite_amd64.msi" 
              Arguments = '/qn' 
              Ensure = 'Present'
              ProductID = '93ED58D2-1180-40C2-8E96-B90D57AC3A11'
