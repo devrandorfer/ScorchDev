@@ -225,11 +225,11 @@
 
         xPackage Install-IIS-URL-ReWrite
         {
-             Name = 'rewrite'
+             Name = 'IIS URL Rewrite Module 2'
              Path = "$($SourceDir)\rewrite_amd64.msi" 
              Arguments = '/qn' 
              Ensure = 'Present'
-             ProductID = '93ED58D2-1180-40C2-8E96-B90D57AC3A11'
+             ProductID = '08F0318A-D113-4CF0-993E-50F191D397AD'
              DependsOn = "[xRemoteFile]Download-IIS-URL-ReWrite"
         }
 
