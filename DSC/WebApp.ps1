@@ -238,10 +238,10 @@
             Uri = 'https://github.com/tjanczuk/iisnode/releases/download/v0.2.21/iisnode-core-v0.2.21-x64.msi'
             DestinationPath = "$($SourceDir)\iisnode-core-v0.2.21-x64.msi"
             MatchSource = $False
-            DependsOn = '[xPackage]Install-iisnode-core-download'
+            DependsOn = '[xPackage]Install-IIS-URL-ReWrite'
         }
 
-        xPackage Install-iisnode-core-download
+        xPackage Install-iisnode-core-install
         {
              Name = 'iisnode for iis 7.x (x64) core'
              Path = "$($SourceDir)\iisnode-core-v0.2.21-x64.msi" 
