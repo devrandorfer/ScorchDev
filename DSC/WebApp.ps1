@@ -150,12 +150,31 @@
             Path = "$($SourceDir)\BuggyBits.zip"
             Destination = 'C:\inetpub\wwwroot'
             Ensure = 'Present'
+            DependsOn = '[xRemoteFile]SiteContentZip'
         }
         cAzureNetworkPerformanceMonitoring EnableAzureNPM
         {
             Name = 'EnableNPM'
             Ensure = 'Present'
         }
+
+        # Download the default site content
+        xRemoteFile NodeJS
+        {
+            Uri = 'https://nodejs.org/dist/v4.5.0/node-v4.5.0-x64.msi'
+            DestinationPath = "$($SourceDir)\node-v4.5.0-x64.msi"
+            MatchSource = $False
+        }
+        xPackage InstallNodeJS
+        {
+             Name = "Node.js"
+             Path = "$($SourceDir)\node-v4.5.0-x64.msi" 
+             Arguments = '/qn' 
+             Ensure = 'Present'
+             ProductID = 'B5FEC613-8EBC-43C3-A232-693D96E07CCF'
+             DependsOn = "[xRemoteFile]NodeJS"
+        }
+        
     }
     Node SQL
     {
