@@ -165,6 +165,22 @@
             Name = 'EnableNPM'
             Ensure = 'Present'
         }
+       
+        xRemoteFile PythonDownload
+        {
+            Uri = 'https://www.python.org/ftp/python/2.7.12/python-2.7.12.msi'
+            DestinationPath = "$($SourceDir)\python-2.7.12.msi"
+            MatchSource = $False
+        }
+        xPackage InstallPython27
+        {
+             Name = "Python 2.7.12"
+             Path = "$($SourceDir)\python-2.7.12.msi" 
+             Arguments = '/qn ALLUSERS=1' 
+             Ensure = 'Present'
+             ProductID = '9DA28CE5-0AA5-429E-86D8-686ED898C665'
+             DependsOn = "[xRemoteFile]PythonDownload"
+        }
 
         # Download the default site content
         xRemoteFile NodeJS
@@ -182,21 +198,12 @@
              ProductID = 'B5FEC613-8EBC-43C3-A232-693D96E07CCF'
              DependsOn = "[xRemoteFile]NodeJS"
         }
-        
-        xRemoteFile PythonDownload
+
+        xRemoteFile Download-IIS-URL-ReWrite
         {
-            Uri = 'https://www.python.org/ftp/python/2.7.12/python-2.7.12.msi'
-            DestinationPath = "$($SourceDir)\python-2.7.12.msi"
+            Uri = 'http://go.microsoft.com/fwlink/?LinkID=615137'
+            DestinationPath = "$($SourceDir)\rewrite_amd64.msi"
             MatchSource = $False
-        }
-        xPackage InstallPython27
-        {
-             Name = "Python 2.7.12"
-             Path = "$($SourceDir)\python-2.7.12.msi" 
-             Arguments = '/qn ALLUSERS=1' 
-             Ensure = 'Present'
-             ProductID = '9DA28CE5-0AA5-429E-86D8-686ED898C665'
-             DependsOn = "[xRemoteFile]NodeJS"
         }
 
         xRemoteFile iisnode-core-download
@@ -204,6 +211,7 @@
             Uri = 'https://github.com/tjanczuk/iisnode/releases/download/v0.2.21/iisnode-core-v0.2.21-x64.msi'
             DestinationPath = "$($SourceDir)\iisnode-core-v0.2.21-x64.msi"
             MatchSource = $False
+            DependsOn = '[xPackage]Install-iisnode-core-download'
         }
 
         xPackage Install-iisnode-core-download
@@ -214,7 +222,7 @@
              Ensure = 'Present'
              ProductID = '93ED58D2-1180-40C2-8E96-B90D57AC3A11'
              DependsOn = "[xRemoteFile]iisnode-core-download"
-        }
+        }       
     }
     Node SQL
     {
