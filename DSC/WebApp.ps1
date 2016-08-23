@@ -117,11 +117,27 @@
             Name            = 'Web-Server'
         }
 
+        WindowsFeature INETMGR
+        {
+            Ensure          = 'Present'
+            Name            = 'Web-Mgmt-Console'
+        }
+
         # Install the ASP .NET 4.5 role
         WindowsFeature AspNet45
         {
             Ensure          = 'Present'
             Name            = 'Web-Asp-Net45'
+        }
+
+        xIisLogging Logging
+        {
+            LogPath = 'F:\IISLogFiles'
+            Logflags = @('Date','Time','ClientIP','UserName','ServerIP')
+            LoglocalTimeRollover = $True
+            LogPeriod = 'Hourly'
+            LogFormat = 'W3C'
+            DependsOn = '[WindowsFeature]IIS'
         }
 
         # Setup the default website
@@ -147,7 +163,7 @@
         Archive UnpackSiteContent
         {
             Path = "$($SourceDir)\BuggyBits.zip"
-            Destination = 'C:\inetpub\wwwroot'
+            Destination = 'F:\inetpub\wwwroot'
             Ensure = 'Present'
             DependsOn = '[xRemoteFile]SiteContentZip'
         }
@@ -157,7 +173,7 @@
             Ensure          = 'Present'
             Name            = 'BuggyBits'
             State           = 'Started'
-            PhysicalPath    = 'C:\inetpub\wwwroot\BuggyBits'
+            PhysicalPath    = 'F:\inetpub\wwwroot\BuggyBits'
             DependsOn       = '[Archive]UnpackSiteContent'
         }
         
