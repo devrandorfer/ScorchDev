@@ -226,7 +226,7 @@
               "caching": "None",
               "diskSizeGB": "[variables('dataDiskSize')]",
               "lun": 0,
-              "createOption": "empty"
+              "createOption": "Empty"
             }
           ]
         },
