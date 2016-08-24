@@ -119,6 +119,7 @@
         "DomainComputer.MemberServerQA",
         "DomainComputer.MemberServerProd",
         "WebApp.FrontEnd",
+        "AzureAutomation.HybridRunbookWorker"
       ],
       "metadata": {
         "description": "The size of the VM Created"
