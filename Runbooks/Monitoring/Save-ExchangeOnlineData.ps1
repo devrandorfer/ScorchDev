@@ -1,9 +1,9 @@
 ﻿<#
     .SYNOPSIS
-       Add a synopsis here to explain the PSScript. 
+       Add a synopsis here to explain the PSScript.
 
     .Description
-        Give a description of the Script.
+        Give a description of the Script!
 
 #>
 Param(

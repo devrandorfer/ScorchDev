@@ -37,9 +37,6 @@
     $ADMSetupExe = 'ADM-Agent-Windows.exe'
     $ADMCommandLineArguments = '/S'
 
-    $MicrosoftAzureSiteRecoveryUnifiedSetupURI = 'http://aka.ms/unifiedinstaller'
-    $ASRSetupEXE = 'MicrosoftAzureSiteRecoveryUnifiedSetup.exe'
-
     $RetryCount = 20
     $RetryIntervalSec = 30
 
@@ -120,6 +117,12 @@
             Name            = 'Web-Server'
         }
 
+        WindowsFeature INETMGR
+        {
+            Ensure          = 'Present'
+            Name            = 'Web-Mgmt-Console'
+        }
+
         # Install the ASP .NET 4.5 role
         WindowsFeature AspNet45
         {
@@ -127,35 +130,126 @@
             Name            = 'Web-Asp-Net45'
         }
 
+        xIisLogging Logging
+        {
+            LogPath = 'F:\IISLogFiles'
+            Logflags = @('Date','Time','ClientIP','UserName','ServerIP')
+            LoglocalTimeRollover = $True
+            LogPeriod = 'Hourly'
+            LogFormat = 'W3C'
+            DependsOn = '[WindowsFeature]IIS'
+        }
+
         # Setup the default website
         xWebsite DefaultSite 
         {
             Ensure          = 'Present'
             Name            = 'Default Web Site'
-            State           = 'Started'
             PhysicalPath    = 'C:\inetpub\wwwroot'
+            State           = 'Stopped'
             DependsOn       = '[WindowsFeature]IIS'
         }
+        
         # Download the default site content
         xRemoteFile SiteContentZip
         {
             Uri = 'https://msdnshared.blob.core.windows.net/media/MSDNBlogsFS/prod.evol.blogs.msdn.com/CommunityServer.Components.PostAttachments/00/07/43/14/54/BuggyBits.zip'
             DestinationPath = "$($SourceDir)\BuggyBits.zip"
             MatchSource = $False
+            DependsOn = '[xWebsite]DefaultSite'
         }
 
         # Setup the default site content
         Archive UnpackSiteContent
         {
             Path = "$($SourceDir)\BuggyBits.zip"
-            Destination = 'C:\inetpub\wwwroot'
+            Destination = 'F:\inetpub\wwwroot'
             Ensure = 'Present'
+            DependsOn = '[xRemoteFile]SiteContentZip'
         }
+        
+        xWebsite BuggyBits
+        {
+            Ensure          = 'Present'
+            Name            = 'BuggyBits'
+            State           = 'Started'
+            PhysicalPath    = 'F:\inetpub\wwwroot\BuggyBits'
+            DependsOn       = '[Archive]UnpackSiteContent'
+        }
+        
         cAzureNetworkPerformanceMonitoring EnableAzureNPM
         {
             Name = 'EnableNPM'
             Ensure = 'Present'
         }
+       
+        xRemoteFile PythonDownload
+        {
+            Uri = 'https://www.python.org/ftp/python/2.7.12/python-2.7.12.msi'
+            DestinationPath = "$($SourceDir)\python-2.7.12.msi"
+            MatchSource = $False
+        }
+        xPackage InstallPython27
+        {
+             Name = "Python 2.7.12"
+             Path = "$($SourceDir)\python-2.7.12.msi" 
+             Arguments = '/qn ALLUSERS=1' 
+             Ensure = 'Present'
+             ProductID = '9DA28CE5-0AA5-429E-86D8-686ED898C665'
+             DependsOn = "[xRemoteFile]PythonDownload"
+        }
+
+        # Download the default site content
+        xRemoteFile NodeJS
+        {
+            Uri = 'https://nodejs.org/dist/v4.5.0/node-v4.5.0-x64.msi'
+            DestinationPath = "$($SourceDir)\node-v4.5.0-x64.msi"
+            MatchSource = $False
+        }
+        xPackage InstallNodeJS
+        {
+             Name = "Node.js"
+             Path = "$($SourceDir)\node-v4.5.0-x64.msi" 
+             Arguments = '/qn' 
+             Ensure = 'Present'
+             ProductID = 'B5FEC613-8EBC-43C3-A232-693D96E07CCF'
+             DependsOn = "[xRemoteFile]NodeJS"
+        }
+
+        xRemoteFile Download-IIS-URL-ReWrite
+        {
+            Uri = 'http://go.microsoft.com/fwlink/?LinkID=615137'
+            DestinationPath = "$($SourceDir)\rewrite_amd64.msi"
+            MatchSource = $False
+        }
+
+        xPackage Install-IIS-URL-ReWrite
+        {
+             Name = 'IIS URL Rewrite Module 2'
+             Path = "$($SourceDir)\rewrite_amd64.msi" 
+             Arguments = '/qn' 
+             Ensure = 'Present'
+             ProductID = '08F0318A-D113-4CF0-993E-50F191D397AD'
+             DependsOn = "[xRemoteFile]Download-IIS-URL-ReWrite"
+        }
+
+        xRemoteFile iisnode-core-download
+        {
+            Uri = 'https://github.com/tjanczuk/iisnode/releases/download/v0.2.21/iisnode-core-v0.2.21-x64.msi'
+            DestinationPath = "$($SourceDir)\iisnode-core-v0.2.21-x64.msi"
+            MatchSource = $False
+            DependsOn = '[xPackage]Install-IIS-URL-ReWrite'
+        }
+
+        xPackage Install-iisnode-core-install
+        {
+             Name = 'iisnode for iis 7.x (x64) core'
+             Path = "$($SourceDir)\iisnode-core-v0.2.21-x64.msi" 
+             Arguments = '/qn' 
+             Ensure = 'Present'
+             ProductID = '93ED58D2-1180-40C2-8E96-B90D57AC3A11'
+             DependsOn = "[xRemoteFile]iisnode-core-download"
+        }       
     }
     Node SQL
     {

@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "LogAnalytics-WorkspaceId":  {
+                                                       "isEncrypted":  false,
+                                                       "Description":  "",
+                                                       "Value":  "09249256-99e5-4c6e-9d7a-3b73e3a90281"
+                                                   },
+                      "LogAnalytics-ResourceGroupName":  {
+                                                             "isEncrypted":  false,
+                                                             "Description":  "",
+                                                             "Value":  "mms-eus"
+                                                         }
+                  }
+}
