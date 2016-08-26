@@ -141,7 +141,7 @@
         }
 
         # Setup the default website
-        xWebsite DefaultSite 
+        xWebsite DefaultWebSite 
         {
             Ensure          = 'Present'
             Name            = 'Default Web Site'
