@@ -156,7 +156,7 @@
             Uri = 'https://msdnshared.blob.core.windows.net/media/MSDNBlogsFS/prod.evol.blogs.msdn.com/CommunityServer.Components.PostAttachments/00/07/43/14/54/BuggyBits.zip'
             DestinationPath = "$($SourceDir)\BuggyBits.zip"
             MatchSource = $False
-            DependsOn = '[xWebsite]DefaultSite'
+            DependsOn = '[xWebsite]DefaultWebSite'
         }
 
         # Setup the default site content
