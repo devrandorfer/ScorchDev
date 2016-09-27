@@ -68,7 +68,7 @@ Function Write-LogAnalyticsLogEntry
     )
     $CompletedParams = Write-StartingMessage -Stream Debug
 
-    $Data = $Data | ConvertTo-JSON -Depth ([int]::MaxValue)
+    $Data = $Data | ConvertTo-JSON -Depth 100
     Write-Debug -message $Data
     $method = "POST"
     $contentType = "application/json"

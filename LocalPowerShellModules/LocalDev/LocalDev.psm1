@@ -141,7 +141,7 @@ Function Read-SmaJSONVariables
             }
         }
     }
-    $Env:LocalAutomationVariable = $LocalAutomationVariable | ConvertTo-Json -Depth ([int]::MaxValue)
+    $Env:LocalAutomationVariable = $LocalAutomationVariable | ConvertTo-Json -Depth 100
 }
 <#
     .Synopsis
