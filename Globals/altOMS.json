@@ -1,0 +1,24 @@
+﻿{
+    "Variables":  {
+                      "altOMS-LastUpdateTime":  {
+                                                    "isEncrypted":  false,
+                                                    "Description":  "",
+                                                    "Value":  "\/Date(1474974882897)\/"
+                                                },
+                      "altOMS-WorkspaceId":  {
+                                                 "isEncrypted":  false,
+                                                 "Description":  "",
+                                                 "Value":  "a97493ec-d2eb-48d4-8cc5-6e55a0adc755"
+                                             },
+                      "altOMS-ResourceGroupName":  {
+                                                       "isEncrypted":  false,
+                                                       "Description":  "",
+                                                       "Value":  "Management"
+                                                   },
+                      "altOMS-WorkspaceName":  {
+                                                   "isEncrypted":  false,
+                                                   "Description":  "",
+                                                   "Value":  "scodev"
+                                               }
+                  }
+}

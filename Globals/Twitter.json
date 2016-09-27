@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "Twitter-AccessToken":  {
+                                                  "isEncrypted":  false,
+                                                  "Description":  "",
+                                                  "Value":  "64294947-EaYW4OK1nQOfulOGgsOjQCCLHlfsqTv7XrkT0FW5J"
+                                              },
+                      "Twitter-ConsumerKey":  {
+                                                  "isEncrypted":  false,
+                                                  "Description":  "",
+                                                  "Value":  "MZivW6czw5hLrC6pHSpSZDbug"
+                                              }
+                  }
+}

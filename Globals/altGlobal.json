@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "altGlobal-SubscriptionAccessCredentialName":  {
+                                                                         "isEncrypted":  false,
+                                                                         "Description":  "",
+                                                                         "Value":  "Ryan.Andorfer@gmail.com"
+                                                                     },
+                      "altGlobal-SubscriptionName":  {
+                                                         "isEncrypted":  false,
+                                                         "Description":  "",
+                                                         "Value":  "Subscription1"
+                                                     }
+                  }
+}
