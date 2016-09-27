@@ -36,8 +36,8 @@ Try
         
             $SearchResult = Get-AzureRmOperationalInsightsSearchResults -ResourceGroupName $OMSVars.ResourceGroupName `
                                                                         -WorkspaceName $OMSVars.WorkspaceName `
-                                                                        -Query 'Type=TweetStream_CL' `
-                                                                        -Start $LastUpdateTime.ToUniversalTime() -Top 5000
+                                                                        -Query 'Type=TweetStream_CL (TrackingTerm_s=msignite)' `
+                                                                        -Start $LastUpdateTime.ToUniversalTime()
             $LastUpdateTime = Get-Date
             Set-AutomationVariable -Name 'altOMS-LastUpdateTime' -Value $LastUpdateTime
             $HashtagHT = @{}
