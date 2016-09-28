@@ -31,7 +31,7 @@ Try
     $CurrentDate = Get-Date
     $SearchResult = Get-AzureRmOperationalInsightsSearchResults -ResourceGroupName $OMSVars.ResourceGroupName `
                                                                 -WorkspaceName $OMSVars.WorkspaceId `
-                                                                -Query 'Type=Type=WindowsLogin_CL | measure sum(product(stddev(AggregatedValue_d),3),avg(AggregatedValue_d) as NormalUpperBound by Computer,Account,EventID' `
+                                                                -Query 'Type=WindowsLoginAggregation_CL | measure sum(product(stddev(AggregatedValue_d),3),avg(AggregatedValue_d) as NormalUpperBound by Computer,Account,EventID' `
                                                                 -Start (Get-date).AddDays(-7) -End $CurrentDate -Top 5000
     if($SearchResult.Value.Count -gt 0)
     {
