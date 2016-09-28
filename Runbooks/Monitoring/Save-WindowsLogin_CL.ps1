@@ -10,7 +10,7 @@ Param(
 
 )
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-$CompletedParameters = Write-StartingMessage -CommandName Save-WindowsLogin_CL
+$CompletedParameters = Write-StartingMessage -CommandName Save-WindowsLogin_C
 
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
@@ -32,13 +32,26 @@ Try
     $SearchResult = Get-AzureRmOperationalInsightsSearchResults -ResourceGroupName $OMSVars.ResourceGroupName `
                                                                 -WorkspaceName $OMSVars.WorkspaceId `
                                                                 -Query 'Type=SecurityEvent (EventID=4624 OR EventID=4625)  Account!="NT AUTHORITY\\SYSTEM" | measure count() by Computer,Account,EventID INTERVAL 1Minute' `
-                                                                -Start $LastSaveDate -End $CurrentDate -Top 5000
+                                                                -Start (Get-Date).AddDays(-7) -End $CurrentDate -Top 5000
+
+    
     if($SearchResult.Value.Count -gt 0)
     {
+        $Data = @()
+        Foreach($Result in ($SearchResult.Value | ConvertFrom-JSON))
+        {
+            $Data += @{
+                'Computer' = $Result.Computer
+                'TimeGenerated' = $Result.TimeGenerated -as [datetime]
+                'Account' = $Result.Account.ToLower()
+                'EventID' = $Result.EventID
+                'Value' = $Result.AggregatedValue
+            }
+        }
         Write-LogAnalyticsLogEntry -WorkspaceId $OMSVars.WorkspaceId `
                                    -Key $OMSCred.GetNetworkCredential().Password `
-                                   -Data ($SearchResult.Value | ConvertFrom-Json) `
-                                   -LogType 'WindowsLogin_CL' `
+                                   -Data $Data `
+                                   -LogType 'WindowsLoginAggregation_CL' `
                                    -TimeStampField 'TimeGenerated'
     }
 
