@@ -29,10 +29,50 @@ Try
     
     $LastSaveDate = Get-AutomationVariable -Name 'WindowsLoginGrouping-LastSaveDate'
     $CurrentDate = Get-Date
-    $SearchResult = Get-AzureRmOperationalInsightsSearchResults -ResourceGroupName $OMSVars.ResourceGroupName `
-                                                                -WorkspaceName $OMSVars.WorkspaceId `
-                                                                -Query 'Type=WindowsLoginAggregation_CL | measure sum(product(stddev(AggregatedValue_d),3),avg(AggregatedValue_d) as NormalUpperBound by Computer,Account,EventID' `
-                                                                -Start (Get-date).AddDays(-7) -End $CurrentDate -Top 5000
+    $StdDevSearchResult = Get-AzureRmOperationalInsightsSearchResults -ResourceGroupName $OMSVars.ResourceGroupName `
+                                                                      -WorkspaceName $OMSVars.WorkspaceId `
+                                                                      -Query 'Type=WindowsLoginAggregation_CL | measure stddev(Value_d), avg(Value_d) by Computer,Account_s,EventID_d' `
+                                                                      -Start (Get-date).AddDays(-7) -End $CurrentDate -Top 5000
+    
+    $LastCount = Get-AzureRmOperationalInsightsSearchResults -ResourceGroupName $OMSVars.ResourceGroupName `
+                                                                      -WorkspaceName $OMSVars.WorkspaceId `
+                                                                      -Query 'Type=SecurityEvent (EventID=4625) | measure count() by Computer,Account,EventID' `
+                                                                      -Start (Get-date).AddMinutes(-15) -End $CurrentDate -Top 5000
+    $HT = @{}
+    Foreach($Result in ($StdDevSearchResult.Value | ConvertFrom-JSON))
+    {
+        $HT.Add("$($Result.Account_s):$($Result.Computer):$($Result.EventID_d -as [int])", ($Result.'avg(Value_d)' + $Result.'stddev(Value_d)'))
+    }
+    
+    Foreach($Result in ($LastCount.Value | ConvertFrom-JSON))
+    {
+        $Key = "$($Result.Account):$($Result.Computer):$($Result.EventID)"
+        if($HT.ContainsKey($Key))
+        {
+            $Upperbound = $HT.$Key
+            if($Result.AggregatedValue -gt $Upperbound)
+            {
+                #Block Result
+                $VMName = $Result.Computer
+                $VMObj = Find-AzureRmResource -ResourceNameContains $VMName -ResourceType 'Microsoft.Compute/virtualMachines'
+                if($VMObj)
+                {
+                    $VirtualMachine = Get-AzureRmVM -ResourceGroupName $VMObj.ResourceGroupName -Name $VMObj.Name
+
+                    Foreach($NetworkInterfaceId in $VirtualMachine.NetworkInterfaceIDs)
+                    {
+                        $NetworkInterface = Get-AzureRmResource -ResourceId $NetworkInterfaceId
+                        Foreach($NetworkSecurityGroupId in $NetworkInterface.Properties.networkSecurityGroup)
+                        {
+                            $NetworkSecurityGroup = Get-AzureRMResource -ResourceId $NetworkSecurityGroupId.id
+                            #Add-AzureRmNetworkSecurityRuleConfig -Name "BlockIPAddress" -NetworkSecurityGroup $NetworkSecurityGroup -Protocol *
+                        }
+                    }#>
+                }
+            }
+        }
+
+    }
     if($SearchResult.Value.Count -gt 0)
     {
         Write-LogAnalyticsLogEntry -WorkspaceId $OMSVars.WorkspaceId `
