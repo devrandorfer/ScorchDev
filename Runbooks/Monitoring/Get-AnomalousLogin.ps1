@@ -65,7 +65,17 @@ Try
                         Foreach($NetworkSecurityGroupId in $NetworkInterface.Properties.networkSecurityGroup)
                         {
                             $NetworkSecurityGroup = Get-AzureRMResource -ResourceId $NetworkSecurityGroupId.id
-                            #Add-AzureRmNetworkSecurityRuleConfig -Name "BlockIPAddress" -NetworkSecurityGroup $NetworkSecurityGroup -Protocol *
+                            $NSG = Get-AzureRmNetworkSecurityGroup -Name $NetworkSecurityGroup.Name -ResourceGroupName $NetworkSecurityGroup.ResourceGroupName
+                            $NSG | Add-AzureRmNetworkSecurityRuleConfig -Name "BlockIPAddress" `
+                                                                        -Protocol * `
+                                                                        -SourcePortRange * `
+                                                                        -DestinationPortRange * `
+                                                                        -SourceAddressPrefix 40.78.108.1 `
+                                                                        -DestinationAddressPrefix * `
+                                                                        -Priority 998 `
+                                                                        -Access Deny `
+                                                                        -Direction Inbound
+                            $nsg | Set-AzureRmNetworkSecurityGroup
                         }
                     }#>
                 }
