@@ -21,7 +21,6 @@ $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
 $RunbookWorkerAccessCredential = Get-AutomationPSCredential -Name 'ryan'
 
-
 Try
 {
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
@@ -31,7 +30,7 @@ Try
                                                               -AutomationAccountName $GlobalVars.AutomationAccountName
 
     $VMName = "$(New-RandomString -MinLength 5 -MaxLength 5 -InputString 'abcdefghijklmnopqrstuvwxyz')"
-    $ResourceGroupName = 'tempserver'
+    $ResourceGroupName = 'runbookworker'
 
     New-AzureRmResourcegroup -Name $ResourceGroupName `
                              -Location 'eastus2' `
@@ -47,7 +46,7 @@ Try
                                        -ResourceGroupName $ResourceGroupName `
                                        -registrationUrl $RegistrationInfo.Endpoint `
                                        -registrationKey ($RegistrationInfo.PrimaryKey | ConvertTo-SecureString -AsPlainText -Force) `
-                                       -serverConfiguration 'DomainComputer.MemberServerDev' `
+                                       -serverConfiguration 'AzureAutomation.HybridRunbookWorker' `
                                        -Verbose
 }
 Catch
