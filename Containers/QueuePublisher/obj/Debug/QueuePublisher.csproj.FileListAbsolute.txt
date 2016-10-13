@@ -1,0 +1,6 @@
+C:\git\SCOrchDev\Containers\QueuePublisher\bin\Debug\QueuePublisher.exe.config
+C:\git\SCOrchDev\Containers\QueuePublisher\bin\Debug\QueuePublisher.exe
+C:\git\SCOrchDev\Containers\QueuePublisher\bin\Debug\QueuePublisher.pdb
+C:\git\SCOrchDev\Containers\QueuePublisher\obj\Debug\QueuePublisher.csprojResolveAssemblyReference.cache
+C:\git\SCOrchDev\Containers\QueuePublisher\obj\Debug\QueuePublisher.exe
+C:\git\SCOrchDev\Containers\QueuePublisher\obj\Debug\QueuePublisher.pdb

@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  queue:
+    image: user/queue${TAG}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80"
