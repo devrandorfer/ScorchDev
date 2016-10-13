@@ -27,27 +27,33 @@ Try
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
                            -SubscriptionName $GlobalVars.SubscriptionName
     
-    $ResourceArray = @()
-    $Resource = Get-AzureRMResource -ExpandProperties
-    foreach($_Resource in $Resource)
+    Do
     {
-        $obj = @{
-            'Name' = $_Resource.Name
-            'ResourceId' = $_Resource.ResourceId
-            'ResourceName' = $_Resource.ResourceName
-            'ResourceType' = $_Resource.ResourceType
-            'ResourceGroupName' = $_Resource.ResourceGroupName
-            'Location' = $_Resource.Location
-            'SubscriptionId' = $_Resource.SubscriptionId
-        }
-        Foreach($PropertyName in ($_Resource.Properties | Get-Member -MemberType NoteProperty).Name)
+        $ResourceArray = @()
+        $Resource = Get-AzureRMResource -ExpandProperties
+        foreach($_Resource in $Resource)
         {
-            $obj.Add("Property-$PropertyName", $_Resource.Properties.$PropertyName) | Out-Null
+            $obj = @{
+                'Name' = $_Resource.Name
+                'ResourceId' = $_Resource.ResourceId
+                'ResourceName' = $_Resource.ResourceName
+                'ResourceType' = $_Resource.ResourceType
+                'ResourceGroupName' = $_Resource.ResourceGroupName
+                'Location' = $_Resource.Location
+                'SubscriptionId' = $_Resource.SubscriptionId
+            }
+            Foreach($PropertyName in ($_Resource.Properties | Get-Member -MemberType NoteProperty).Name)
+            {
+                $obj.Add("Property-$PropertyName", $_Resource.Properties.$PropertyName) | Out-Null
+            }
+            $ResourceArray += $obj
         }
-        $ResourceArray += $obj
-    }
 
-    Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $ResourceArray -LogType 'AzureResourceProperty_CL'
+        Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $ResourceArray -LogType 'AzureResourceProperty_CL'
+
+        Start-Sleep -Seconds 30
+    }
+    While($True)
 }
 Catch
 {
