@@ -1,6 +1,6 @@
 ﻿FROM microsoft/aspnet:latest
 ENTRYPOINT ["cmd"]
-ARG SOURCE=.\\bin\\Debug
+ARG SOURCE= .
 WORKDIR c:\\app
 EXPOSE 80
 COPY $SOURCE .
