@@ -24,6 +24,8 @@ $Key = $WorkspaceCredential.GetNetworkCredential().Password
 
 Try
 {
+    while($true)
+    {
     $DataToSave = @()
     Foreach($_City in ($WeatherVars.LocationsToMonitor | ConvertFrom-JSON))
     {
@@ -44,6 +46,9 @@ Try
     }
 
     Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $DataToSave -LogType 'OpenWeather_CL'
+    start-sleep -Seconds 10
+    }
+
 }
 Catch
 {
