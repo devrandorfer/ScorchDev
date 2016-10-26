@@ -1,6 +1,5 @@
 ﻿FROM microsoft/aspnet:latest
-ENTRYPOINT ["cmd"]
-ARG SOURCE= .\\bin\\Debug
+ENTRYPOINT ["c:\\app\\QueuePublisher.exe"]
+ARG SOURCE=.\\bin\\debug
 WORKDIR c:\\app
-EXPOSE 80
 COPY $SOURCE .
