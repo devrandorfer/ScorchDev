@@ -1,0 +1,9 @@
+﻿{
+    "Variables":  {
+                      "Office365-CredentialName":  {
+                                                       "isEncrypted":  false,
+                                                       "Description":  "",
+                                                       "Value":  "ryan.andorfer@scorchdev.com"
+                                                   }
+                  }
+}
