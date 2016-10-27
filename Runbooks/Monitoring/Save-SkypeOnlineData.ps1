@@ -60,19 +60,20 @@ Try
             $User,$StartTime = $Message.AsString.Split(';')
         
             $StartTime = ($StartTime -as [datetime]).ToLocalTime()
-            $EndTime = (Get-Date)
-
+            
             $DataToSave = @{}
-            $CompletedParams = Write-StartingMessage -Command 'Processing User' -String $User -Stream Debug
+            $CompletedParams = Write-StartingMessage -Command 'Processing User' -String "$User from $StartTime" -Stream Debug
             Try
             {
                 $Sessions = Get-CsUserSession -User $User `
                                               -StartTime $StartTime `
-                                              -EndTime $EndTime `
                                               -WarningAction SilentlyContinue
-            
                 Foreach($Session in $Sessions)
                 {
+                    if($Session.StartTime.AddMinutes(5).CompareTo($StartTime) -gt 0)
+                    {
+                        $StartTime = $Session.StartTime.AddMinutes(5)
+                    }
                     $SessionHeader = @{}
                     $SessionPropertyNames = ($Session | Get-Member -MemberType Property).Name
                     Foreach($SessionPropertyName in $SessionPropertyNames)
@@ -84,7 +85,7 @@ Try
                     }
 
                     #ErrorReport
-                    if($SessionPropertyNames -contains 'ErrorReports')
+                    if($Session.ErrorReports -ne $null)
                     {
                         Foreach($ErrorReport in $Session.ErrorReports)
                         {
@@ -121,7 +122,7 @@ Try
                     }
 
                     #QoEReport
-                    if($SessionPropertyNames -contains 'QoEReport')
+                    if($Session.QoEReport -ne $null)
                     {
                         $QoEReport = $Session.QoEReport
                         $QoeReportType = ($QoeReport | Get-Member -MemberType Property).Name
@@ -153,13 +154,17 @@ Try
                 {
                     Foreach($DataToSaveKey in $DataToSave.Keys)
                     {
-                        Write-LogAnalyticsLogEntry -WorkspaceId $Vars.WorkspaceId -Key $Key -Data $DataToSave.$DataToSaveKey -LogType "SkypeOnline_$($DataToSaveKey)_CL" -TimeStampField 'StartTime'
+                        Write-LogAnalyticsLogEntry -WorkspaceId $LogAnalyticsVars.WorkspaceId `
+                                                   -Key $Key `
+                                                   -Data $DataToSave.$DataToSaveKey `
+                                                   -LogType "SkypeOnline_$($DataToSaveKey)_CL" `
+                                                   -TimeStampField 'StartTime'
                     }
                 }
                 $Queue.CloudQueue.DeleteMessage($Message)
             
                 $QueueMessage = New-Object -TypeName Microsoft.WindowsAzure.Storage.Queue.CloudQueueMessage `
-                                           -ArgumentList "$($User);$($EndTime.ToUniversalTime().ToString())"
+                                           -ArgumentList "$($User);$($StartTime.ToUniversalTime().ToString())"
                 $Queue.CloudQueue.AddMessage($QueueMessage)
             }
             Catch { $_ | Format-List * }
