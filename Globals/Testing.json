@@ -1,0 +1,39 @@
+﻿{
+    "Variables":  {
+                      "Testing-Partition2":  {
+                                                 "isEncrypted":  false,
+                                                 "Description":  "",
+                                                 "Value":  "{\"ryan@microsoft.com\":\"{\\r\\n    \\\"value\\\":  \\\"\\\\/Date(1477519682727)\\\\/\\\",\\r\\n    \\\"DisplayHint\\\":  2,\\r\\n    \\\"DateTime\\\":  \\\"Wednesday, October 26, 2016 5:08:02 PM\\\"\\r\\n}\"}"
+                                             },
+                      "Testing-Partition0":  {
+                                                 "isEncrypted":  false,
+                                                 "Description":  "",
+                                                 "Value":  "{\"ryan@microsoft.com\":\"{\\r\\n    \\\"value\\\":  \\\"\\\\/Date(1477519698233)\\\\/\\\",\\r\\n    \\\"DisplayHint\\\":  2,\\r\\n    \\\"DateTime\\\":  \\\"Wednesday, October 26, 2016 5:08:18 PM\\\"\\r\\n}\"}"
+                                             },
+                      "Testing-Partition4":  {
+                                                 "isEncrypted":  false,
+                                                 "Description":  "",
+                                                 "Value":  "{\"ryan@microsoft.com\":\"{\\r\\n    \\\"value\\\":  \\\"\\\\/Date(1477519691933)\\\\/\\\",\\r\\n    \\\"DisplayHint\\\":  2,\\r\\n    \\\"DateTime\\\":  \\\"Wednesday, October 26, 2016 5:08:11 PM\\\"\\r\\n}\"}"
+                                             },
+                      "Testing-Partition1":  {
+                                                 "isEncrypted":  false,
+                                                 "Description":  "",
+                                                 "Value":  "{\"ryan@microsoft.com\":\"{\\r\\n    \\\"value\\\":  \\\"\\\\/Date(1477519678277)\\\\/\\\",\\r\\n    \\\"DisplayHint\\\":  2,\\r\\n    \\\"DateTime\\\":  \\\"Wednesday, October 26, 2016 5:07:58 PM\\\"\\r\\n}\"}"
+                                             },
+                      "Testing-Partition3":  {
+                                                 "isEncrypted":  false,
+                                                 "Description":  "",
+                                                 "Value":  "{\"ryan@microsoft.com\":\"{\\r\\n    \\\"value\\\":  \\\"\\\\/Date(1477519686795)\\\\/\\\",\\r\\n    \\\"DisplayHint\\\":  2,\\r\\n    \\\"DateTime\\\":  \\\"Wednesday, October 26, 2016 5:08:06 PM\\\"\\r\\n}\"}"
+                                             },
+                      "Testing-RunbookName":  {
+                                                  "isEncrypted":  false,
+                                                  "Description":  "",
+                                                  "Value":  "Invoke-Multi"
+                                              },
+                      "Testing-PartitionCount":  {
+                                                     "isEncrypted":  false,
+                                                     "Description":  "",
+                                                     "Value":  5
+                                                 }
+                  }
+}

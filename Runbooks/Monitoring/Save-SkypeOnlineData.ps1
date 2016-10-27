@@ -19,7 +19,7 @@ $Office365Vars = Get-BatchAutomationVariable -Prefix 'Office365' `
                                              -Name 'CredentialName'
 
 $SkypeForBusinessVars = Get-BatchAutomationVariable -Prefix 'SkypeForBusiness' `
-                                                    -Name 'Queue', 'PartitionCount'
+                                                    -Name 'StorageAccountName'
 
 $Queue = $SkypeForBusinessVars.Queue | ConvertFrom-Json | ConvertFrom-PSCustomObject
 $JobId = (New-Guid) -as [string]

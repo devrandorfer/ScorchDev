@@ -1,9 +1,19 @@
 ﻿{
     "Variables":  {
-                      "SkypeForBusiness-Queue":  {
-                                                     "isEncrypted":  false,
-                                                     "Description":  "",
-                                                     "Value":  "{\r\n    \"ca4040f7-50f5-4b44-b8af-ff45bcdbe7f0\":  \"\\/Date(1477519147354)\\/\",\r\n    \"43296e68-d584-4a82-880b-2825fbde106c\":  \"\\/Date(1477519247347)\\/\",\r\n    \"bcbfcd6e-3b06-4d4d-9106-ccbdb73d74a3\":  \"\\/Date(1477519213384)\\/\",\r\n    \"26e06f3f-add4-4d75-9b72-156db5ca479a\":  \"\\/Date(1477519218601)\\/\"\r\n}"
-                                                 }
+                      "SkypeForBusiness-StorageAccountName":  {
+                                                                  "isEncrypted":  false,
+                                                                  "Description":  "",
+                                                                  "Value":  "scoskypemonitoringqueue"
+                                                              },
+                      "SkypeForBusiness-QueueName":  {
+                                                         "isEncrypted":  false,
+                                                         "Description":  "",
+                                                         "Value":  "userqueue"
+                                                     },
+                      "SkypeForBusiness-StorageAccountResourceGroupName":  {
+                                                                               "isEncrypted":  false,
+                                                                               "Description":  "",
+                                                                               "Value":  "skypemonitoring"
+                                                                           }
                   }
 }
