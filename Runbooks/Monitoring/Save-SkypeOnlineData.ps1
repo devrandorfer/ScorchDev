@@ -19,20 +19,20 @@ $Office365Vars = Get-BatchAutomationVariable -Prefix 'Office365' `
                                              -Name 'CredentialName'
 
 $SkypeForBusinessVars = Get-BatchAutomationVariable -Prefix 'SkypeForBusiness' `
-                                                    -Name 'StorageAccountName'
+                                                    -Name 'StorageAccountName',
+                                                          'StorageAccountResourceGroupName',
+                                                          'QueueName'
 
-$Queue = $SkypeForBusinessVars.Queue | ConvertFrom-Json | ConvertFrom-PSCustomObject
-$JobId = (New-Guid) -as [string]
-$StartTime = Get-Date
-
-$Queue.Add($JobId,$StartTime) | Out-Null
-
-Set-AutomationVariable -Name 'SkypeForBusiness-Queue' -Value ($Queue | ConvertTo-Json)
-
-$WorkspaceCredential = Get-AutomationPSCredential -Name $LogAnalyticsVars.WorkspaceID
-$Key = $WorkspaceCredential.GetNetworkCredential().Password
+$GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
+                                          -Name 'SubscriptionName',
+                                                'SubscriptionAccessCredentialName',
+                                                'SubscriptionAccessTenant'
 
 $Office365Credential = Get-AutomationPSCredential -Name $Office365Vars.CredentialName
+$SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
+$WorkspaceCredential = Get-AutomationPSCredential -Name $LogAnalyticsVars.WorkspaceID
+
+$Key = $WorkspaceCredential.GetNetworkCredential().Password
 
 $MonitorRefreshTime = ( Get-Date ).AddMinutes(60)
 $MonitorActive      = ( Get-Date ) -lt $MonitorRefreshTime
@@ -40,42 +40,52 @@ Write-Debug -Message "`$MonitorRefreshTime [$MonitorRefreshTime]"
 
 Try
 {
+    Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
+                           -SubscriptionName $GlobalVars.SubscriptionName `
+                           -Tenant $GlobalVars.SubscriptionAccessTenant
+
     Import-Module 'C:\Program Files\Common Files\Skype for Business Online\Modules\SkypeOnlineConnector'
     New-CsOnlineSession -Credential $Office365Credential | % { Import-PSSession -Session $_ -AllowClobber } | Out-Null
     
-    $StartTime = Invoke-SqlQuery -Query $SQLGetStartDate -ConnectionString $RBAConnection
-    $Users = Get-CsOnlineUser -Filter {Enabled -eq $True} -WarningAction SilentlyContinue | Select-Object -Property UserPrincipalName
-    
+    $StorageAccount = Get-AzureRmStorageAccount -StorageAccountName $SkypeForBusinessVars.StorageAccountName `
+                                                -ResourceGroupName $SkypeForBusinessVars.StorageAccountResourceGroupName
+
+    $Queue = Get-AzureStorageQueue -Name $SkypeForBusinessVars.QueueName `
+                                   -Context $StorageAccount.Context
     Do
     {
-        Set-RBAMonitorTimestamp -Environment $Vars.RBAEnvironment -ID $Vars.RBAMonitorID
-        $PreBatchTime = Get-Date
-        For($i = 0 ; $i -lt $Users.Count; $i += $BatchSize)
+        $Message = $Queue.CloudQueue.GetMessage()
+        if($Message)
         {
-            $EndPoint = $i + $BatchSize
-            $BatchUsers = $Users[$i..$EndPoint]
-            $CompletedParams = Write-StartingMessage -CommandName 'Processing' -String "$i..$EndPoint"
-            
-            $DataToSave = @{}
-            Foreach($_User in $BatchUsers)
-            {
-                $CompletedUser = Write-StartingMessage -Command 'User' -String $_User.UserPrincipalName -Stream Debug
-                Try
-                {
-                    $Sessions = Get-CsUserSession -User $_User.UserPrincipalName -StartTime $StartTime -EndTime $PreBatchTime -WarningAction SilentlyContinue | Where-Object { $_.QoEReport -ne $null }
-                    Foreach($Session in $Sessions)
-                    {
-                        $SessionHeader = @{}
-                        $SessionPropertyNames = ($Session | Get-Member -MemberType Property).Name
-                        Foreach($SessionPropertyName in $SessionPropertyNames)
-                        {
-                            if(($SessionPropertyName -ne 'QoEReport') -and ($SessionPropertyName -ne 'ErrorReports'))
-                            {
-                                $SessionHeader.Add("$($SessionPropertyName)", $Session.$SessionPropertyName) | Out-Null
-                            }
-                        }
+            $User,$StartTime = $Message.AsString.Split(';')
+        
+            $StartTime = ($StartTime -as [datetime]).ToLocalTime()
+            $EndTime = (Get-Date)
 
-                        #ErrorReport
+            $DataToSave = @{}
+            $CompletedParams = Write-StartingMessage -Command 'Processing User' -String $User -Stream Debug
+            Try
+            {
+                $Sessions = Get-CsUserSession -User $User `
+                                              -StartTime $StartTime `
+                                              -EndTime $EndTime `
+                                              -WarningAction SilentlyContinue
+            
+                Foreach($Session in $Sessions)
+                {
+                    $SessionHeader = @{}
+                    $SessionPropertyNames = ($Session | Get-Member -MemberType Property).Name
+                    Foreach($SessionPropertyName in $SessionPropertyNames)
+                    {
+                        if(($SessionPropertyName -ne 'QoEReport') -and ($SessionPropertyName -ne 'ErrorReports'))
+                        {
+                            $SessionHeader.Add("$($SessionPropertyName)", $Session.$SessionPropertyName) | Out-Null
+                        }
+                    }
+
+                    #ErrorReport
+                    if($SessionPropertyNames -contains 'ErrorReports')
+                    {
                         Foreach($ErrorReport in $Session.ErrorReports)
                         {
                             $ErrorReportObj = @{}
@@ -108,8 +118,11 @@ Try
                                 $DataToSave.Add('ErrorReport', @($ErrorReportObj)) | Out-Null
                             }
                         }
+                    }
 
-                        #QoEReport
+                    #QoEReport
+                    if($SessionPropertyNames -contains 'QoEReport')
+                    {
                         $QoEReport = $Session.QoEReport
                         $QoeReportType = ($QoeReport | Get-Member -MemberType Property).Name
                         Foreach($_QoeReportType in $QoeReportType)
@@ -135,23 +148,27 @@ Try
                             }
                         }
                     }
-               }
-                Catch { $_ | Format-List * }
-                Write-CompletedMessage @CompletedUser
-            }
-            if($DataToSave -as [bool])
-            {
-                Foreach($DataToSaveKey in $DataToSave.Keys)
-                {
-                    Write-LogAnalyticsLogEntry -WorkspaceId $Vars.WorkspaceId -Key $Key -Data $DataToSave.$DataToSaveKey -LogType "SkypeOnline_$($DataToSaveKey)_CL" -TimeStampField 'StartTime'
                 }
+                if($DataToSave -as [bool])
+                {
+                    Foreach($DataToSaveKey in $DataToSave.Keys)
+                    {
+                        Write-LogAnalyticsLogEntry -WorkspaceId $Vars.WorkspaceId -Key $Key -Data $DataToSave.$DataToSaveKey -LogType "SkypeOnline_$($DataToSaveKey)_CL" -TimeStampField 'StartTime'
+                    }
+                }
+                $Queue.CloudQueue.DeleteMessage($Message)
+            
+                $QueueMessage = New-Object -TypeName Microsoft.WindowsAzure.Storage.Queue.CloudQueueMessage `
+                                           -ArgumentList "$($User);$($EndTime.ToUniversalTime().ToString())"
+                $Queue.CloudQueue.AddMessage($QueueMessage)
             }
+            Catch { $_ | Format-List * }
+
             Write-CompletedMessage @CompletedParams
         }
         
         # Calculate if we should continue running or if we should start a new instance of this monitor
         $MonitorActive = ( Get-Date ) -lt $MonitorRefreshTime
-        $StartTime = $PreBatchTime
     }
     While($MonitorActive)
 }

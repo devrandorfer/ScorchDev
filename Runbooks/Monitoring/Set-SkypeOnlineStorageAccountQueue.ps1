@@ -20,7 +20,6 @@ $SkypeForBusinessVars = Get-BatchAutomationVariable -Prefix 'SkypeForBusiness' `
                                                           'StorageAccountResourceGroupName',
                                                           'QueueName'
 
-
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
                                                 'SubscriptionAccessCredentialName',
@@ -66,7 +65,8 @@ Try
     {
         if($User -inotin $CurrentUsers)
         {
-            $QueueMessage = New-Object -TypeName Microsoft.WindowsAzure.Storage.Queue.CloudQueueMessage -ArgumentList "$($User.UserPrincipalName);$((Get-Date).ToString())"
+            $QueueMessage = New-Object -TypeName Microsoft.WindowsAzure.Storage.Queue.CloudQueueMessage `
+                                       -ArgumentList "$($User.UserPrincipalName);$((Get-Date).ToUniversalTime().ToString())"
             $Queue.CloudQueue.AddMessage($QueueMessage)        
         }
     }
