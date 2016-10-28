@@ -62,89 +62,98 @@ Try
             $StartTime = ($StartTime -as [datetime]).ToLocalTime()
             
             $DataToSave = @{}
-            $CompletedParams = Write-StartingMessage -Command 'Processing User' -String "$User from $StartTime" -Stream Debug
+            $CompletedParams = Write-StartingMessage -Command 'Processing User' -String "$User from $($StartTime.ToString("MM/dd/yyyy h:mm:ss zzz"))" -Stream Debug
             Try
             {
                 $Sessions = Get-CsUserSession -User $User `
-                                              -StartTime $StartTime `
+                                              -StartTime $StartTime.ToString("MM/dd/yyyy h:mm:ss tt zzz") `
                                               -WarningAction SilentlyContinue
                 Foreach($Session in $Sessions)
                 {
-                    if($Session.StartTime.AddMinutes(5).CompareTo($StartTime) -gt 0)
+                    if($Session.EndTime -ne $Null)
                     {
-                        $StartTime = $Session.StartTime.AddMinutes(5)
-                    }
-                    $SessionHeader = @{}
-                    $SessionPropertyNames = ($Session | Get-Member -MemberType Property).Name
-                    Foreach($SessionPropertyName in $SessionPropertyNames)
-                    {
-                        if(($SessionPropertyName -ne 'QoEReport') -and ($SessionPropertyName -ne 'ErrorReports'))
+                        if($Session.StartTime.AddSeconds(1).CompareTo($StartTime) -gt 0)
                         {
-                            $SessionHeader.Add("$($SessionPropertyName)", $Session.$SessionPropertyName) | Out-Null
+                            $StartTime = $Session.StartTime.AddSeconds(1)
                         }
-                    }
-
-                    #ErrorReport
-                    if($Session.ErrorReports -ne $null)
-                    {
-                        Foreach($ErrorReport in $Session.ErrorReports)
+                        $SessionHeader = @{}
+                        $SessionPropertyNames = ($Session | Get-Member -MemberType Property).Name
+                        Foreach($SessionPropertyName in $SessionPropertyNames)
                         {
-                            $ErrorReportObj = @{}
-                            $ErrorReportObj += $SessionHeader
-                            $ErrorReportPropertyNames = ($ErrorReport | Get-Member -MemberType Property).Name
-                            Foreach($ErrorReportPropertyName in $ErrorReportPropertyNames)
+                            if(($SessionPropertyName -ne 'QoEReport') -and ($SessionPropertyName -ne 'ErrorReports'))
                             {
-                                if($ErrorReportPropertyName -eq 'DiagnosticHeader')
+                                $SessionHeader.Add("$($SessionPropertyName)", $Session.$SessionPropertyName) | Out-Null
+                            }
+                        }
+
+                        #ErrorReport
+                        if($Session.ErrorReports -ne $null)
+                        {
+                            Foreach($ErrorReport in $Session.ErrorReports)
+                            {
+                                $ErrorReportObj = @{}
+                                $ErrorReportObj += $SessionHeader
+                                $ErrorReportPropertyNames = ($ErrorReport | Get-Member -MemberType Property).Name
+                                Foreach($ErrorReportPropertyName in $ErrorReportPropertyNames)
                                 {
-                                    Foreach($DiagKeyValue in $ErrorReport.$ErrorReportPropertyName.Split(';'))
+                                    if($ErrorReportPropertyName -eq 'DiagnosticHeader')
                                     {
-                                        if($DiagKeyValue.Contains('='))
+                                        Foreach($DiagKeyValue in $ErrorReport.$ErrorReportPropertyName.Split(';'))
                                         {
-                                            $DiagObj = $DiagKeyValue.Split('=')
-                                            $ErrorReportObj.Add("ErrorReport_$($DiagObj[0])",$DiagObj[1]) | Out-Null
+                                            if($DiagKeyValue.Contains('='))
+                                            {
+                                                $DiagObj = $DiagKeyValue.Split('=')
+                                                if(-not($ErrorReportObj.ContainsKey("ErrorReport_$($DiagObj[0])")))
+                                                {
+                                                    $ErrorReportObj.Add("ErrorReport_$($DiagObj[0])",$DiagObj[1]) | Out-Null
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if(-not($ErrorReportObj.ContainsKey("ErrorReport_$ErrorReportPropertyName")))
+                                        {
+                                            $ErrorReportObj.Add("ErrorReport_$ErrorReportPropertyName", $ErrorReport.$ErrorReportPropertyName)
                                         }
                                     }
                                 }
+                                if($DataToSave.ContainsKey('ErrorReport'))
+                                {
+                                    $DataToSave.ErrorReport += $ErrorReportObj
+                                }
                                 else
                                 {
-                                    $ErrorReportObj.Add("ErrorReport_$ErrorReportPropertyName", $ErrorReport.$ErrorReportPropertyName)
+                                    $DataToSave.Add('ErrorReport', @($ErrorReportObj)) | Out-Null
                                 }
-                            }
-                            if($DataToSave.ContainsKey('ErrorReport'))
-                            {
-                                $DataToSave.ErrorReport += $ErrorReportObj
-                            }
-                            else
-                            {
-                                $DataToSave.Add('ErrorReport', @($ErrorReportObj)) | Out-Null
                             }
                         }
-                    }
 
-                    #QoEReport
-                    if($Session.QoEReport -ne $null)
-                    {
-                        $QoEReport = $Session.QoEReport
-                        $QoeReportType = ($QoeReport | Get-Member -MemberType Property).Name
-                        Foreach($_QoeReportType in $QoeReportType)
+                        #QoEReport
+                        if($Session.QoEReport -ne $null)
                         {
-                            $ObjToInsert = @{}
-                            $ObjToInsert += $SessionHeader
-                            $QoEReportProperties = $QoEReport.$_QoeReportType
-                            if($QoEReportProperties -ne $Null)
+                            $QoEReport = $Session.QoEReport
+                            $QoeReportType = ($QoeReport | Get-Member -MemberType Property).Name
+                            Foreach($_QoeReportType in $QoeReportType)
                             {
-                                $QoEReportPropertyNames = ($QoEReportProperties | Get-Member -MemberType Property).Name
-                                Foreach($QoEReportPropertyName in $QoEReportPropertyNames)
+                                $ObjToInsert = @{}
+                                $ObjToInsert += $SessionHeader
+                                $QoEReportProperties = $QoEReport.$_QoeReportType
+                                if($QoEReportProperties -ne $Null)
                                 {
-                                    $ObjToInsert.Add("QoEReport_$($QoEReportPropertyName)", $QoEReportProperties.$QoEReportPropertyName) | Out-Null
-                                }
-                                if($DataToSave.ContainsKey("QoEReport_$_QoeReportType"))
-                                {
-                                    $DataToSave."QoEReport_$_QoeReportType" += $ObjToInsert
-                                }
-                                else
-                                {
-                                    $DataToSave.Add("QoEReport_$_QoeReportType", @($ObjToInsert)) | Out-Null
+                                    $QoEReportPropertyNames = ($QoEReportProperties | Get-Member -MemberType Property).Name
+                                    Foreach($QoEReportPropertyName in $QoEReportPropertyNames)
+                                    {
+                                        $ObjToInsert.Add("QoEReport_$($QoEReportPropertyName)", $QoEReportProperties.$QoEReportPropertyName) | Out-Null
+                                    }
+                                    if($DataToSave.ContainsKey("QoEReport_$_QoeReportType"))
+                                    {
+                                        $DataToSave."QoEReport_$_QoeReportType" += $ObjToInsert
+                                    }
+                                    else
+                                    {
+                                        $DataToSave.Add("QoEReport_$_QoeReportType", @($ObjToInsert)) | Out-Null
+                                    }
                                 }
                             }
                         }
@@ -154,11 +163,25 @@ Try
                 {
                     Foreach($DataToSaveKey in $DataToSave.Keys)
                     {
-                        Write-LogAnalyticsLogEntry -WorkspaceId $LogAnalyticsVars.WorkspaceId `
-                                                   -Key $Key `
-                                                   -Data $DataToSave.$DataToSaveKey `
-                                                   -LogType "SkypeOnline_$($DataToSaveKey)_CL" `
-                                                   -TimeStampField 'StartTime'
+                        if($DataToSaveKey -eq 'ErrorReport')
+                        {
+                            Foreach($ErrorReport in $DataToSave.$DataToSaveKey)
+                            {
+                                Write-LogAnalyticsLogEntry -WorkspaceId $LogAnalyticsVars.WorkspaceId `
+                                                           -Key $Key `
+                                                           -Data $ErrorReport `
+                                                           -LogType "SkypeOnline_$($DataToSaveKey)_CL" `
+                                                           -TimeStampField 'StartTime'
+                            }
+                        }
+                        else
+                        {
+                            Write-LogAnalyticsLogEntry -WorkspaceId $LogAnalyticsVars.WorkspaceId `
+                                                       -Key $Key `
+                                                       -Data $DataToSave.$DataToSaveKey `
+                                                       -LogType "SkypeOnline_$($DataToSaveKey)_CL" `
+                                                       -TimeStampField 'StartTime'
+                        }
                     }
                 }
                 $Queue.CloudQueue.DeleteMessage($Message)
