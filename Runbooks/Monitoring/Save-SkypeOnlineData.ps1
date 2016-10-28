@@ -38,6 +38,11 @@ $MonitorRefreshTime = ( Get-Date ).AddMinutes(60)
 $MonitorActive      = ( Get-Date ) -lt $MonitorRefreshTime
 Write-Debug -Message "`$MonitorRefreshTime [$MonitorRefreshTime]"
 
+$ErrorReportDiagnoticKeys = @(
+    'reason','FederationType','MediaType','UserType', 'AllocationTimeInMs', 'TransportBytesSent', 'PrelimConnCheckSucceeded', 'NetworkErr'
+    'NetworkName','BaseAddress','LocalAddress','RemoteAddress'
+)
+
 Try
 {
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
@@ -103,28 +108,25 @@ Try
                                             if($DiagKeyValue.Contains('='))
                                             {
                                                 $DiagObj = $DiagKeyValue.Split('=')
-                                                if(-not($ErrorReportObj.ContainsKey("ErrorReport_$($DiagObj[0])")))
+                                                if($ErrorReportDiagnoticKeys -iContains $DiagObj[0])
                                                 {
-                                                    $ErrorReportObj.Add("ErrorReport_$($DiagObj[0])",$DiagObj[1]) | Out-Null
+                                                    $ErrorReportObj.Add("ErrorReport_DiagHeader_$($DiagObj[0])",$DiagObj[1]) | Out-Null
                                                 }
                                             }
                                         }
                                     }
-                                    else
+                                    if(-not($ErrorReportObj.ContainsKey("ErrorReport_$ErrorReportPropertyName")))
                                     {
-                                        if(-not($ErrorReportObj.ContainsKey("ErrorReport_$ErrorReportPropertyName")))
-                                        {
-                                            $ErrorReportObj.Add("ErrorReport_$ErrorReportPropertyName", $ErrorReport.$ErrorReportPropertyName)
-                                        }
+                                        $ErrorReportObj.Add("ErrorReport_$ErrorReportPropertyName", $ErrorReport.$ErrorReportPropertyName)
                                     }
                                 }
-                                if($DataToSave.ContainsKey('ErrorReport'))
+                                if($DataToSave.ContainsKey('ErrorReports'))
                                 {
-                                    $DataToSave.ErrorReport += $ErrorReportObj
+                                    $DataToSave.ErrorReports += $ErrorReportObj
                                 }
                                 else
                                 {
-                                    $DataToSave.Add('ErrorReport', @($ErrorReportObj)) | Out-Null
+                                    $DataToSave.Add('ErrorReports', @($ErrorReportObj)) | Out-Null
                                 }
                             }
                         }
@@ -163,25 +165,11 @@ Try
                 {
                     Foreach($DataToSaveKey in $DataToSave.Keys)
                     {
-                        if($DataToSaveKey -eq 'ErrorReport')
-                        {
-                            Foreach($ErrorReport in $DataToSave.$DataToSaveKey)
-                            {
-                                Write-LogAnalyticsLogEntry -WorkspaceId $LogAnalyticsVars.WorkspaceId `
-                                                           -Key $Key `
-                                                           -Data $ErrorReport `
-                                                           -LogType "SkypeOnline_$($DataToSaveKey)_CL" `
-                                                           -TimeStampField 'StartTime'
-                            }
-                        }
-                        else
-                        {
-                            Write-LogAnalyticsLogEntry -WorkspaceId $LogAnalyticsVars.WorkspaceId `
-                                                       -Key $Key `
-                                                       -Data $DataToSave.$DataToSaveKey `
-                                                       -LogType "SkypeOnline_$($DataToSaveKey)_CL" `
-                                                       -TimeStampField 'StartTime'
-                        }
+                        Write-LogAnalyticsLogEntry -WorkspaceId $LogAnalyticsVars.WorkspaceId `
+                                                   -Key $Key `
+                                                   -Data $DataToSave.$DataToSaveKey `
+                                                   -LogType "SkypeOnline_$($DataToSaveKey)_CL" `
+                                                   -TimeStampField 'StartTime'
                     }
                 }
                 $Queue.CloudQueue.DeleteMessage($Message)
