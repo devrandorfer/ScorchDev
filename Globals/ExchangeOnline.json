@@ -1,0 +1,19 @@
+﻿{
+    "Variables":  {
+                      "ExchangeOnline-QueueName":  {
+                                                       "isEncrypted":  false,
+                                                       "Description":  "",
+                                                       "Value":  "exchangequeue"
+                                                   },
+                      "ExchangeOnline-StorageAccountName":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  "scoskypemonitoringqueue"
+                                                            },
+                      "ExchangeOnline-StorageAccountResourceGroupName":  {
+                                                                             "isEncrypted":  false,
+                                                                             "Description":  "",
+                                                                             "Value":  "skypemonitoring"
+                                                                         }
+                  }
+}
