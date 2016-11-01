@@ -17,9 +17,6 @@ $GlobalVars = Get-BatchAutomationVariable -Prefix 'TargetExample' `
                                           -Name 'HelloMessage',
                                                 'Audience'
 
-$SubscriptionAccessCredential = Get-AutomationPSCredential -Name 'ryan'
-
-
 Try
 {
     
