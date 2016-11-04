@@ -1,0 +1,9 @@
+﻿{
+    "Variables":  {
+                      "AzureVMMaintenance-CriticalResourceGroupName":  {
+                                                                           "isEncrypted":  false,
+                                                                           "Description":  "",
+                                                                           "Value":  "[\"DomainController\",\"runbookworker\"]"
+                                                                       }
+                  }
+}
