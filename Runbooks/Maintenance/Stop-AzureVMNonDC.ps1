@@ -37,7 +37,7 @@ Try
         }
     }
 
-    Get-Job | Receieve-Job -Wait -AutoRemoveJob
+    Get-Job | Receive-Job -Wait -AutoRemoveJob
 }
 Catch
 {

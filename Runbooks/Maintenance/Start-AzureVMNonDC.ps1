@@ -33,11 +33,11 @@ Try
             $VM = $Using:VM
             Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
                                -SubscriptionName $GlobalVars.SubscriptionName
-            $VM | Start-AzureRmVM -Force -ErrorAction SilentlyContinue
+            $VM | Start-AzureRmVM -ErrorAction SilentlyContinue
         }
     }
 
-    Get-Job | Receieve-Job -Wait -AutoRemoveJob
+    Get-Job | Receive-Job -Wait -AutoRemoveJob
 }
 Catch
 {
