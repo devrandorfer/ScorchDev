@@ -1,0 +1,1988 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Azure.Management.HDInsight.Job</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient">
+            <summary>
+            The HDInsight job client manages jobs against HDInsight clusters.
+            </summary>
+            <summary>
+            The HDInsight job client manages jobs against HDInsight clusters.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.HDInsightRetryPolicy">
+            <summary>
+            Gets the recommended Retry Policy for the HDInsight Job Management Client.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.#ctor(System.String,Hyak.Common.BasicAuthenticationCloudCredentials,Hyak.Common.TransientFaultHandling.RetryPolicy)">
+            <summary>
+            Initializes a new instance of the HDInsightJobManagementClient
+            class.
+            </summary>
+            <param name='clusterDnsName'>
+            Required. The cluster dns name against which the job management is
+            to be performed.
+            </param>
+            <param name='credentials'>
+            Required. Basic authentication credentials for job submission.
+            </param>
+            <param name='retryPolicy'>
+            Optional. Retry Policy for Http Transient errors.
+            </param>
+        </member>
+        <member name="F:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.DefaultPollInterval">
+            <summary>
+            The default poll interval to get job status for the HDInsight Job Management Client.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.ClusterDnsName">
+            <summary>
+            The cluster dns name against which the job management is to be
+            performed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.Credentials">
+            <summary>
+            Basic authentication credentials for job submission.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.SdkUserAgent">
+            <summary>
+            Gets or sets the SDK UserAgent text to be added to the user agent
+            header. This is used to further differentiate various SDK versions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.UserAgentSuffix">
+            <summary>
+            Gets or sets the additional UserAgent text to be added to the user
+            agent header. This is used to further differentiate using
+            applications.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.UserName">
+            <summary>
+            The user name from Username of BasicAuthenticationCloudCredentials
+            in lower case used for running job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.JobManagement">
+            <summary>
+            Operations for managing jobs against HDInsight clusters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.#ctor">
+            <summary>
+            Initializes a new instance of the HDInsightJobManagementClient
+            class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.#ctor(System.String,Hyak.Common.BasicAuthenticationCloudCredentials)">
+            <summary>
+            Initializes a new instance of the HDInsightJobManagementClient
+            class.
+            </summary>
+            <param name='clusterDnsName'>
+            Required. The cluster dns name against which the job management is
+            to be performed.
+            </param>
+            <param name='credentials'>
+            Required. Basic authentication credentials for job submission.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.#ctor(System.Net.Http.HttpClient)">
+            <summary>
+            Initializes a new instance of the HDInsightJobManagementClient
+            class.
+            </summary>
+            <param name='httpClient'>
+            The Http client
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.#ctor(System.String,Hyak.Common.BasicAuthenticationCloudCredentials,System.Net.Http.HttpClient)">
+            <summary>
+            Initializes a new instance of the HDInsightJobManagementClient
+            class.
+            </summary>
+            <param name='clusterDnsName'>
+            Required. The cluster dns name against which the job management is
+            to be performed.
+            </param>
+            <param name='credentials'>
+            Required. Basic authentication credentials for job submission.
+            </param>
+            <param name='httpClient'>
+            The Http client
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.Clone(Hyak.Common.ServiceClient{Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient})">
+            <summary>
+            Clones properties from current instance to another
+            HDInsightJobManagementClient instance
+            </summary>
+            <param name='client'>
+            Instance of HDInsightJobManagementClient to clone to
+            </param>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.IJobOperations">
+            <summary>
+            Operations for managing jobs against HDInsight clusters.
+            </summary>
+            <summary>
+            Operations for managing jobs against HDInsight clusters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.SubmitHiveJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters)">
+            <summary>
+            Submits a Hive job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. Hive job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.SubmitMapReduceJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.SubmitMapReduceStreamingJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce streaming job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.SubmitPigJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.PigJobSubmissionParameters)">
+            <summary>
+            Submits a Pig job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. Pig job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.SubmitSqoopJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.SqoopJobSubmissionParameters)">
+            <summary>
+            Submits a Sqoop job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. Sqoop job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.GetJobOutputAsync(System.String,Microsoft.Azure.Management.HDInsight.Job.Models.IStorageAccess,System.Threading.CancellationToken)">
+            <summary>
+            Gets the output from the execution of an individual jobDetails.
+            </summary>
+            <param name="jobId">
+            Required. The id of the job.
+            </param>
+            <param name="storageAccess">
+            Required. The storage account object of type IStorageAccess.
+            </param>
+            <param name="cancellationToken"></param>
+            <returns>
+            The output of an individual jobDetails by jobId.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.GetJobErrorLogsAsync(System.String,Microsoft.Azure.Management.HDInsight.Job.Models.IStorageAccess,System.Threading.CancellationToken)">
+            <summary>
+            Gets the error logs from the execution of an individual jobDetails.
+            </summary>
+            <param name="jobId">
+            Required. The id of the job.
+            </param>
+            <param name="storageAccess">
+            Required. The storage account object of type IStorageAccess.
+            </param>
+            <param name="cancellationToken"></param>
+            <returns>
+            The error logs of an individual jobDetails by jobId.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.WaitForJobCompletionAsync(System.String,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan})">
+            <summary>
+            Wait for completion of a Job.
+            </summary>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <param name='duration'>
+            Optional. The maximum duration to wait for completion of job before returning to client. If not passed then wait till job is completed.
+            </param>
+            <param name='waitInterval'>
+            Optional. The interval to poll for job status. The default value is set from DefaultPollInterval property of HDInsight job management client.
+            </param>
+            <exception cref="T:System.TimeoutException">
+            Thrown when waiting for job completion exceeds the maximum duration specified by parameter duration.
+            </exception>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.GetJobAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets job details from the specified HDInsight cluster.
+            </summary>
+            <param name='jobId'>
+            The id of the job.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Get Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.KillJobAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Initiates cancel on given running job in the specified HDInsight
+            cluster.
+            </summary>
+            <param name='jobId'>
+            The id of the job.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Get Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.ListJobsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Gets the list of jobs from the specified HDInsight cluster.
+            </summary>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The List Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.ListJobsAfterJobIdAsync(System.String,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets numOfJobs after jobId from the specified HDInsight cluster.
+            </summary>
+            <param name='jobId'>
+            jobId from where to list jobs.
+            </param>
+            <param name='numOfJobs'>
+            Number of jobs to fetch. Use -1 to get all.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The List Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.SubmitHiveJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters,System.Threading.CancellationToken)">
+            <summary>
+            Submits a Hive job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Hive job parameters.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.SubmitMapReduceJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters,System.Threading.CancellationToken)">
+            <summary>
+            Submits a MapReduce job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            MapReduce job parameters.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.SubmitMapReduceStreamingJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters,System.Threading.CancellationToken)">
+            <summary>
+            Submits a MapReduce streaming job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            MapReduce job parameters.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.SubmitPigJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters,System.Threading.CancellationToken)">
+            <summary>
+            Submits a Pig job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Pig job parameters.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.IJobOperations.SubmitSqoopJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters,System.Threading.CancellationToken)">
+            <summary>
+            Submits a Sqoop job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Sqoop job parameters.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions">
+            <summary>
+            Operations for managing jobs against HDInsight clusters.
+            </summary>
+            <summary>
+            The HDInsight job client manages jobs against HDInsight clusters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitHiveJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters)">
+            <summary>
+            Submits a Hive job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Hive job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitHiveJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters)">
+            <summary>
+            Submits a Hive job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Hive job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitMapReduceJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitMapReduceJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitMapReduceStreamingJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce streaming job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitMapReduceStreamingJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce streaming job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitPigJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.PigJobSubmissionParameters)">
+            <summary>
+            Submits a Pig job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Pig job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitPigJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.PigJobSubmissionParameters)">
+            <summary>
+            Submits a Pig job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Pig job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitSqoopJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.SqoopJobSubmissionParameters)">
+            <summary>
+            Submits a Sqoop job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Sqoop job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitSqoopJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.SqoopJobSubmissionParameters)">
+            <summary>
+            Submits a Sqoop job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Sqoop job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.GetJobOutput(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String,Microsoft.Azure.Management.HDInsight.Job.Models.IStorageAccess)">
+            <summary>
+            Gets the output from the execution of an individual jobDetails.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name="jobId">
+            Required. The id of the job.
+            </param>
+            <param name="storageAccess">
+            Required. The storage account object of type IStorageAccess.
+            </param>
+            <returns>
+            The output of an individual jobDetails by jobId.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.GetJobOutputAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String,Microsoft.Azure.Management.HDInsight.Job.Models.IStorageAccess)">
+            <summary>
+            Gets the output from the execution of an individual jobDetails.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name="jobId">
+            Required. The id of the job.
+            </param>
+            <param name="storageAccess">
+            Required. The storage account object of type IStorageAccess.
+            </param>
+            <returns>
+            The output of an individual jobDetails by jobId.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.GetJobErrorLogs(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String,Microsoft.Azure.Management.HDInsight.Job.Models.IStorageAccess)">
+            <summary>
+            Gets the error logs from the execution of an individual jobDetails.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name="jobId">
+            Required. The id of the job.
+            </param>
+            <param name="storageAccess">
+            Required. The storage account object of type IStorageAccess.
+            </param>
+            <returns>
+            The error logs of an individual jobDetails by jobId.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.GetJobErrorLogsAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String,Microsoft.Azure.Management.HDInsight.Job.Models.IStorageAccess)">
+            <summary>
+            Gets the error logs from the execution of an individual jobDetails.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name="jobId">
+            Required. The id of the job.
+            </param>
+            <param name="storageAccess">
+            Required. The storage account object of type IStorageAccess.
+            </param>
+            <returns>
+            The error logs of an individual jobDetails by jobId.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.WaitForJobCompletion(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan})">
+            <summary>
+            Wait for completion of a Job.
+            </summary>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <param name='duration'>
+            Optional. The maximum duration to wait for completion of job before returning to client. If not passed then wait till job is completed.
+            </param>
+            <param name='waitInterval'>
+            Optional. The interval to poll for job status. The default value is set from DefaultPollInterval property of HDInsight job management client.
+            </param>
+            <exception cref="T:System.TimeoutException">
+            Thrown when waiting for job completion exceeds the maximum duration specified by parameter duration.
+            </exception>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.WaitForJobCompletionAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan})">
+            <summary>
+            Wait for completion of a Job.
+            </summary>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <param name='duration'>
+            Optional. The maximum duration to wait for completion of job before returning to client. If not passed then wait till job is completed.
+            </param>
+            <param name='waitInterval'>
+            Optional. The interval to poll for job status. The default value is set from DefaultPollInterval property of HDInsight job management client.
+            </param>
+            <exception cref="T:System.TimeoutException">
+            Thrown when waiting for job completion exceeds the maximum duration specified by parameter duration.
+            </exception>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.GetJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String)">
+            <summary>
+            Gets job details from the specified HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <returns>
+            The Get Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.GetJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String)">
+            <summary>
+            Gets job details from the specified HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <returns>
+            The Get Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.KillJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String)">
+            <summary>
+            Initiates cancel on given running job in the specified HDInsight
+            cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <returns>
+            The Get Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.KillJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String)">
+            <summary>
+            Initiates cancel on given running job in the specified HDInsight
+            cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <returns>
+            The Get Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.ListJobs(Microsoft.Azure.Management.HDInsight.Job.IJobOperations)">
+            <summary>
+            Gets the list of jobs from the specified HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <returns>
+            The List Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.ListJobsAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations)">
+            <summary>
+            Gets the list of jobs from the specified HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <returns>
+            The List Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.ListJobsAfterJobId(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String,System.Int32)">
+            <summary>
+            Gets numOfJobs after jobId from the specified HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='jobId'>
+            Optional. jobId from where to list jobs.
+            </param>
+            <param name='numOfJobs'>
+            Required. Number of jobs to fetch. Use -1 to get all.
+            </param>
+            <returns>
+            The List Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.ListJobsAfterJobIdAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,System.String,System.Int32)">
+            <summary>
+            Gets numOfJobs after jobId from the specified HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='jobId'>
+            Optional. jobId from where to list jobs.
+            </param>
+            <param name='numOfJobs'>
+            Required. Number of jobs to fetch. Use -1 to get all.
+            </param>
+            <returns>
+            The List Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitHiveJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters)">
+            <summary>
+            Submits a Hive job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Hive job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitHiveJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters)">
+            <summary>
+            Submits a Hive job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Hive job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitMapReduceJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitMapReduceJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitMapReduceStreamingJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce streaming job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitMapReduceStreamingJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce streaming job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitPigJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters)">
+            <summary>
+            Submits a Pig job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Pig job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitPigJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters)">
+            <summary>
+            Submits a Pig job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Pig job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitSqoopJob(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters)">
+            <summary>
+            Submits a Sqoop job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Sqoop job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperationsExtensions.SubmitSqoopJobAsync(Microsoft.Azure.Management.HDInsight.Job.IJobOperations,Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters)">
+            <summary>
+            Submits a Sqoop job to an HDInsight cluster.
+            </summary>
+            <param name='operations'>
+            Reference to the
+            Microsoft.Azure.Management.HDInsight.Job.IJobOperations.
+            </param>
+            <param name='parameters'>
+            Required. Sqoop job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.JobOperations">
+            <summary>
+            Operations for managing jobs against HDInsight clusters.
+            </summary>
+            <summary>
+            Operations for managing jobs against HDInsight clusters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.SubmitHiveJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters)">
+            <summary>
+            Submits a Hive job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. Hive job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.SubmitMapReduceJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.SubmitMapReduceStreamingJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters)">
+            <summary>
+            Submits a MapReduce streaming job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.SubmitPigJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.PigJobSubmissionParameters)">
+            <summary>
+            Submits a Pig job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. Pig job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.SubmitSqoopJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.SqoopJobSubmissionParameters)">
+            <summary>
+            Submits a Sqoop job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. Sqoop job parameters.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.GetJobOutputAsync(System.String,Microsoft.Azure.Management.HDInsight.Job.Models.IStorageAccess,System.Threading.CancellationToken)">
+            <summary>
+            Gets the job output content as memory stream.
+            </summary>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <param name="storageAccess">
+            Required. The storage account object of type IStorageAccess.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The job output content as memory stream.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.GetJobErrorLogsAsync(System.String,Microsoft.Azure.Management.HDInsight.Job.Models.IStorageAccess,System.Threading.CancellationToken)">
+            <summary>
+            Gets the job error output content as memory stream.
+            </summary>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <param name="storageAccess">
+            Required. The storage account object of type IStorageAccess.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The job error output content as memory stream when job fails to run successfully.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.WaitForJobCompletionAsync(System.String,System.Nullable{System.TimeSpan},System.Nullable{System.TimeSpan})">
+            <summary>
+            Wait for completion of a Job. 
+            </summary>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <param name='duration'>
+            Optional. The maximum duration to wait for completion of job before returning to client. If not passed then wait till job is completed.
+            </param>
+            <param name='waitInterval'>
+            Optional. The interval to poll for job status. The default value is set from DefaultPollInterval property of HDInsight job management client.
+            </param>
+            <exception cref="T:System.TimeoutException">
+            Thrown when waiting for job completion exceeds the maximum duration specified by parameter duration.
+            </exception>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.#ctor(Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient)">
+            <summary>
+            Initializes a new instance of the JobOperations class.
+            </summary>
+            <param name='client'>
+            Reference to the service client.
+            </param>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.JobOperations.Client">
+            <summary>
+            Gets a reference to the
+            Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClient.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.GetAppStateAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets application state from the specified HDInsight cluster.
+            </summary>
+            <param name='appId'>
+            Required. The id of the job.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            Gets or sets the State of the application.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.GetJobAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets job details from the specified HDInsight cluster.
+            </summary>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Get Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.KillJobAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Initiates cancel on given running job in the specified HDInsight
+            cluster.
+            </summary>
+            <param name='jobId'>
+            Required. The id of the job.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Get Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.ListJobsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Gets the list of jobs from the specified HDInsight cluster.
+            </summary>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The List Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.ListJobsAfterJobIdAsync(System.String,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets numOfJobs after jobId from the specified HDInsight cluster.
+            </summary>
+            <param name='jobId'>
+            Optional. jobId from where to list jobs.
+            </param>
+            <param name='numOfJobs'>
+            Required. Number of jobs to fetch. Use -1 to get all.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The List Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.SubmitHiveJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters,System.Threading.CancellationToken)">
+            <summary>
+            Submits a Hive job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. Hive job parameters.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.SubmitMapReduceJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters,System.Threading.CancellationToken)">
+            <summary>
+            Submits a MapReduce job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.SubmitMapReduceStreamingJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters,System.Threading.CancellationToken)">
+            <summary>
+            Submits a MapReduce streaming job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. MapReduce job parameters.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.SubmitPigJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters,System.Threading.CancellationToken)">
+            <summary>
+            Submits a Pig job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. Pig job parameters.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.JobOperations.SubmitSqoopJobAsync(Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters,System.Threading.CancellationToken)">
+            <summary>
+            Submits a Sqoop job to an HDInsight cluster.
+            </summary>
+            <param name='parameters'>
+            Required. Sqoop job parameters.
+            </param>
+            <param name='cancellationToken'>
+            Cancellation token.
+            </param>
+            <returns>
+            The Create Job operation response.
+            </returns>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.ApplicationState">
+            <summary>
+            State of the application.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.AppState">
+            <summary>
+            Gets or sets the State of the application.
+            </summary>
+            <summary>
+            Gets or sets the State of the application.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.AppState.GetState">
+            <summary>
+            Gets the state of the Application.
+            </summary>
+            <returns>
+            Return enum ApplicationState.
+            </returns>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.AppState.State">
+            <summary>
+            Optional. Gets or sets the State of the application. Possible
+            values are “NEW”, “NEW_SAVING”, “SUBMITTED”, “ACCEPTED”,
+            “RUNNING”, “FINISHED”, “FAILED”, “KILLED”
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.AppState.#ctor">
+            <summary>
+            Initializes a new instance of the AppState class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters">
+            <summary>
+            Parameters specifying the HDInsight Hive job definition.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters.Arguments">
+            <summary>
+            Optional. Gets the arguments for the jobDetails.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters.Defines">
+            <summary>
+            Optional. Gets or sets the Hive parameters.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters.File">
+            <summary>
+            Optional. Gets or sets the query file to use for a Hive job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters.Files">
+            <summary>
+            Optional. Gets or sets the files to be copied to the cluster.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters.Query">
+            <summary>
+            Optional. Gets or sets the query to use for a Hive job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters.StatusDir">
+            <summary>
+            Optional. Status directory in the default storage account to store job files stderr, stdout and exit.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.HiveJobSubmissionParameters.#ctor">
+            <summary>
+            Initializes a new instance of the HiveJobSubmissionParameters class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters">
+            <summary>
+            Parameters specifying the HDInsight MapReduce job definition.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters.Arguments">
+            <summary>
+            Optional. Gets the arguments for the jobDetails.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters.Defines">
+            <summary>
+            Optional. Gets or sets define parameter list.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters.Files">
+            <summary>
+            Optional. List of files to be copied to the cluster.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters.JarClass">
+            <summary>
+            Optional. Gets or sets the class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters.JarFile">
+            <summary>
+            Optional. Gets or sets the Jar file.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters.LibJars">
+            <summary>
+            Optional. List of files to include in the classpath.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters.StatusDir">
+            <summary>
+            Optional. Status directory in the default storage account to store job files stderr, stdout and exit.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceJobSubmissionParameters.#ctor">
+            <summary>
+            Initializes a new instance of the MapReduceJobSubmissionParameters
+            class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters">
+            <summary>
+            Parameters specifying the HDInsight MapReduce Streaming job definition.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters.Arguments">
+            <summary>
+            Optional. Gets the arguments for the jobDetails.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters.CmdEnv">
+            <summary>
+            Optional. Set list of environment variables.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters.Defines">
+            <summary>
+            Optional. Gets or sets define parameters.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters.File">
+            <summary>
+            Optional. File to add to the distributed cache.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters.Files">
+            <summary>
+            Optional. List of files to be copied to the cluster.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters.Input">
+            <summary>
+            Optional. Location of the input data in Hadoop.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters.Mapper">
+            <summary>
+            Optional. Gets or sets Mapper executable or Java class name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters.Output">
+            <summary>
+            Optional. Location in which to store the output data.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters.Reducer">
+            <summary>
+            Optional. Gets or sets Reducer executable or Java class name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters.StatusDir">
+            <summary>
+            Optional. Status directory in the default storage account to store job files stderr, stdout and exit.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.MapReduceStreamingJobSubmissionParameters.#ctor">
+            <summary>
+            Initializes a new instance of the
+            MapReduceStreamingJobSubmissionParameters class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.IStorageAccess">
+            <summary>
+            Manages storage access details for job operations against HDInsight clusters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.IStorageAccess.GetFileContent(System.String)">
+            <summary>
+            Gets the content of input file as memory stream.
+            </summary>
+            <param name='file'>
+            Required. File path which needs to be downloaded.
+            </param>
+            <returns>
+            Memory stream which contains file content.
+            </returns>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.PigJobSubmissionParameters">
+            <summary>
+            Parameters specifying the HDInsight Pig job definition.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.PigJobSubmissionParameters.Arguments">
+            <summary>
+            Optional. Gets the arguments for the jobDetails.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.PigJobSubmissionParameters.File">
+            <summary>
+            Optional. Gets or sets the query file to use for a Pig job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.PigJobSubmissionParameters.Files">
+            <summary>
+            Optional. Gets or sets the files to be copied to the cluster.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.PigJobSubmissionParameters.Query">
+            <summary>
+            Optional. Gets or sets the query to use for a Pig job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.PigJobSubmissionParameters.StatusDir">
+            <summary>
+            Optional. Status directory in the default storage account to store job files stderr, stdout and exit.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.PigJobSubmissionParameters.#ctor">
+            <summary>
+            Initializes a new instance of the PigJobSubmissionParameters class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.SqoopJobSubmissionParameters">
+            <summary>
+            Parameters specifying the HDInsight Hive job definition.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.SqoopJobSubmissionParameters.Command">
+            <summary>
+            Optional. Gets or sets the command to use for a Sqoop job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.SqoopJobSubmissionParameters.File">
+            <summary>
+            Optional. Gets or sets the command file to use for a Sqoop job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.SqoopJobSubmissionParameters.Files">
+            <summary>
+            Optional. Gets or sets the files to be copied to the cluster.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.SqoopJobSubmissionParameters.LibDir">
+            <summary>
+            Optional. Directory where libjar can be found to use by Sqoop.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.SqoopJobSubmissionParameters.StatusDir">
+            <summary>
+            Optional. Status directory in the default storage account to store job files stderr, stdout and exit.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.SqoopJobSubmissionParameters.#ctor">
+            <summary>
+            Initializes a new instance of the SqoopJobSubmissionParameters
+            class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.JobACLs">
+            <summary>
+            Gets or sets the object containing the job ACLs.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.JobACLs.#ctor">
+            <summary>
+            Initializes a new instance of the JobACLs class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject">
+            <summary>
+            Gets or sets the object containing the job details.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.Callback">
+            <summary>
+            Optional. Gets or sets the callback URL, if any.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.Completed">
+            <summary>
+            Optional. Gets or sets the string representing completed status,
+            for example 'done'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.ExitValue">
+            <summary>
+            Optional. Gets or sets the job's exit value.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.Id">
+            <summary>
+            Optional. Gets or sets the job ID.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.Msg">
+            <summary>
+            Optional. Gets or sets the message returned.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.ParentId">
+            <summary>
+            Optional. Gets or sets the parent job ID.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.PercentComplete">
+            <summary>
+            Optional. Gets or sets the job completion percentage, for example
+            '75% complete'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.Profile">
+            <summary>
+            Optional. Gets or sets the object containing the job profile
+            information.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.Status">
+            <summary>
+            Optional. Gets or sets the object containing the job status
+            information.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.User">
+            <summary>
+            Optional. Gets or sets the user name of the job creator.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.Userargs">
+            <summary>
+            Optional. Gets or sets the arguments passed in by the user.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.JobDetailRootJsonObject.#ctor">
+            <summary>
+            Initializes a new instance of the JobDetailRootJsonObject class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.JobGetResponse">
+            <summary>
+            The Get Job operation response.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobGetResponse.JobDetail">
+            <summary>
+            Optional. Gets or sets the job detail received from the HDInsight
+            cluster.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.JobGetResponse.#ctor">
+            <summary>
+            Initializes a new instance of the JobGetResponse class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.JobID">
+            <summary>
+            Gets or sets the object with the Job ID.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobID.Id">
+            <summary>
+            Optional. Gets or sets the job number.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobID.JtIdentifier">
+            <summary>
+            Optional. Gets or sets the jobTracker identifier.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.JobID.#ctor">
+            <summary>
+            Initializes a new instance of the JobID class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.JobListJsonObject">
+            <summary>
+            The List Job operation response.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobListJsonObject.Detail">
+            <summary>
+            Optional. Gets or sets the detail of the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobListJsonObject.Id">
+            <summary>
+            Optional. Gets or sets the Id of the job.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.JobListJsonObject.#ctor">
+            <summary>
+            Initializes a new instance of the JobListJsonObject class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.JobListResponse">
+            <summary>
+            The List Job operation response.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobListResponse.JobList">
+            <summary>
+            Optional. Gets or sets the job list result object recieved from the
+            HDInsight cluster.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.JobListResponse.#ctor">
+            <summary>
+            Initializes a new instance of the JobListResponse class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.JobListResponse.GetEnumerator">
+            <summary>
+            Gets the sequence of JobList.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.JobListResponse.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Gets the sequence of JobList.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionJsonResponse">
+            <summary>
+            The job submission json response.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionJsonResponse.Id">
+            <summary>
+            Optional. Gets or sets the Id of the created job.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionJsonResponse.#ctor">
+            <summary>
+            Initializes a new instance of the JobSubmissionJsonResponse class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters">
+            <summary>
+            Parameters specifying the HDInsight job definition.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters.Content">
+            <summary>
+            Optional.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionParameters.#ctor">
+            <summary>
+            Initializes a new instance of the JobSubmissionParameters class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionResponse">
+            <summary>
+            The Create Job operation response.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionResponse.JobSubmissionJsonResponse">
+            <summary>
+            Optional. Gets or sets the job submission result object recieved
+            from the HDInsight cluster.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.JobSubmissionResponse.#ctor">
+            <summary>
+            Initializes a new instance of the JobSubmissionResponse class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.Profile">
+            <summary>
+            Gets or sets the object containing the job profile information.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Profile.JobFile">
+            <summary>
+            Optional. Gets or sets the job configuration file.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Profile.JobId">
+            <summary>
+            Optional. Gets or sets the full ID of the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Profile.JobID">
+            <summary>
+            Optional. Gets or sets the ID of the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Profile.JobName">
+            <summary>
+            Optional. Gets or sets the user-specified job name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Profile.QueueName">
+            <summary>
+            Optional. Gets or sets the name of the queue to which the job is
+            submitted.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Profile.Url">
+            <summary>
+            Optional. Gets or sets the link to the web-ui for details of the
+            job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Profile.User">
+            <summary>
+            Optional. Gets or sets the userid of the person who submitted the
+            job.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.Profile.#ctor">
+            <summary>
+            Initializes a new instance of the Profile class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.Status">
+            <summary>
+            Gets or sets the object containing the job status information.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.CleanupProgress">
+            <summary>
+            Optional. Gets or sets the progress made on the cleanup.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.FailureInfo">
+            <summary>
+            Optional. Gets or sets the information about any failures that have
+            occurred.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.FinishTime">
+            <summary>
+            Optional. Gets or sets the time at which the job completed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.HistoryFile">
+            <summary>
+            Optional. Gets or sets the history file of the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.JobACLs">
+            <summary>
+            Optional. Gets or sets the ACLs of the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.JobComplete">
+            <summary>
+            Optional. Whether or not the job has completed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.JobFile">
+            <summary>
+            Optional. Gets or sets the job configuration file.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.JobId">
+            <summary>
+            Optional. Gets or sets the full ID of the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.JobID">
+            <summary>
+            Optional. Gets or sets the ID of the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.JobName">
+            <summary>
+            Optional. Gets or sets the user-specified job name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.JobPriority">
+            <summary>
+            Optional. Gets or sets the priority of the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.MapProgress">
+            <summary>
+            Optional. Gets or sets the progress made on the maps.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.NeededMem">
+            <summary>
+            Optional. Gets or sets the amount of memory needed for the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.NumReservedSlots">
+            <summary>
+            Optional. Gets or sets the number of slots reserved.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.NumUsedSlots">
+            <summary>
+            Optional. Gets or sets the number of slots used for the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.Priority">
+            <summary>
+            Optional. Gets or sets the priority of the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.Queue">
+            <summary>
+            Optional. Gets or sets the job queue name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.ReduceProgress">
+            <summary>
+            Optional. Gets or sets the progress made on the reduces.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.ReservedMem">
+            <summary>
+            Optional. Gets or sets the amount of memory reserved for the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.Retired">
+            <summary>
+            Optional. Whether or not the job has been retired.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.RunState">
+            <summary>
+            Optional. Gets or sets the current state of the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.SchedulingInfo">
+            <summary>
+            Optional. Gets or sets the information about the scheduling of the
+            job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.SetupProgress">
+            <summary>
+            Optional. Gets or sets the progress made on the setup.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.StartTime">
+            <summary>
+            Optional. Gets or sets the time at which the job started.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.State">
+            <summary>
+            Optional. Gets or sets the state of the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.TrackingUrl">
+            <summary>
+            Optional. Gets or sets the link to the web-ui for details of the
+            job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.Uber">
+            <summary>
+            Optional. Whether job running in uber mode.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.UsedMem">
+            <summary>
+            Optional. Gets or sets the amount of memory used by the job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Status.Username">
+            <summary>
+            Optional. Gets or sets the userid of the person who submitted the
+            job.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.Status.#ctor">
+            <summary>
+            Initializes a new instance of the Status class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs">
+            <summary>
+            Gets or sets the object containing the user arguments.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs.Arg">
+            <summary>
+            Optional. Gets or sets the list of args defined by the user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs.Callback">
+            <summary>
+            Optional. Gets or sets the callback URL, if any.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs.Define">
+            <summary>
+            Optional. Gets or sets the define properties defined by the user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs.Enablelog">
+            <summary>
+            Optional. Whether or not the user enabled logs.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs.Execute">
+            <summary>
+            Optional. Gets or sets the query defined by the user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs.File">
+            <summary>
+            Optional. Gets or sets the query file provided by the user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs.Files">
+            <summary>
+            Optional. Gets or sets the files defined by the user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs.Jar">
+            <summary>
+            Optional. Gets or sets the JAR file provided by the user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs.Statusdir">
+            <summary>
+            Optional. Gets or sets the status directory defined by the user.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs.Username">
+            <summary>
+            Optional. Gets or sets the username.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.Userargs.#ctor">
+            <summary>
+            Initializes a new instance of the Userargs class.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.Models.AzureStorageAccess">
+            <summary>
+            Manages storage access details for job operations against HDInsight clusters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.AzureStorageAccess.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the AzureStorageAccess class.
+            </summary>
+            <param name='storageAccountName'>
+            Required. The storage account name.
+            </param>
+            <param name='storageAccountKey'>
+            Required. The storage account key.
+            </param>
+            <param name='defaultStorageContainer'>
+            Required. The default storage container name.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.HDInsight.Job.Models.AzureStorageAccess.GetFileContent(System.String)">
+            <summary>
+            Gets the file content from blob reference path.
+            </summary>
+            <param name='blobReferencePath'>
+            Required. Blob reference path for which url to be generated.
+            </param>
+            <returns>
+            Content of the file for the input blob reference path.
+            </returns>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.HDInsightJobManagementClientExtensions">
+            <summary>
+            The HDInsight job client manages jobs against HDInsight clusters.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.HDInsight.Job.IHDInsightJobManagementClient">
+            <summary>
+            The HDInsight job client manages jobs against HDInsight clusters.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.IHDInsightJobManagementClient.ClusterDnsName">
+            <summary>
+            The cluster dns name against which the job management is to be
+            performed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.IHDInsightJobManagementClient.Credentials">
+            <summary>
+            Basic authentication credentials for job submission.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.IHDInsightJobManagementClient.SdkUserAgent">
+            <summary>
+            Gets or sets the SDK UserAgent text to be added to the user agent
+            header. This is used to further differentiate various SDK versions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.IHDInsightJobManagementClient.UserAgentSuffix">
+            <summary>
+            Gets or sets the additional UserAgent text to be added to the user
+            agent header. This is used to further differentiate using
+            applications.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.IHDInsightJobManagementClient.UserName">
+            <summary>
+            The user name from Username of BasicAuthenticationCloudCredentials
+            in lower case used for running job.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.HDInsight.Job.IHDInsightJobManagementClient.JobManagement">
+            <summary>
+            Operations for managing jobs against HDInsight clusters.
+            </summary>
+        </member>
+    </members>
+</doc>
