@@ -1,0 +1,1634 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Azure.Management.Storage</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Azure.Management.Storage.IStorageAccountsOperations">
+            <summary>
+            StorageAccountsOperations operations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.IStorageAccountsOperations.CheckNameAvailabilityWithHttpMessagesAsync(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Checks that account name is valid and is not in use.
+            </summary>
+            <param name='name'>
+            </param>
+            <param name='type'>
+            </param>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.IStorageAccountsOperations.CreateWithHttpMessagesAsync(System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously creates a new storage account with the specified
+            parameters. Existing accounts cannot be updated with this API and
+            should instead use the Update Storage Account API. If an account
+            is already created and subsequent PUT request is issued with
+            exact same set of properties, then HTTP 200 would be returned.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource
+            group. Storage account names must be between 3 and 24 characters
+            in length and use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to provide for the created account.
+            </param>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.IStorageAccountsOperations.BeginCreateWithHttpMessagesAsync(System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously creates a new storage account with the specified
+            parameters. Existing accounts cannot be updated with this API and
+            should instead use the Update Storage Account API. If an account
+            is already created and subsequent PUT request is issued with
+            exact same set of properties, then HTTP 200 would be returned.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource
+            group. Storage account names must be between 3 and 24 characters
+            in length and use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to provide for the created account.
+            </param>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.IStorageAccountsOperations.DeleteWithHttpMessagesAsync(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Deletes a storage account in Microsoft Azure.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource
+            group. Storage account names must be between 3 and 24 characters
+            in length and use numbers and lower-case letters only.
+            </param>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.IStorageAccountsOperations.GetPropertiesWithHttpMessagesAsync(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Returns the properties for the specified storage account including
+            but not limited to name, account type, location, and account
+            status. The ListKeys operation should be used to retrieve storage
+            keys.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource
+            group. Storage account names must be between 3 and 24 characters
+            in length and use numbers and lower-case letters only.
+            </param>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.IStorageAccountsOperations.UpdateWithHttpMessagesAsync(System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountUpdateParameters,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Updates the account type or tags for a storage account. It can
+            also be used to add a custom domain (note that custom domains
+            cannot be added via the Create operation). Only one custom domain
+            is supported per storage account. In order to replace a custom
+            domain, the old value must be cleared before a new value may be
+            set. To clear a custom domain, simply update the custom domain
+            with empty string. Then call update again with the new cutsom
+            domain name. The update API can only be used to update one of
+            tags, accountType, or customDomain per call. To update multiple
+            of these properties, call the API multiple times with one change
+            per call. This call does not change the storage keys for the
+            account. If you want to change storage account keys, use the
+            RegenerateKey operation. The location and name of the storage
+            account cannot be changed after creation.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource
+            group. Storage account names must be between 3 and 24 characters
+            in length and use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to update on the account. Note that only one
+            property can be changed at a time using this API.
+            </param>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.IStorageAccountsOperations.ListKeysWithHttpMessagesAsync(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Lists the access keys for the specified storage account.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group.
+            </param>
+            <param name='accountName'>
+            The name of the storage account.
+            </param>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.IStorageAccountsOperations.ListWithHttpMessagesAsync(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Lists all the storage accounts available under the subscription.
+            Note that storage keys are not returned; use the ListKeys
+            operation for this.
+            </summary>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.IStorageAccountsOperations.ListByResourceGroupWithHttpMessagesAsync(System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Lists all the storage accounts available under the given resource
+            group. Note that storage keys are not returned; use the ListKeys
+            operation for this.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.IStorageAccountsOperations.RegenerateKeyWithHttpMessagesAsync(System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Regenerates the access keys for the specified storage account.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource
+            group. Storage account names must be between 3 and 24 characters
+            in length and use numbers and lower-case letters only.
+            </param>
+            <param name='keyName'>
+            </param>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.IStorageManagementClient">
+            <summary>
+            The Storage Management Client.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.IStorageManagementClient.BaseUri">
+            <summary>
+            The base URI of the service.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.IStorageManagementClient.SerializationSettings">
+            <summary>
+            Gets or sets json serialization settings.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.IStorageManagementClient.DeserializationSettings">
+            <summary>
+            Gets or sets json deserialization settings.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.IStorageManagementClient.Credentials">
+            <summary>
+            Gets Azure subscription credentials.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.IStorageManagementClient.SubscriptionId">
+            <summary>
+            Gets subscription credentials which uniquely identify Microsoft
+            Azure subscription. The subscription ID forms part of the URI for
+            every service call.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.IStorageManagementClient.ApiVersion">
+            <summary>
+            Client Api Version.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.IStorageManagementClient.AcceptLanguage">
+            <summary>
+            Gets or sets the preferred language for the response.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.IStorageManagementClient.LongRunningOperationRetryTimeout">
+            <summary>
+            Gets or sets the retry timeout in seconds for Long Running
+            Operations. Default value is 30.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.IStorageManagementClient.GenerateClientRequestId">
+            <summary>
+            When set to true a unique x-ms-client-request-id value is
+            generated and included in each request. Default is true.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.IUsageOperations">
+            <summary>
+            UsageOperations operations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.IUsageOperations.ListWithHttpMessagesAsync(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Gets the current usage count and the limit for the resources under
+            the subscription.
+            </summary>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.StorageAccountsOperations">
+            <summary>
+            StorageAccountsOperations operations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperations.#ctor(Microsoft.Azure.Management.Storage.StorageManagementClient)">
+            <summary>
+            Initializes a new instance of the StorageAccountsOperations class.
+            </summary>
+            <param name='client'>
+            Reference to the service client.
+            </param>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.StorageAccountsOperations.Client">
+            <summary>
+            Gets a reference to the StorageManagementClient
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperations.CheckNameAvailabilityWithHttpMessagesAsync(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Checks that account name is valid and is not in use.
+            </summary>
+            <param name='name'>
+            </param>
+            <param name='type'>
+            </param>
+            <param name='customHeaders'>
+            Headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperations.CreateWithHttpMessagesAsync(System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously creates a new storage account with the specified
+            parameters. Existing accounts cannot be updated with this API and should
+            instead use the Update Storage Account API. If an account is already
+            created and subsequent PUT request is issued with exact same set of
+            properties, then HTTP 200 would be returned.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to provide for the created account.
+            </param>
+            <param name='customHeaders'>
+            The headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperations.BeginCreateWithHttpMessagesAsync(System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously creates a new storage account with the specified
+            parameters. Existing accounts cannot be updated with this API and should
+            instead use the Update Storage Account API. If an account is already
+            created and subsequent PUT request is issued with exact same set of
+            properties, then HTTP 200 would be returned.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to provide for the created account.
+            </param>
+            <param name='customHeaders'>
+            Headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperations.DeleteWithHttpMessagesAsync(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Deletes a storage account in Microsoft Azure.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='customHeaders'>
+            Headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperations.GetPropertiesWithHttpMessagesAsync(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Returns the properties for the specified storage account including but not
+            limited to name, account type, location, and account status. The ListKeys
+            operation should be used to retrieve storage keys.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='customHeaders'>
+            Headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperations.UpdateWithHttpMessagesAsync(System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountUpdateParameters,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Updates the account type or tags for a storage account. It can also be
+            used to add a custom domain (note that custom domains cannot be added via
+            the Create operation). Only one custom domain is supported per storage
+            account. In order to replace a custom domain, the old value must be
+            cleared before a new value may be set. To clear a custom domain, simply
+            update the custom domain with empty string. Then call update again with
+            the new cutsom domain name. The update API can only be used to update one
+            of tags, accountType, or customDomain per call. To update multiple of
+            these properties, call the API multiple times with one change per call.
+            This call does not change the storage keys for the account. If you want
+            to change storage account keys, use the RegenerateKey operation. The
+            location and name of the storage account cannot be changed after creation.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to update on the account. Note that only one property can
+            be changed at a time using this API.
+            </param>
+            <param name='customHeaders'>
+            Headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperations.ListKeysWithHttpMessagesAsync(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Lists the access keys for the specified storage account.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group.
+            </param>
+            <param name='accountName'>
+            The name of the storage account.
+            </param>
+            <param name='customHeaders'>
+            Headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperations.ListWithHttpMessagesAsync(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Lists all the storage accounts available under the subscription. Note that
+            storage keys are not returned; use the ListKeys operation for this.
+            </summary>
+            <param name='customHeaders'>
+            Headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperations.ListByResourceGroupWithHttpMessagesAsync(System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Lists all the storage accounts available under the given resource group.
+            Note that storage keys are not returned; use the ListKeys operation for
+            this.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='customHeaders'>
+            Headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperations.RegenerateKeyWithHttpMessagesAsync(System.String,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Regenerates the access keys for the specified storage account.
+            </summary>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='keyName'>
+            </param>
+            <param name='customHeaders'>
+            Headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.CheckNameAvailability(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String)">
+            <summary>
+            Checks that account name is valid and is not in use.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='name'>
+            </param>
+            <param name='type'>
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.CheckNameAvailabilityAsync(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Checks that account name is valid and is not in use.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='name'>
+            </param>
+            <param name='type'>
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.Create(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters)">
+            <summary>
+            Asynchronously creates a new storage account with the specified
+            parameters. Existing accounts cannot be updated with this API and should
+            instead use the Update Storage Account API. If an account is already
+            created and subsequent PUT request is issued with exact same set of
+            properties, then HTTP 200 would be returned.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to provide for the created account.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.CreateAsync(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters,System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously creates a new storage account with the specified
+            parameters. Existing accounts cannot be updated with this API and should
+            instead use the Update Storage Account API. If an account is already
+            created and subsequent PUT request is issued with exact same set of
+            properties, then HTTP 200 would be returned.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to provide for the created account.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.BeginCreate(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters)">
+            <summary>
+            Asynchronously creates a new storage account with the specified
+            parameters. Existing accounts cannot be updated with this API and should
+            instead use the Update Storage Account API. If an account is already
+            created and subsequent PUT request is issued with exact same set of
+            properties, then HTTP 200 would be returned.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to provide for the created account.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.BeginCreateAsync(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters,System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously creates a new storage account with the specified
+            parameters. Existing accounts cannot be updated with this API and should
+            instead use the Update Storage Account API. If an account is already
+            created and subsequent PUT request is issued with exact same set of
+            properties, then HTTP 200 would be returned.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to provide for the created account.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.Delete(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String)">
+            <summary>
+            Deletes a storage account in Microsoft Azure.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.DeleteAsync(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Deletes a storage account in Microsoft Azure.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.GetProperties(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String)">
+            <summary>
+            Returns the properties for the specified storage account including but not
+            limited to name, account type, location, and account status. The ListKeys
+            operation should be used to retrieve storage keys.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.GetPropertiesAsync(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Returns the properties for the specified storage account including but not
+            limited to name, account type, location, and account status. The ListKeys
+            operation should be used to retrieve storage keys.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.Update(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountUpdateParameters)">
+            <summary>
+            Updates the account type or tags for a storage account. It can also be
+            used to add a custom domain (note that custom domains cannot be added via
+            the Create operation). Only one custom domain is supported per storage
+            account. In order to replace a custom domain, the old value must be
+            cleared before a new value may be set. To clear a custom domain, simply
+            update the custom domain with empty string. Then call update again with
+            the new cutsom domain name. The update API can only be used to update one
+            of tags, accountType, or customDomain per call. To update multiple of
+            these properties, call the API multiple times with one change per call.
+            This call does not change the storage keys for the account. If you want
+            to change storage account keys, use the RegenerateKey operation. The
+            location and name of the storage account cannot be changed after creation.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to update on the account. Note that only one property can
+            be changed at a time using this API.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.UpdateAsync(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,Microsoft.Azure.Management.Storage.Models.StorageAccountUpdateParameters,System.Threading.CancellationToken)">
+            <summary>
+            Updates the account type or tags for a storage account. It can also be
+            used to add a custom domain (note that custom domains cannot be added via
+            the Create operation). Only one custom domain is supported per storage
+            account. In order to replace a custom domain, the old value must be
+            cleared before a new value may be set. To clear a custom domain, simply
+            update the custom domain with empty string. Then call update again with
+            the new cutsom domain name. The update API can only be used to update one
+            of tags, accountType, or customDomain per call. To update multiple of
+            these properties, call the API multiple times with one change per call.
+            This call does not change the storage keys for the account. If you want
+            to change storage account keys, use the RegenerateKey operation. The
+            location and name of the storage account cannot be changed after creation.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='parameters'>
+            The parameters to update on the account. Note that only one property can
+            be changed at a time using this API.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.ListKeys(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String)">
+            <summary>
+            Lists the access keys for the specified storage account.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group.
+            </param>
+            <param name='accountName'>
+            The name of the storage account.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.ListKeysAsync(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Lists the access keys for the specified storage account.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group.
+            </param>
+            <param name='accountName'>
+            The name of the storage account.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.List(Microsoft.Azure.Management.Storage.IStorageAccountsOperations)">
+            <summary>
+            Lists all the storage accounts available under the subscription. Note that
+            storage keys are not returned; use the ListKeys operation for this.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.ListAsync(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.Threading.CancellationToken)">
+            <summary>
+            Lists all the storage accounts available under the subscription. Note that
+            storage keys are not returned; use the ListKeys operation for this.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.ListByResourceGroup(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String)">
+            <summary>
+            Lists all the storage accounts available under the given resource group.
+            Note that storage keys are not returned; use the ListKeys operation for
+            this.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.ListByResourceGroupAsync(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Lists all the storage accounts available under the given resource group.
+            Note that storage keys are not returned; use the ListKeys operation for
+            this.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.RegenerateKey(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,System.String)">
+            <summary>
+            Regenerates the access keys for the specified storage account.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='keyName'>
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageAccountsOperationsExtensions.RegenerateKeyAsync(Microsoft.Azure.Management.Storage.IStorageAccountsOperations,System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Regenerates the access keys for the specified storage account.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='resourceGroupName'>
+            The name of the resource group within the user's subscription.
+            </param>
+            <param name='accountName'>
+            The name of the storage account within the specified resource group.
+            Storage account names must be between 3 and 24 characters in length and
+            use numbers and lower-case letters only.
+            </param>
+            <param name='keyName'>
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.StorageManagementClient">
+            <summary>
+            The Storage Management Client.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.StorageManagementClient.BaseUri">
+            <summary>
+            The base URI of the service.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.StorageManagementClient.SerializationSettings">
+            <summary>
+            Gets or sets json serialization settings.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.StorageManagementClient.DeserializationSettings">
+            <summary>
+            Gets or sets json deserialization settings.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.StorageManagementClient.Credentials">
+            <summary>
+            Gets Azure subscription credentials.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.StorageManagementClient.SubscriptionId">
+            <summary>
+            Gets subscription credentials which uniquely identify Microsoft Azure
+            subscription. The subscription ID forms part of the URI for every service
+            call.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.StorageManagementClient.ApiVersion">
+            <summary>
+            Client Api Version.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.StorageManagementClient.AcceptLanguage">
+            <summary>
+            Gets or sets the preferred language for the response.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.StorageManagementClient.LongRunningOperationRetryTimeout">
+            <summary>
+            Gets or sets the retry timeout in seconds for Long Running Operations.
+            Default value is 30.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.StorageManagementClient.GenerateClientRequestId">
+            <summary>
+            When set to true a unique x-ms-client-request-id value is generated and
+            included in each request. Default is true.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageManagementClient.#ctor(System.Net.Http.DelegatingHandler[])">
+            <summary>
+            Initializes a new instance of the StorageManagementClient class.
+            </summary>
+            <param name='handlers'>
+            Optional. The delegating handlers to add to the http client pipeline.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageManagementClient.#ctor(System.Net.Http.HttpClientHandler,System.Net.Http.DelegatingHandler[])">
+            <summary>
+            Initializes a new instance of the StorageManagementClient class.
+            </summary>
+            <param name='rootHandler'>
+            Optional. The http client handler used to handle http transport.
+            </param>
+            <param name='handlers'>
+            Optional. The delegating handlers to add to the http client pipeline.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageManagementClient.#ctor(System.Uri,System.Net.Http.DelegatingHandler[])">
+            <summary>
+            Initializes a new instance of the StorageManagementClient class.
+            </summary>
+            <param name='baseUri'>
+            Optional. The base URI of the service.
+            </param>
+            <param name='handlers'>
+            Optional. The delegating handlers to add to the http client pipeline.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageManagementClient.#ctor(System.Uri,System.Net.Http.HttpClientHandler,System.Net.Http.DelegatingHandler[])">
+            <summary>
+            Initializes a new instance of the StorageManagementClient class.
+            </summary>
+            <param name='baseUri'>
+            Optional. The base URI of the service.
+            </param>
+            <param name='rootHandler'>
+            Optional. The http client handler used to handle http transport.
+            </param>
+            <param name='handlers'>
+            Optional. The delegating handlers to add to the http client pipeline.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageManagementClient.#ctor(Microsoft.Rest.ServiceClientCredentials,System.Net.Http.DelegatingHandler[])">
+            <summary>
+            Initializes a new instance of the StorageManagementClient class.
+            </summary>
+            <param name='credentials'>
+            Required. Gets Azure subscription credentials.
+            </param>
+            <param name='handlers'>
+            Optional. The delegating handlers to add to the http client pipeline.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageManagementClient.#ctor(Microsoft.Rest.ServiceClientCredentials,System.Net.Http.HttpClientHandler,System.Net.Http.DelegatingHandler[])">
+            <summary>
+            Initializes a new instance of the StorageManagementClient class.
+            </summary>
+            <param name='credentials'>
+            Required. Gets Azure subscription credentials.
+            </param>
+            <param name='rootHandler'>
+            Optional. The http client handler used to handle http transport.
+            </param>
+            <param name='handlers'>
+            Optional. The delegating handlers to add to the http client pipeline.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageManagementClient.#ctor(System.Uri,Microsoft.Rest.ServiceClientCredentials,System.Net.Http.DelegatingHandler[])">
+            <summary>
+            Initializes a new instance of the StorageManagementClient class.
+            </summary>
+            <param name='baseUri'>
+            Optional. The base URI of the service.
+            </param>
+            <param name='credentials'>
+            Required. Gets Azure subscription credentials.
+            </param>
+            <param name='handlers'>
+            Optional. The delegating handlers to add to the http client pipeline.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageManagementClient.#ctor(System.Uri,Microsoft.Rest.ServiceClientCredentials,System.Net.Http.HttpClientHandler,System.Net.Http.DelegatingHandler[])">
+            <summary>
+            Initializes a new instance of the StorageManagementClient class.
+            </summary>
+            <param name='baseUri'>
+            Optional. The base URI of the service.
+            </param>
+            <param name='credentials'>
+            Required. Gets Azure subscription credentials.
+            </param>
+            <param name='rootHandler'>
+            Optional. The http client handler used to handle http transport.
+            </param>
+            <param name='handlers'>
+            Optional. The delegating handlers to add to the http client pipeline.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.StorageManagementClient.Initialize">
+            <summary>
+            Initializes client properties.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.UsageOperations">
+            <summary>
+            UsageOperations operations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.UsageOperations.#ctor(Microsoft.Azure.Management.Storage.StorageManagementClient)">
+            <summary>
+            Initializes a new instance of the UsageOperations class.
+            </summary>
+            <param name='client'>
+            Reference to the service client.
+            </param>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.UsageOperations.Client">
+            <summary>
+            Gets a reference to the StorageManagementClient
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.UsageOperations.ListWithHttpMessagesAsync(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},System.Threading.CancellationToken)">
+            <summary>
+            Gets the current usage count and the limit for the resources under the
+            subscription.
+            </summary>
+            <param name='customHeaders'>
+            Headers that will be added to request.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.UsageOperationsExtensions.List(Microsoft.Azure.Management.Storage.IUsageOperations)">
+            <summary>
+            Gets the current usage count and the limit for the resources under the
+            subscription.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.UsageOperationsExtensions.ListAsync(Microsoft.Azure.Management.Storage.IUsageOperations,System.Threading.CancellationToken)">
+            <summary>
+            Gets the current usage count and the limit for the resources under the
+            subscription.
+            </summary>
+            <param name='operations'>
+            The operations group for this extension method.
+            </param>
+            <param name='cancellationToken'>
+            The cancellation token.
+            </param>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.AccountStatus">
+            <summary>
+            Defines values for AccountStatus.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.AccountType">
+            <summary>
+            Defines values for AccountType.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.CheckNameAvailabilityResult">
+            <summary>
+            The CheckNameAvailability operation response.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.CheckNameAvailabilityResult.#ctor">
+            <summary>
+            Initializes a new instance of the CheckNameAvailabilityResult
+            class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.CheckNameAvailabilityResult.#ctor(System.Nullable{System.Boolean},System.Nullable{Microsoft.Azure.Management.Storage.Models.Reason},System.String)">
+            <summary>
+            Initializes a new instance of the CheckNameAvailabilityResult
+            class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.CheckNameAvailabilityResult.NameAvailable">
+            <summary>
+            Gets a boolean value that indicates whether the name is available
+            for you to use. If true, the name is available. If false, the
+            name has already been taken or invalid and cannot be used.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.CheckNameAvailabilityResult.Reason">
+            <summary>
+            Gets the reason that a storage account name could not be used. The
+            Reason element is only returned if NameAvailable is false.
+            Possible values for this property include: 'AccountNameInvalid',
+            'AlreadyExists'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.CheckNameAvailabilityResult.Message">
+            <summary>
+            Gets an error message explaining the Reason value in more detail.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.CustomDomain">
+            <summary>
+            The custom domain assigned to this storage account. This can be set
+            via Update.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.CustomDomain.#ctor">
+            <summary>
+            Initializes a new instance of the CustomDomain class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.CustomDomain.#ctor(System.String,System.Nullable{System.Boolean})">
+            <summary>
+            Initializes a new instance of the CustomDomain class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.CustomDomain.Name">
+            <summary>
+            Gets or sets the custom domain name. Name is the CNAME source.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.CustomDomain.UseSubDomain">
+            <summary>
+            Indicates whether indirect CName validation is enabled. Default
+            value is false. This should only be set on updates
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.CustomDomain.Validate">
+            <summary>
+            Validate the object. Throws ValidationException if validation fails.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.Endpoints">
+            <summary>
+            The URIs that are used to perform a retrieval of a public blob, queue
+            or table object.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.Endpoints.#ctor">
+            <summary>
+            Initializes a new instance of the Endpoints class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.Endpoints.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the Endpoints class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Endpoints.Blob">
+            <summary>
+            Gets the blob endpoint.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Endpoints.Queue">
+            <summary>
+            Gets the queue endpoint.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Endpoints.Table">
+            <summary>
+            Gets the table endpoint.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Endpoints.File">
+            <summary>
+            Gets the file endpoint.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.Page`1">
+            <summary>
+            Defines a page in Azure responses.
+            </summary>
+            <typeparam name="T">Type of the page content items</typeparam>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Page`1.NextPageLink">
+            <summary>
+            Gets the link to the next page.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.Page`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>A an enumerator that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.Page`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>A an enumerator that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.ProvisioningState">
+            <summary>
+            Defines values for ProvisioningState.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.Reason">
+            <summary>
+            Defines values for Reason.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.Resource">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.Resource.#ctor">
+            <summary>
+            Initializes a new instance of the Resource class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.Resource.#ctor(System.String,System.String,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Initializes a new instance of the Resource class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Resource.Id">
+            <summary>
+            Resource Id
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Resource.Name">
+            <summary>
+            Resource name
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Resource.Type">
+            <summary>
+            Resource type
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Resource.Location">
+            <summary>
+            Resource location
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Resource.Tags">
+            <summary>
+            Resource tags
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.StorageAccount">
+            <summary>
+            The storage account.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccount.#ctor">
+            <summary>
+            Initializes a new instance of the StorageAccount class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccount.#ctor(System.String,System.String,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Nullable{Microsoft.Azure.Management.Storage.Models.ProvisioningState},System.Nullable{Microsoft.Azure.Management.Storage.Models.AccountType},Microsoft.Azure.Management.Storage.Models.Endpoints,System.String,System.Nullable{Microsoft.Azure.Management.Storage.Models.AccountStatus},System.Nullable{System.DateTime},System.String,System.Nullable{Microsoft.Azure.Management.Storage.Models.AccountStatus},System.Nullable{System.DateTime},Microsoft.Azure.Management.Storage.Models.CustomDomain,Microsoft.Azure.Management.Storage.Models.Endpoints)">
+            <summary>
+            Initializes a new instance of the StorageAccount class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccount.ProvisioningState">
+            <summary>
+            Gets the status of the storage account at the time the operation
+            was called. Possible values for this property include:
+            'Creating', 'ResolvingDNS', 'Succeeded'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccount.AccountType">
+            <summary>
+            Gets the type of the storage account. Possible values for this
+            property include: 'Standard_LRS', 'Standard_ZRS', 'Standard_GRS',
+            'Standard_RAGRS', 'Premium_LRS'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccount.PrimaryEndpoints">
+            <summary>
+            Gets the URLs that are used to perform a retrieval of a public
+            blob, queue or table object.Note that StandardZRS and PremiumLRS
+            accounts only return the blob endpoint.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccount.PrimaryLocation">
+            <summary>
+            Gets the location of the primary for the storage account.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccount.StatusOfPrimary">
+            <summary>
+            Gets the status indicating whether the primary location of the
+            storage account is available or unavailable. Possible values for
+            this property include: 'Available', 'Unavailable'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccount.LastGeoFailoverTime">
+            <summary>
+            Gets the timestamp of the most recent instance of a failover to
+            the secondary location. Only the most recent timestamp is
+            retained. This element is not returned if there has never been a
+            failover instance. Only available if the accountType is
+            StandardGRS or StandardRAGRS.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccount.SecondaryLocation">
+            <summary>
+            Gets the location of the geo replicated secondary for the storage
+            account. Only available if the accountType is StandardGRS or
+            StandardRAGRS.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccount.StatusOfSecondary">
+            <summary>
+            Gets the status indicating whether the secondary location of the
+            storage account is available or unavailable. Only available if
+            the accountType is StandardGRS or StandardRAGRS. Possible values
+            for this property include: 'Available', 'Unavailable'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccount.CreationTime">
+            <summary>
+            Gets the creation date and time of the storage account in UTC.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccount.CustomDomain">
+            <summary>
+            Gets the user assigned custom domain assigned to this storage
+            account.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccount.SecondaryEndpoints">
+            <summary>
+            Gets the URLs that are used to perform a retrieval of a public
+            blob, queue or table object from the secondary location of the
+            storage account. Only available if the accountType is
+            StandardRAGRS.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccount.Validate">
+            <summary>
+            Validate the object. Throws ValidationException if validation fails.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.StorageAccountCheckNameAvailabilityParameters">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountCheckNameAvailabilityParameters.#ctor">
+            <summary>
+            Initializes a new instance of the
+            StorageAccountCheckNameAvailabilityParameters class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountCheckNameAvailabilityParameters.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the
+            StorageAccountCheckNameAvailabilityParameters class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccountCheckNameAvailabilityParameters.Name">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccountCheckNameAvailabilityParameters.Type">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountCheckNameAvailabilityParameters.Validate">
+            <summary>
+            Validate the object. Throws ValidationException if validation fails.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters">
+            <summary>
+            The parameters to provide for the account.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters.#ctor">
+            <summary>
+            Initializes a new instance of the StorageAccountCreateParameters
+            class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters.#ctor(System.String,System.Nullable{Microsoft.Azure.Management.Storage.Models.AccountType},System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Initializes a new instance of the StorageAccountCreateParameters
+            class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters.Location">
+            <summary>
+            Resource location
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters.Tags">
+            <summary>
+            Resource tags
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters.AccountType">
+            <summary>
+            Gets or sets the account type. Possible values for this property
+            include: 'Standard_LRS', 'Standard_ZRS', 'Standard_GRS',
+            'Standard_RAGRS', 'Premium_LRS'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountCreateParameters.Validate">
+            <summary>
+            Validate the object. Throws ValidationException if validation fails.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.StorageAccountKeys">
+            <summary>
+            The access keys for the storage account.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountKeys.#ctor">
+            <summary>
+            Initializes a new instance of the StorageAccountKeys class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountKeys.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the StorageAccountKeys class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccountKeys.Key1">
+            <summary>
+            Gets the value of key 1.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccountKeys.Key2">
+            <summary>
+            Gets the value of key 2.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.StorageAccountRegenerateKeyParameters">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountRegenerateKeyParameters.#ctor">
+            <summary>
+            Initializes a new instance of the
+            StorageAccountRegenerateKeyParameters class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountRegenerateKeyParameters.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the
+            StorageAccountRegenerateKeyParameters class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccountRegenerateKeyParameters.KeyName">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountRegenerateKeyParameters.Validate">
+            <summary>
+            Validate the object. Throws ValidationException if validation fails.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.StorageAccountUpdateParameters">
+            <summary>
+            The parameters to update on the account.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountUpdateParameters.#ctor">
+            <summary>
+            Initializes a new instance of the StorageAccountUpdateParameters
+            class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountUpdateParameters.#ctor(System.Collections.Generic.IDictionary{System.String,System.String},System.Nullable{Microsoft.Azure.Management.Storage.Models.AccountType},Microsoft.Azure.Management.Storage.Models.CustomDomain)">
+            <summary>
+            Initializes a new instance of the StorageAccountUpdateParameters
+            class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccountUpdateParameters.Tags">
+            <summary>
+            Resource tags
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccountUpdateParameters.AccountType">
+            <summary>
+            Gets or sets the account type. Note that StandardZRS and
+            PremiumLRS accounts cannot be changed to other account types, and
+            other account types cannot be changed to StandardZRS or
+            PremiumLRS. Possible values for this property include:
+            'Standard_LRS', 'Standard_ZRS', 'Standard_GRS', 'Standard_RAGRS',
+            'Premium_LRS'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.StorageAccountUpdateParameters.CustomDomain">
+            <summary>
+            User domain assigned to the storage account. Name is the CNAME
+            source. Only one custom domain is supported per storage account
+            at this time. To clear the existing custom domain, use an empty
+            string for the custom domain name property.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.StorageAccountUpdateParameters.Validate">
+            <summary>
+            Validate the object. Throws ValidationException if validation fails.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.Usage">
+            <summary>
+            Describes Storage Resource Usage.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.Usage.#ctor">
+            <summary>
+            Initializes a new instance of the Usage class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.Usage.#ctor(System.Nullable{Microsoft.Azure.Management.Storage.Models.UsageUnit},System.Nullable{System.Int32},System.Nullable{System.Int32},Microsoft.Azure.Management.Storage.Models.UsageName)">
+            <summary>
+            Initializes a new instance of the Usage class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Usage.Unit">
+            <summary>
+            Gets the unit of measurement. Possible values for this property
+            include: 'Count', 'Bytes', 'Seconds', 'Percent',
+            'CountsPerSecond', 'BytesPerSecond'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Usage.CurrentValue">
+            <summary>
+            Gets the current count of the allocated resources in the
+            subscription.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Usage.Limit">
+            <summary>
+            Gets the maximum count of the resources that can be allocated in
+            the subscription.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.Usage.Name">
+            <summary>
+            Gets the name of the type of usage.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.Usage.Validate">
+            <summary>
+            Validate the object. Throws ValidationException if validation fails.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.UsageName">
+            <summary>
+            The Usage Names.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.UsageName.#ctor">
+            <summary>
+            Initializes a new instance of the UsageName class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.Management.Storage.Models.UsageName.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the UsageName class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.UsageName.Value">
+            <summary>
+            Gets a string describing the resource name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Azure.Management.Storage.Models.UsageName.LocalizedValue">
+            <summary>
+            Gets a localized string describing the resource name.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.Management.Storage.Models.UsageUnit">
+            <summary>
+            Defines values for UsageUnit.
+            </summary>
+        </member>
+    </members>
+</doc>
