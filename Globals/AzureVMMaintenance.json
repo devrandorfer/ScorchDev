@@ -3,7 +3,7 @@
                       "AzureVMMaintenance-CriticalResourceGroupName":  {
                                                                            "isEncrypted":  false,
                                                                            "Description":  "",
-                                                                           "Value":  "[\"DomainController\",\"runbookworker\"]"
+                                                                           "Value":  "[\"DomainController\",\"runbookworker\",\"spinnaker\"]"
                                                                        }
                   }
 }
