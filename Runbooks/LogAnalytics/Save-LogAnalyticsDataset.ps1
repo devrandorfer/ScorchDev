@@ -19,7 +19,7 @@ $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                                 'SubscriptionAccessTenant'
 
 $LogAnalyticsVars = Get-BatchAutomationVariable -Prefix 'LogAnalytics' `
-                                                -Name 'WorkspaceName',
+                                                -Name 'WorkspaceId',
                                                       'ResourceGroupName'
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
@@ -36,7 +36,7 @@ Try
     $DataSet = @()
 
     $Result = Get-AzureRmOperationalInsightsSearchResults -ResourceGroupName $LogAnalyticsVars.ResourceGroupName `
-                                                          -WorkspaceName $LogAnalyticsVars.WorkspaceName `
+                                                          -WorkspaceName $LogAnalyticsVars.WorkspaceId `
                                                           -Query $Query `
                                                           -Top 5000
 
@@ -45,7 +45,7 @@ Try
     While($ResultData.Count -gt 0 -and $DataSet.Count -lt $DataSetSizeTarget)
     {
         $Result = Get-AzureRmOperationalInsightsSearchResults -ResourceGroupName $LogAnalyticsVars.ResourceGroupName `
-                                                              -WorkspaceName $LogAnalyticsVars.WorkspaceName `
+                                                              -WorkspaceName $LogAnalyticsVars.WorkspaceId `
                                                               -Query $Query `
                                                               -Top 5000 `
                                                               -End $ResultData[-1].TimeGenerated
