@@ -14,7 +14,7 @@ $CompletedParameters = Write-StartingMessage -CommandName Invoke-HelloWorld
 
 Try
 {
-    Write-Output -InputObject "Hello US Bank"
+    Write-Output -InputObject 'Hello Testing'
 }
 Catch
 {
