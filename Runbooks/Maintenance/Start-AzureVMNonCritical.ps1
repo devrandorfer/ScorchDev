@@ -14,7 +14,8 @@ $CompletedParameters = Write-StartingMessage -CommandName Start-AzureVMNonCritia
 
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
-                                                'SubscriptionAccessCredentialName'
+                                                'SubscriptionAccessCredentialName',
+                                                'SubscriptionAccessTenant'
 
 $Vars = Get-BatchAutomationVariable -Prefix 'AzureVMMaintenance' `
                                     -Name 'CriticalResourceGroupName'
@@ -25,7 +26,8 @@ $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.Sub
 Try
 {
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                           -SubscriptionName $GlobalVars.SubscriptionName
+                           -SubscriptionName $GlobalVars.SubscriptionName `
+                           -Tenant $GlobalVars.SubscriptionAccessTenant
 
     Get-AzureRmVM | ? {$_.ResourceGroupName -notin ($Vars.CriticalResourceGroupName | ConvertFrom-Json)} | % {
         $VM = $_

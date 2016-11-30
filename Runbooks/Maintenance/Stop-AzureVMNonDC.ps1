@@ -14,7 +14,8 @@ $CompletedParameters = Write-StartingMessage -CommandName Stop-AzureVMNonDC
 
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
-                                                'SubscriptionAccessCredentialName'
+                                                'SubscriptionAccessCredentialName',
+                                                'SubscriptionAccessTenant'
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
 
@@ -22,7 +23,8 @@ $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.Sub
 Try
 {
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                           -SubscriptionName $GlobalVars.SubscriptionName
+                           -SubscriptionName $GlobalVars.SubscriptionName `
+                           -Tenant $GlobalVars.SubscriptionAccessTenant
 
     Get-AzureRmVM | ? {$_.ResourceGroupName -ne 'DomainController'} | % {
         $VM = $_

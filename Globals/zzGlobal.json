@@ -13,7 +13,7 @@
                       "zzGlobal-SubscriptionAccessCredentialName":  {
                                                                         "isEncrypted":  false,
                                                                         "Description":  "Name of the credential to be used for authenticating to the subscription",
-                                                                        "Value":  "scorchd@microsoft.com"
+                                                                        "Value":  "6640d6a4-7a7c-45b9-b0a9-bbc055bf8684"
                                                                     },
                       "zzGlobal-WorkspaceID":  {
                                                    "isEncrypted":  false,
@@ -28,7 +28,7 @@
                       "zzGlobal-SubscriptionAccessTenant":  {
                                                                 "isEncrypted":  false,
                                                                 "Description":  "The tenant id for ServicePrincipal type auth. Can be blank",
-                                                                "Value":  ""
+                                                                "Value":  "72f988bf-86f1-41af-91ab-2d7cd011db47"
                                                             },
                       "zzGlobal-GitRepository":  {
                                                      "isEncrypted":  false,
