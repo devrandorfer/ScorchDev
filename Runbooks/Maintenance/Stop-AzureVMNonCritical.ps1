@@ -36,7 +36,8 @@ Try
             $GlobalVars = $Using:GlobalVars
             $VM = $Using:VM
             Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                               -SubscriptionName $GlobalVars.SubscriptionName
+                                   -SubscriptionName $GlobalVars.SubscriptionName `
+                                   -Tenant $GlobalVars.SubscriptionAccessTenant
             $VM | Stop-AzureRmVM -Force -ErrorAction SilentlyContinue
         }
     }
