@@ -14,7 +14,8 @@ $CompletedParameters = Write-StartingMessage -CommandName Save-WindowsLogin_C
 
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
-                                                'SubscriptionAccessCredentialName'
+                                                'SubscriptionAccessCredentialName',
+                                                'SubscriptionAccessTenant'
 
 $OMSVars = Get-BatchAutomationVariable -Prefix 'LogAnalytics' `
                                        -Name 'WorkspaceId',
@@ -25,7 +26,8 @@ $OMSCred = Get-AutomationPSCredential -Name $OMSVars.WorkspaceId
 Try
 {
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                           -SubscriptionName $GlobalVars.SubscriptionName
+                           -SubscriptionName $GlobalVars.SubscriptionName `
+                           -Tenant $GlobalVars.SubscriptionAccessTenant
     
     $LastSaveDate = Get-AutomationVariable -Name 'WindowsLoginGrouping-LastSaveDate'
     $CurrentDate = Get-Date
