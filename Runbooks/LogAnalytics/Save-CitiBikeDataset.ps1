@@ -43,32 +43,39 @@ Try
     {
         Foreach($_DataFeed in $DataFeed.data.en.feeds)
         {
-            if($_DataFeed.Name -ne 'system_information')
+            Try
             {
-                $FeedData = Invoke-RestMethod -Method Get -Uri $_DataFeed.url
-                $TypeName = ($FeedData.data | get-member -MemberType NoteProperty)[0].Name
-                $FeedItem = $FeedData.data.$TypeName
-
-                $Data = @()
-                Foreach($_Item in $FeedItem)
+                if($_DataFeed.Name -ne 'system_information')
                 {
-                    $DataItem = @{}
-                    $FeedItemPropertyName = ($_Item | get-member -MemberType NoteProperty).Name
-                    Foreach($_FeedItemPropertyName in $FeedItemPropertyName)
-                    {
-                        if($_FeedItemPropertyName -ne 'last_reported')
-                        {
-                            $DataItem.Add($_FeedItemPropertyName, $_Item.$_FeedItemPropertyName)
-                        }
-                        else
-                        {
-                            $DataItem.Add('EventTimestamp', (ConvertFrom-UnixDate -Date $_Item.$_FeedItemPropertyName)) | Out-Null
-                        }
-                    }
-                    $Data += $DataItem
-                }
+                    $FeedData = Invoke-RestMethod -Method Get -Uri $_DataFeed.url
+                    $TypeName = ($FeedData.data | get-member -MemberType NoteProperty)[0].Name
+                    $FeedItem = $FeedData.data.$TypeName
 
-                Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $Data -LogType "CitiBike_$($_DataFeed.Name)_CL" -TimeStampField 'EventTimestamp'
+                    $Data = @()
+                    Foreach($_Item in $FeedItem)
+                    {
+                        $DataItem = @{}
+                        $FeedItemPropertyName = ($_Item | get-member -MemberType NoteProperty).Name
+                        Foreach($_FeedItemPropertyName in $FeedItemPropertyName)
+                        {
+                            if($_FeedItemPropertyName -ne 'last_reported')
+                            {
+                                $DataItem.Add($_FeedItemPropertyName, $_Item.$_FeedItemPropertyName)
+                            }
+                            else
+                            {
+                                $DataItem.Add('EventTimestamp', (ConvertFrom-UnixDate -Date $_Item.$_FeedItemPropertyName)) | Out-Null
+                            }
+                        }
+                        $Data += $DataItem
+                    }
+
+                    Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $Data -LogType "CitiBike_$($_DataFeed.Name)_CL" -TimeStampField 'EventTimestamp'
+                }
+            }
+            Catch
+            {
+                Write-Exception -Exception $_ -Stream Warning
             }
         }
 
