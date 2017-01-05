@@ -3,7 +3,7 @@
        Add a synopsis here to explain the PSScript. 
 
     .Description
-        Give a better description of the Script.
+        Give a better description of the Script!
 
 #>
 Param(
