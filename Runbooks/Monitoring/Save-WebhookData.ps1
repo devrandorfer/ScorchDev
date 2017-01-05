@@ -21,29 +21,27 @@ $OMSVars = Get-BatchAutomationVariable -Prefix 'LogAnalytics' `
 $WorkspaceCredential = Get-AutomationPSCredential -Name $OMSVars.WorkspaceID
 
 Try
-{
-    $WebhookObj = $WebhookData | ConvertFrom-Json
-    
+{   
     $Data = @()
 
-    $RequestHeader = $WebhookObj.RequestHeader | ConvertFrom-PSCustomObject
+    $RequestHeader = $WebhookData.RequestHeader | ConvertFrom-PSCustomObject
 
     Try
     {
-           $RequestBody = $WebhookObj.RequestBody | ConvertFrom-Json | ConvertFrom-PSCustomObject
+           $RequestBody = $WebhookData.RequestBody | ConvertFrom-Json | ConvertFrom-PSCustomObject
            $RequestBody += $RequestHeader
            $Data += $RequestBody
     }
     Catch
     {
-        $RequestHeader.Add('RequestBody',$WebhookObj.RequestBody)
+        $RequestHeader.Add('RequestBody',$WebhookData.RequestBody)
         $Data += $RequestHeader
     }
 
     Write-LogAnalyticsLogEntry -WorkspaceId $OMSVars.WorkspaceId `
                             -Key $WorkspaceCredential.GetNetworkCredential().Password `
                             -Data $Data `
-                            -LogType "$($WebhookObj.WebhookName)_CL"
+                            -LogType "$($WebhookData.WebhookName)_CL"
 }
 Catch
 {
