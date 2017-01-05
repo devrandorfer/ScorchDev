@@ -25,13 +25,45 @@ Try
 
     Try
     {
-           $RequestBody = $WebhookData.RequestBody | ConvertFrom-Json | ConvertFrom-PSCustomObject
-           $RequestBody += $RequestHeader
-           $Data += $RequestBody
+        $RequestBody = $WebhookData.RequestBody | ConvertFrom-Json | ConvertFrom-PSCustomObject
+        
+        $Item = @{}
+        foreach($Key in $RequestBody.Keys)
+        {
+            Try
+            {
+                $TypeName = $RequestBody.$Key.GetType().Name 
+                if($TypeName -eq 'PSCustomObject')
+                {
+                    Try
+                    {
+                        $InnerObject = $RequestBody.$Key | ConvertFrom-PSCustomObject
+                        Foreach($InnerKey in $InnerObject.Keys)
+                        {
+                            $Item.Add("$($key)_$($InnerKey)",$InnerObject.$InnerKey) | Out-Null
+                        }
+                    }
+                    Catch
+                    {
+                        $Item.Add($key,$RequestBody.$Key) | Out-Null
+                    }
+                }
+                else
+                {
+                    $Item.Add($key,$RequestBody.$Key) | Out-Null
+                }
+            }
+            Catch
+            {
+                $Item.Add($Key,$RequestBody.$Key)
+            }
+        }
+        $RequestBody += $RequestHeader
+        $Data += $RequestBody
     }
     Catch
     {
-        $RequestHeader.Add('RequestBody',$WebhookData.RequestBody)
+        $RequestHeader.Add('RequestBody',$WebhookData.RequestBody)  | Out-Null
         $Data += $RequestHeader
     }
 
