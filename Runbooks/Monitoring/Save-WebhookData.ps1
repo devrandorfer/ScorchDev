@@ -27,39 +27,42 @@ Try
     {
         $RequestBody = $WebhookData.RequestBody | ConvertFrom-Json | ConvertFrom-PSCustomObject
         
-        $Item = @{}
-        foreach($Key in $RequestBody.Keys)
+        Foreach($Entry in $RequestBody)
         {
-            Try
+            $Item = @{}
+            foreach($Key in $Entry.Keys)
             {
-                $TypeName = $RequestBody.$Key.GetType().Name 
-                if($TypeName -eq 'PSCustomObject')
+                Try
                 {
-                    Try
+                    $TypeName = $Entry.$Key.GetType().Name 
+                    if($TypeName -eq 'PSCustomObject')
                     {
-                        $InnerObject = $RequestBody.$Key | ConvertFrom-PSCustomObject
-                        Foreach($InnerKey in $InnerObject.Keys)
+                        Try
                         {
-                            $Item.Add("$($key)_$($InnerKey)",$InnerObject.$InnerKey) | Out-Null
+                            $InnerObject = $Entry.$Key | ConvertFrom-PSCustomObject
+                            Foreach($InnerKey in $InnerObject.Keys)
+                            {
+                                $Item.Add("$($key)_$($InnerKey)",$InnerObject.$InnerKey) | Out-Null
+                            }
+                        }
+                        Catch
+                        {
+                            $Item.Add($key,$Entry.$Key) | Out-Null
                         }
                     }
-                    Catch
+                    else
                     {
-                        $Item.Add($key,$RequestBody.$Key) | Out-Null
+                        $Item.Add($key,$Entry.$Key) | Out-Null
                     }
                 }
-                else
+                Catch
                 {
-                    $Item.Add($key,$RequestBody.$Key) | Out-Null
+                    $Item.Add($Key,$Entry.$Key) | Out-Null
                 }
             }
-            Catch
-            {
-                $Item.Add($Key,$RequestBody.$Key)
-            }
+            $Item += $RequestHeader
+            $Data += $Item
         }
-        $RequestBody += $RequestHeader
-        $Data += $RequestBody
     }
     Catch
     {
