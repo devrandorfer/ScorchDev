@@ -16,7 +16,8 @@ $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
                                                 'SubscriptionAccessCredentialName',
                                                 'ResourceGroupName',
-                                                'WorkspaceId'
+                                                'WorkspaceId',
+                                                'SubscriptionAccessTenant'
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
 $WorkspaceCredential = Get-AutomationPSCredential -Name $GlobalVars.WorkspaceID
@@ -25,35 +26,31 @@ $Key = $WorkspaceCredential.GetNetworkCredential().Password
 Try
 {
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                           -SubscriptionName $GlobalVars.SubscriptionName
+                           -SubscriptionName $GlobalVars.SubscriptionName `
+                           -Tenant $GlobalVars.SubscriptionAccessTenant
     
-    Do
+   
+    $ResourceArray = @()
+    $Resource = Get-AzureRMResource -ExpandProperties
+    foreach($_Resource in $Resource)
     {
-        $ResourceArray = @()
-        $Resource = Get-AzureRMResource -ExpandProperties
-        foreach($_Resource in $Resource)
-        {
-            $obj = @{
-                'Name' = $_Resource.Name
-                'ResourceId' = $_Resource.ResourceId
-                'ResourceName' = $_Resource.ResourceName
-                'ResourceType' = $_Resource.ResourceType
-                'ResourceGroupName' = $_Resource.ResourceGroupName
-                'Location' = $_Resource.Location
-                'SubscriptionId' = $_Resource.SubscriptionId
-            }
-            Foreach($PropertyName in ($_Resource.Properties | Get-Member -MemberType NoteProperty).Name)
-            {
-                $obj.Add("Property-$PropertyName", $_Resource.Properties.$PropertyName) | Out-Null
-            }
-            $ResourceArray += $obj
+        $obj = @{
+            'Name' = $_Resource.Name
+            'ResourceId' = $_Resource.ResourceId
+            'ResourceName' = $_Resource.ResourceName
+            'ResourceType' = $_Resource.ResourceType
+            'ResourceGroupName' = $_Resource.ResourceGroupName
+            'Location' = $_Resource.Location
+            'SubscriptionId' = $_Resource.SubscriptionId
         }
-
-        Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $ResourceArray -LogType 'AzureResourceProperty_CL'
-
-        Start-Sleep -Seconds 30
+        Foreach($PropertyName in ($_Resource.Properties | Get-Member -MemberType NoteProperty).Name)
+        {
+            $obj.Add("Property-$PropertyName", $_Resource.Properties.$PropertyName) | Out-Null
+        }
+        $ResourceArray += $obj
     }
-    While($True)
+
+    Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $ResourceArray -LogType 'AzureResourceProperty_CL'
 }
 Catch
 {
