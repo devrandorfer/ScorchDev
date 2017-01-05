@@ -1,9 +1,9 @@
 ﻿<#
     .SYNOPSIS
-       Script to collect Skype for Business log data and ingest it into Log Analytics
+       Script to collect Skype for Business log data and ingest it into Log Analytics.
 
     .Description
-       Script to collect Skype for Business log data and ingest it into Log Analytics
+       Script to collect Skype for Business log data and ingest it into Log Analytics.
 
 #>
 Param(
