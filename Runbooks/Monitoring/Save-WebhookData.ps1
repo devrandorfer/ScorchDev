@@ -1,9 +1,12 @@
 ﻿<#
     .SYNOPSIS
-       Add a synopsis here to explain the PSScript. 
+       Saves data passed in from a webhook to Log Analytics
 
     .Description
-        Give a description of the Script.
+        Designed to be run inside of Azure Automation. Each webhook that is created on the runbook will be given
+        its own unqiue type inside of log analytics in the form webhooname_CL. All header properties are added
+        as unique properties to the type schema. The request body is converted from JSON and injected into Log
+        Analytics.
 
 #>
 Param(
