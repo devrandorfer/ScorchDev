@@ -7,9 +7,6 @@
 
 #>
 Param(
-    [Parameter(
-        Mandatory=$True
-    )]
     [object] $WebhookData
 )
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
