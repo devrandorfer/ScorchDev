@@ -8,6 +8,8 @@
         as unique properties to the type schema. The request body is converted from JSON and injected into Log
         Analytics.
 
+        An example usecase: Inserting push information from a github repository into a log analytics workspace
+
 #>
 Param(
     [object] $WebhookData
