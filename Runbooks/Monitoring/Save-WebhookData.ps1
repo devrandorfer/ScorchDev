@@ -48,7 +48,17 @@ Try
                             $InnerObject = $Entry.$Key | ConvertFrom-PSCustomObject
                             Foreach($InnerKey in $InnerObject.Keys)
                             {
-                                $Item.Add("$($key)_$($InnerKey)",$InnerObject.$InnerKey) | Out-Null
+                                # Try converting value to int
+                                Try
+                                {
+                                    $Value = $Value = $InnerObject.$InnerKey -as [double]
+                                    if($Value -eq $null) { $Value = $Entry.$Key }
+                                }
+                                Catch
+                                {
+                                    $Value = $InnerObject.$InnerKey
+                                }
+                                $Item.Add("$($key)_$($InnerKey)",$Value) | Out-Null
                             }
                         }
                         Catch
@@ -58,7 +68,16 @@ Try
                     }
                     else
                     {
-                        $Item.Add($key,$Entry.$Key) | Out-Null
+                        Try
+                        {
+                            $Value = $Value = $Entry.$Key -as [double]
+                            if($Value -eq $null) { $Value = $Entry.$Key }
+                        }
+                        Catch
+                        {
+                            $Value = $Entry.$Key
+                        }
+                        $Item.Add($key,$Value) | Out-Null
                     }
                 }
                 Catch
