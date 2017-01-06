@@ -51,7 +51,7 @@ Try
                                 # Try converting value to int
                                 Try
                                 {
-                                    $Value = $Value = $InnerObject.$InnerKey -as [double]
+                                    $Value = $InnerObject.$InnerKey -as [double]
                                     if($Value -eq $null) { $Value = $Entry.$Key }
                                 }
                                 Catch
@@ -70,7 +70,7 @@ Try
                     {
                         Try
                         {
-                            $Value = $Value = $Entry.$Key -as [double]
+                            $Value = $Entry.$Key -as [double]
                             if($Value -eq $null) { $Value = $Entry.$Key }
                         }
                         Catch
