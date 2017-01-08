@@ -97,7 +97,7 @@ Try
     }
 
     if($LogType) { if($LogType -notlike '*_CL') { $LogType = "$($LogType)_CL" } }
-    else { $LogType = "$($WebhookData.WebhookName)_CL"
+    else { $LogType = "$($WebhookData.WebhookName)_CL" }
 
     $Params = @{
         'WorkspaceId' = $OMSVars.WorkspaceId
