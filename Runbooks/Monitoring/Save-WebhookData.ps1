@@ -13,7 +13,8 @@
 #>
 Param(
     [object] $WebhookData,
-    [string] $TimeStampField
+    [string] $TimeStampField,
+    [string] $LogType
 )
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
 $CompletedParameters = Write-StartingMessage -CommandName Save-WebhookData.ps1
@@ -95,11 +96,14 @@ Try
         $Data += $RequestHeader
     }
 
+    if($LogType) { if($LogType -notlike '*_CL') { $LogType = "$($LogType)_CL" } }
+    else { $LogType = "$($WebhookData.WebhookName)_CL"
+
     $Params = @{
         'WorkspaceId' = $OMSVars.WorkspaceId
         'Key' = $WorkspaceCredential.GetNetworkCredential().Password
         'Data' = $Data
-        'LogType' = "$($WebhookData.WebhookName)_CL"
+        'LogType' = $LogType
     }
 
     if($TimeStampField) { $Params.Add('TimeStampField',$TimeStampField) | Out-Null }
