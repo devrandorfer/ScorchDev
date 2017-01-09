@@ -17,7 +17,7 @@ Param(
     [string] $LogType
 )
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-$CompletedParameters = Write-StartingMessage -CommandName Save-WebhookData.ps1
+$CompletedParameters = Write-StartingMessage -CommandName Save-WebhookData.ps1 -String $LogType
 
 $OMSVars = Get-BatchAutomationVariable -Prefix 'LogAnalytics' `
                                        -Name 'WorkspaceId'
@@ -53,7 +53,7 @@ Try
                                 Try
                                 {
                                     $Value = $InnerObject.$InnerKey -as [double]
-                                    if($Value -eq $null) { $Value = $Entry.$Key }
+                                    if($Value -eq $null) { $Value = $InnerObject.$InnerKey }
                                 }
                                 Catch
                                 {
