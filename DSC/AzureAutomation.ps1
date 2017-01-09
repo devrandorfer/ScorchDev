@@ -29,7 +29,7 @@
         'DomainName'
     )
 
-    $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
+    $SubscriptionAccessCredential = Get-AutomationPSCredential -Name ryan@microsoft.com
     $DomainJoinCredential = Get-AutomationPSCredential -Name $GlobalVars.DomainJoinCredentialName
     
     Login-AzureRmAccount -Credential $SubscriptionAccessCredential `
