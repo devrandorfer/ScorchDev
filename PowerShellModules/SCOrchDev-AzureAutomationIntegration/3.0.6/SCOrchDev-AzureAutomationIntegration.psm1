@@ -1061,32 +1061,11 @@ Function Sync-GitRepositoryToAzureAutomation
                                              -AutomationAccountName $AutomationAccountName | ? { $_.Status -ne 'Unresponsive' }
         
         $TrustedHosts = (Get-Item WSMan:\localhost\Client\TrustedHosts).Value -as [string]
-        Write-Verbose -Message "$($env:COMPUTERNAME) - Current Trusted Hosts - [$TrustedHosts]"
-        $IPAddress = $Node.IpAddress | % {
-            $_IPAddress = $_.Split(';')[0]
-            if($TrustedHosts -as [bool])
-            {
-                if($TrustedHosts -notlike "*$_IPAddress*")
-                {
-                    $TrustedHosts = "$($TrustedHosts),$($_IPAddress)"
-                }
-            }
-            else
-            {
-                $TrustedHosts = $_IPAddress
-            }
-            Try
-            {
-                Write-Verbose -Message "$($env:COMPUTERNAME) - Adding $_IPAddress to Trusted Hosts"
-                Set-Item WSMan:\localhost\Client\TrustedHosts -Value $TrustedHosts -Force
-            }
-            Catch
-            {
-                Write-Exception -Exception $_ -Stream Warning
-            }
-            $_IPAddress
-        }
+        if($TrustedHosts -ne '*') { Set-Item -Path 'WSMan:\localhost\Client\TrustedHosts' -Value '*' -Force }
         $TrustedHosts = (Get-Item WSMan:\localhost\Client\TrustedHosts).Value -as [string]
+        Write-Verbose -Message "$($env:COMPUTERNAME) - Current Trusted Hosts - [$TrustedHosts]"
+        $IPAddress = $Node.IpAddress
+        
         Write-Verbose -Message "$($env:COMPUTERNAME) - Updated Trusted Hosts - [$TrustedHosts]"
         Start-DscConfiguration -ComputerName $IPAddress `
                                -Credential $RunbookWorkerAccessCredential `
