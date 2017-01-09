@@ -17,7 +17,7 @@ Param(
     [string] $LogType
 )
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-$CompletedParameters = Write-StartingMessage -CommandName Save-WebhookData.ps1 -String $LogType
+$CompletedParameters = Write-StartingMessage -CommandName Save-WebhookData.ps1 -String $LogType -Stream Verbose
 
 $OMSVars = Get-BatchAutomationVariable -Prefix 'LogAnalytics' `
                                        -Name 'WorkspaceId'
@@ -107,6 +107,8 @@ Try
     }
 
     if($TimeStampField) { $Params.Add('TimeStampField',$TimeStampField) | Out-Null }
+
+    Write-Verbose -Message ($Params | ConvertTo-JSON)
 
     Write-LogAnalyticsLogEntry @Params
 }
