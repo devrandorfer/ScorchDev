@@ -32,9 +32,9 @@
     $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
     $DomainJoinCredential = Get-AutomationPSCredential -Name $GlobalVars.DomainJoinCredentialName
     
-    Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                           -SubscriptionName $GlobalVars.SubscriptionName `
-                           -Tenant $GlobalVars.SubscriptionAccessTenant
+    Login-AzureRmAccount -Credential $SubscriptionAccessCredential `
+                         -SubscriptionName $GlobalVars.SubscriptionName `
+                         -TenantId $GlobalVars.SubscriptionAccessTenant
 
     $RegistrationInfo = Get-AzureRmAutomationRegistrationInfo -ResourceGroupName $GlobalVars.ResourceGroupName `
                                                               -AutomationAccountName $GlobalVars.AutomationAccountName
