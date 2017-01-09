@@ -1067,9 +1067,9 @@ Function Sync-GitRepositoryToAzureAutomation
             Try
             {
                 $HostName = ([System.Net.Dns]::GetHostByAddress("$_Node")).HostName
-                If($HostName -ne $Env:ComputerName) 
+                If($HostName -notlike "$($Env:ComputerName)*") 
                 { 
-                    if($Computer -notlike '$HostName*')
+                    if($Computer -notcontains $HostName)
                     {
                         $Computer += $HostName | Out-Null
                     }
@@ -1077,13 +1077,15 @@ Function Sync-GitRepositoryToAzureAutomation
             } 
             Catch{}
         }
-        Write-Verbose -Message "$Computer"
-        
-        Start-DscConfiguration -ComputerName $Computer `
-                               -Credential $RunbookWorkerAccessCredential `
-                               -UseExisting `
-                               -Wait `
-                               -Force
+        Write-Verbose -Message "[$Computer]"
+        if($Computer)
+        {
+            Start-DscConfiguration -ComputerName $Computer `
+                                   -Credential $RunbookWorkerAccessCredential `
+                                   -UseExisting `
+                                   -Wait `
+                                   -Force
+        }
     }
     Catch
     {
