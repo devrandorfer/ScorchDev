@@ -6,6 +6,12 @@
 Param(
 )
 
+Import-Module SCOrchDev-Utility -Verbose:$False
+Import-Module SCOrchDev-Exception -Verbose:$False
+Import-Module SCOrchDev-File -Verbose:$False
+Import-Module SCOrchDev-GitIntegration -Verbose:$False
+Import-Module AzureRM.Profile -Verbose:$False
+
 $CompletedParams = Write-StartingMessage -CommandName 'Invoke-GitRepositorySync'
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
     
