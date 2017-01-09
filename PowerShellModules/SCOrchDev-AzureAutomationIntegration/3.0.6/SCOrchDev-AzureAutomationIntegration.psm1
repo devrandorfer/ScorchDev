@@ -1060,7 +1060,23 @@ Function Sync-GitRepositoryToAzureAutomation
                                              -ResourceGroupName $ResourceGroupName `
                                              -AutomationAccountName $AutomationAccountName | ? { $_.Status -ne 'Unresponsive' }
         
-        $Computer = $Node.IpAddress.Split(';') | % { Write-Verbose -Message "[$_]"; try{([System.Net.Dns]::GetHostByAddress("$_")).HostName} catch{}}
+        $Computer = @()
+        Foreach($_Node in $Node.IpAddress.Split(';'))
+        {
+            Write-Verbose -Message "[$_]"
+            Try
+            {
+                $HostName = ([System.Net.Dns]::GetHostByAddress("$_")).HostName
+                If($HostName -ne $Env:ComputerName) 
+                { 
+                    if($Computer -notcontains $HostName)
+                    {
+                        $Computer += $HostName | Out-Null
+                    }
+                }
+            } 
+            Catch{}
+        }
         Write-Verbose -Message "$Computer"
         
         Start-DscConfiguration -ComputerName $Computer `
