@@ -19,6 +19,7 @@
         'AutomationAccountName',
         'SubscriptionName',
         'SubscriptionAccessCredentialName',
+        'SubscriptionAccessTenant'
         'ResourceGroupName',
         'WorkspaceID',
         'HybridWorkerGroup',
@@ -32,7 +33,8 @@
     $DomainJoinCredential = Get-AutomationPSCredential -Name $GlobalVars.DomainJoinCredentialName
     
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                           -SubscriptionName $GlobalVars.SubscriptionName
+                           -SubscriptionName $GlobalVars.SubscriptionName `
+                           -Tenant $GlobalVars.SubscriptionAccessTenant
 
     $RegistrationInfo = Get-AzureRmAutomationRegistrationInfo -ResourceGroupName $GlobalVars.ResourceGroupName `
                                                               -AutomationAccountName $GlobalVars.AutomationAccountName
