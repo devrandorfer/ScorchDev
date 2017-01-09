@@ -1063,10 +1063,10 @@ Function Sync-GitRepositoryToAzureAutomation
         $Computer = @()
         Foreach($_Node in $Node.IpAddress.Split(';'))
         {
-            Write-Verbose -Message "[$_]"
+            Write-Verbose -Message "[$_Node]"
             Try
             {
-                $HostName = ([System.Net.Dns]::GetHostByAddress("$_")).HostName
+                $HostName = ([System.Net.Dns]::GetHostByAddress("$_Node")).HostName
                 If($HostName -ne $Env:ComputerName) 
                 { 
                     if($Computer -notcontains $HostName)
