@@ -1069,7 +1069,7 @@ Function Sync-GitRepositoryToAzureAutomation
                 $HostName = ([System.Net.Dns]::GetHostByAddress("$_Node")).HostName
                 If($HostName -ne $Env:ComputerName) 
                 { 
-                    if($Computer -notcontains $HostName)
+                    if($Computer -notlike '$HostName*')
                     {
                         $Computer += $HostName | Out-Null
                     }
