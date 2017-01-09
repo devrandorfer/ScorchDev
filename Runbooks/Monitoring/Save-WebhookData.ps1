@@ -17,6 +17,12 @@ Param(
     [string] $LogType
 )
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
+
+Import-Module SCOrchDev-GitIntegration -Verbose:$False
+Import-Module SCOrchDev-Utility -Verbose:$False
+Import-Module SCOrchDev-Exception -Verbose:$False
+Import-Module SCOrchDev-File -Verbose:$False
+
 $CompletedParameters = Write-StartingMessage -CommandName Save-WebhookData.ps1 -String $LogType -Stream Verbose
 
 $OMSVars = Get-BatchAutomationVariable -Prefix 'LogAnalytics' `
