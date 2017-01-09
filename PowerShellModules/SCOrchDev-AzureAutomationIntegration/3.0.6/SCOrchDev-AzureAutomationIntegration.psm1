@@ -1031,11 +1031,6 @@ Function Sync-GitRepositoryToAzureAutomation
         [Parameter(Mandatory = $False)]
         $LocalGitRepositoryRoot = 'c:\git'
     )
-
-    Import-Module PSDesiredStateConfiguration -Verbose:false
-    Import-Module AzureRM.Profile -Verbose:false
-    Import-Module Azure.Storage -Verbose:false
-    Import-Module AzureRM.Storage -Verbose:false
     
     $CompletedParams = Write-StartingMessage -String $GitRepositoryCurrentCommit
     $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
