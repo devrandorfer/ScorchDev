@@ -1060,14 +1060,10 @@ Function Sync-GitRepositoryToAzureAutomation
                                              -ResourceGroupName $ResourceGroupName `
                                              -AutomationAccountName $AutomationAccountName | ? { $_.Status -ne 'Unresponsive' }
         
-        $TrustedHosts = (Get-Item WSMan:\localhost\Client\TrustedHosts).Value -as [string]
-        if($TrustedHosts -ne '*') { Set-Item -Path 'WSMan:\localhost\Client\TrustedHosts' -Value '*' -Force }
-        $TrustedHosts = (Get-Item WSMan:\localhost\Client\TrustedHosts).Value -as [string]
-        Write-Verbose -Message "$($env:COMPUTERNAME) - Current Trusted Hosts - [$TrustedHosts]"
-        $IPAddress = $Node.IpAddress
+        $Computer = $Node.IpAddress | % { ([System.Net.Dns]::GetHostByAddress($_)).HostName }
+        Write-Verbose -Message "$Computer"
         
-        Write-Verbose -Message "$($env:COMPUTERNAME) - Updated Trusted Hosts - [$TrustedHosts]"
-        Start-DscConfiguration -ComputerName $IPAddress `
+        Start-DscConfiguration -ComputerName $Computer `
                                -Credential $RunbookWorkerAccessCredential `
                                -UseExisting `
                                -Wait `
