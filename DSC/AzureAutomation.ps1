@@ -29,11 +29,11 @@
         'DomainName'
     )
 
-    $SubscriptionAccessCredential = Get-AutomationPSCredential -Name 'scorchd@microsoft.com'
+    $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
     $DomainJoinCredential = Get-AutomationPSCredential -Name $GlobalVars.DomainJoinCredentialName
     
     Login-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                         -SubscriptionName $GlobalVars.SubscriptionName
+                         -SubscriptionName $GlobalVars.SubscriptionName -ServicePrincipal -TenantId $GlobalVars.SubscriptionAccessTenant
 
     $RegistrationInfo = Get-AzureRmAutomationRegistrationInfo -ResourceGroupName $GlobalVars.ResourceGroupName `
                                                               -AutomationAccountName $GlobalVars.AutomationAccountName
