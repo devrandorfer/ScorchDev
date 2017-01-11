@@ -50,6 +50,11 @@
                                                              "Description":  "name of the automation account",
                                                              "Value":  "demorandorfer"
                                                          },
+                      "zzGlobal-AutomationAccountEndpoint":  {
+                                                                 "isEncrypted":  false,
+                                                                 "Description":  "",
+                                                                 "Value":  "https://eus2-agentservice-prod-1.azure-automation.net/accounts/170768e2-537e-49b8-812e-95de9f2b917d"
+                                                             },
                       "zzGlobal-HybridWorkerGroup":  {
                                                          "isEncrypted":  false,
                                                          "Description":  "name of the hybrid worker group for starting sync job on",

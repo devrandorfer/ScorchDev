@@ -26,25 +26,13 @@
         'GitRepository',
         'LocalGitRepositoryRoot',
         'DomainJoinCredentialName',
-        'DomainName'
+        'DomainName',
+        'AutomationAccountEndpoint'
     )
 
-    #$SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
-    $SubscriptionAccessCredential = Get-AutomationPSCredential -Name 'scorchd@microsoft.com'
     $DomainJoinCredential = Get-AutomationPSCredential -Name $GlobalVars.DomainJoinCredentialName
-    
-    <#
-    Add-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                         -SubscriptionName $GlobalVars.SubscriptionName `
-                         -TenantId $GlobalVars.SubscriptionAccessTenant `
-                         -ServicePrincipal
-    #>
-    Add-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                         -SubscriptionName $GlobalVars.SubscriptionName
 
-    $RegistrationInfo = Get-AzureRmAutomationRegistrationInfo -ResourceGroupName $GlobalVars.ResourceGroupName `
-                                                              -AutomationAccountName $GlobalVars.AutomationAccountName
-
+    $PrimaryKey = (Get-AutomationPSCredential -Name $GlobalVars.AutomationAccountName).GetNetworkCredential().Password
     $WorkspaceCredential = Get-AutomationPSCredential -Name $GlobalVars.WorkspaceID
     $WorkspaceKey = $WorkspaceCredential.GetNetworkCredential().Password
 
@@ -224,8 +212,8 @@
         cHybridRunbookWorkerRegistration HybridRegistration
         {
             RunbookWorkerGroup = $GlobalVars.HybridWorkerGroup
-            AutomationAccountURL = $RegistrationInfo.Endpoint
-            Key = $RegistrationInfo.PrimaryKey
+            AutomationAccountURL = $GlobalVars.AutomationAccountEndpoint
+            Key = $PrimaryKey
             DependsOn = $HybridRunbookWorkerDependency
         }
 
