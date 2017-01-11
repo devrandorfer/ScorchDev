@@ -1,5 +1,6 @@
 ﻿Configuration DomainComputer
 {
+    #Import Modules
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module cWindowscomputer
