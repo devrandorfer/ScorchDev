@@ -66,6 +66,12 @@
       },
       "defaultValue": "Standard_A2m_v2"
     },
+    "AvailabilitySetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Availability Set to create or place into"
+      }
+    },
     "imagePublisher": {
       "type": "string",
       "defaultValue": "MicrosoftWindowsServer",
@@ -150,6 +156,17 @@
             }
           }
         ]
+      }
+    },
+    {
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[parameters('AvailabilitySetName')",
+      "apiVersion": "[variables('computeResouresApiVersion')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "platformFaultDomainCount": "3",
+        "platformUpdateDomainCount": "3",
+        "managed": "true"
       }
     },
     {

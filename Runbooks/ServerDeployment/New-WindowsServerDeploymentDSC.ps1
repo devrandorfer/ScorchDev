@@ -48,6 +48,7 @@ Try
                                        -registrationUrl $RegistrationInfo.Endpoint `
                                        -registrationKey ($RegistrationInfo.PrimaryKey | ConvertTo-SecureString -AsPlainText -Force) `
                                        -serverConfiguration 'AzureAutomation.HybridRunbookWorker' `
+                                       -AvailabilitySetName 'HybridRunbookWorker' `
                                        -Verbose
 }
 Catch
