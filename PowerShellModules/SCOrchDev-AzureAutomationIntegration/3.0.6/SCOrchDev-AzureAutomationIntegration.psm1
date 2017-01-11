@@ -307,7 +307,7 @@ Function Publish-AzureAutomationDSCChange
                                                             -Tenant $Tenant
         if($DSCInformation.Update)
         {
-            $UpdateCompleteParams = Write-StartingMessage -CommandName 'Updating DSC Configuration' -String "[$($DSCInformation | ConvertTo-Json -Depth ([int]::MaxValue))]"
+            $UpdateCompleteParams = Write-StartingMessage -CommandName 'Updating DSC Configuration' -String "[$($DSCInformation | ConvertTo-Json -Depth 5)]"
             $ParameterSet = $DSCInformation.ParameterSet
             $Null = Import-AzureRmAutomationDscConfiguration @ParameterSet
 
@@ -331,7 +331,7 @@ Function Publish-AzureAutomationDSCChange
         }
         else
         {
-            Write-Verbose -Message "DSC Configuration is not a new version. Skipping. [$($DSCInformation | ConvertTo-Json -Depth ([int]::MaxValue))]"
+            Write-Verbose -Message "DSC Configuration is not a new version. Skipping. [$($DSCInformation | ConvertTo-Json -Depth 5)]"
         }
     }
     Catch
