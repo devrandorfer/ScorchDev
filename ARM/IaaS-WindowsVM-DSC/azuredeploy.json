@@ -161,8 +161,8 @@
     {
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[parameters('AvailabilitySetName')",
-      "apiVersion": "[variables('computeResouresApiVersion')]",
-      "location": "[variables('location')]",
+      "apiVersion": "2016-04-30-preview",
+      "location": "[resourceGroup().location]",
       "properties": {
         "platformFaultDomainCount": "3",
         "platformUpdateDomainCount": "3",
