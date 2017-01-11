@@ -102,16 +102,6 @@
             Domain = $GlobalVars.DomainName
             Credential = $DomainJoinCredential
         }
-        NetworkAdapterComponent ms_rspndr
-        {
-            ComponentId = 'ms_rspndr'
-            Enabled = $False
-        }
-        NetworkAdapterComponent ms_lltdio
-        {
-            ComponentId = 'ms_lltdio'
-            Enabled = $False
-        }
         cAzureNetworkPerformanceMonitoring EnableAzureNPM
         {
             Name = 'EnableNPM'
