@@ -15,6 +15,7 @@ $CompletedParameters = Write-StartingMessage -CommandName New-WindowsServerDeplo
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
                                                 'SubscriptionAccessCredentialName',
+                                                'SubscriptionAccessTenant',
                                                 'ResourceGroupName',
                                                 'AutomationAccountName'
 
@@ -24,7 +25,8 @@ $RunbookWorkerAccessCredential = Get-AutomationPSCredential -Name 'ryan'
 Try
 {
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                           -SubscriptionName $GlobalVars.SubscriptionName
+                           -SubscriptionName $GlobalVars.SubscriptionName `
+                           -Tenant $GlobalVars.SubscriptionAccessTenant
     
     $RegistrationInfo = Get-AzureRmAutomationRegistrationInfo -ResourceGroupName $GlobalVars.ResourceGroupName `
                                                               -AutomationAccountName $GlobalVars.AutomationAccountName
@@ -41,7 +43,6 @@ Try
                                        -TemplateFile 'C:\git\ScorchDev\ARM\Iaas-WindowsVM-DSC\azuredeploy.json' `
                                        -adminUsername $RunbookWorkerAccessCredential.UserName `
                                        -adminPassword $RunbookWorkerAccessCredential.Password `
-                                       -storageAccountName "$($ResourceGroupName.ToLower())store" `
                                        -vmName $VMName `
                                        -ResourceGroupName $ResourceGroupName `
                                        -registrationUrl $RegistrationInfo.Endpoint `
