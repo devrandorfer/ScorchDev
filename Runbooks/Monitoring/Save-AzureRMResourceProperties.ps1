@@ -40,6 +40,7 @@ Try
     $Resource = Find-AzureRMResource
     foreach($_Resource in $Resource)
     {
+        $ItemCompleted = Write-StartingMessage -CommandName 'Item Processing' -String $_Resource.Name
         Try
         {
             $PopulatedResource = Get-AzureRMResource -ResourceId $_Resource.ResourceId -ExpandProperties
@@ -65,13 +66,14 @@ Try
             if($ResourceArray.Count -ge 20)
             {
                 Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $ResourceArray -LogType 'AzureResourceProperty_CL'
-                $ResourceArray.Clear()
+                $ResourceArray = @()
             }
         }
         catch
         {
             Write-Exception -Exception $_ -Stream Warning
         }
+        Write-CompletedMessage @ItemCompleted
     }
     if($ResourceArray.Count -gt 0)
     {
