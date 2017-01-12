@@ -16,9 +16,15 @@ configuration DomainController
 
     $zzGlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                               -Name @(
-        'WorkspaceID',
+        'WorkspaceID'
+    )
+
+    $GlobalVars = Get-BatchAutomationVariable -Prefix 'Global' `
+                                              -Name @(
+        'DomainCredentialName',
         'DomainName'
     )
+
 
     $WorkspaceCredential = Get-AutomationPSCredential -Name $zzGlobalVars.WorkspaceID
     $WorkspaceKey = $WorkspaceCredential.GetNetworkCredential().Password
@@ -36,9 +42,6 @@ configuration DomainController
     $ADMSetupExe = 'ADM-Agent-Windows.exe'
     $ADMCommandLineArguments = '/S'
 
-    $GlobalVars = Get-BatchAutomationVariable -Prefix 'Global' `
-                                              -Name 'DomainCredentialName',
-                                                    'DomainName'
 
     $DomainCredentail = Get-AutomationPSCredential -Name $GlobalVars.DomainCredentialName
     $RetryCount = 20
@@ -92,7 +95,7 @@ configuration DomainController
 
         xWaitForADDomain DscForestWait
         {
-            DomainName = $DomainName
+            DomainName = $GlobalVars.DomainName
             DomainUserCredential = $DomainCredentail
             RetryCount = $RetryCount
             RetryIntervalSec = $RetryIntervalSec
