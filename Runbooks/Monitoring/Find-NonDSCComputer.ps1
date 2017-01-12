@@ -57,7 +57,7 @@ Try
                 {
                     if(($_Nic.Properties.ipConfigurations | ConvertTo-Json) -like "*$_Vnet*")
                     {
-                        Register-AzureRmAutomationDscNode -AzureVMName $VirtualMachine.Name `
+                        Register-AzureRmAutomationDscNode -AzureVMName $VM.Name `
                                                           -AutomationAccountName $GlobalVars.AutomationAccountName `
                                                           -ResourceGroupName $GlobalVars.ResourceGroupName `
                                                           -NodeConfigurationName $Vars.NodeConfigurationName
