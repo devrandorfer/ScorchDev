@@ -16,7 +16,8 @@ configuration DomainController
 
     $zzGlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                               -Name @(
-        'WorkspaceID'
+        'WorkspaceID',
+        'DomainName'
     )
 
     $WorkspaceCredential = Get-AutomationPSCredential -Name $zzGlobalVars.WorkspaceID
