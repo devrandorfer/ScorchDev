@@ -37,26 +37,46 @@ Try
     
    
     $ResourceArray = @()
-    $Resource = Get-AzureRMResource -ExpandProperties
+    $Resource = Find-AzureRMResource
     foreach($_Resource in $Resource)
     {
-        $obj = @{
-            'Name' = $_Resource.Name
-            'ResourceId' = $_Resource.ResourceId
-            'ResourceName' = $_Resource.ResourceName
-            'ResourceType' = $_Resource.ResourceType
-            'ResourceGroupName' = $_Resource.ResourceGroupName
-            'Location' = $_Resource.Location
-            'SubscriptionId' = $_Resource.SubscriptionId
-        }
-        Foreach($PropertyName in ($_Resource.Properties | Get-Member -MemberType NoteProperty).Name)
+        Try
         {
-            $obj.Add("Property-$PropertyName", $_Resource.Properties.$PropertyName) | Out-Null
-        }
-        $ResourceArray += $obj
-    }
+            $PopulatedResource = Get-AzureRMResource -ResourceId $_Resource.ResourceId -ExpandProperties
+            $obj = @{
+                'Name' = $PopulatedResource.Name
+                'ResourceId' = $PopulatedResource.ResourceId
+                'ResourceName' = $PopulatedResource.ResourceName
+                'ResourceType' = $PopulatedResource.ResourceType
+                'ResourceGroupName' = $PopulatedResource.ResourceGroupName
+                'Location' = $PopulatedResource.Location
+                'SubscriptionId' = $PopulatedResource.SubscriptionId
+            }
+            if(($_Resource | Get-Member -MemberType NoteProperty).Name -contains 'Tags')
+            {
+                $obj.Add('Tags', ($_Resource.Tags | ConvertTo-Json)) | Out-Null
+            }
+            Foreach($PropertyName in ($PopulatedResource.Properties | Get-Member -MemberType NoteProperty).Name)
+            {
+                $obj.Add("Property-$PropertyName", $PopulatedResource.Properties.$PropertyName) | Out-Null
+            }
+            $ResourceArray += $obj
 
-    Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $ResourceArray -LogType 'AzureResourceProperty_CL'
+            if($ResourceArray.Count -ge 20)
+            {
+                Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $ResourceArray -LogType 'AzureResourceProperty_CL'
+                $ResourceArray.Clear()
+            }
+        }
+        catch
+        {
+            Write-Exception -Exception $_ -Stream Warning
+        }
+    }
+    if($ResourceArray.Count -gt 0)
+    {
+        Write-LogAnalyticsLogEntry -WorkspaceId $GlobalVars.WorkspaceId -Key $Key -Data $ResourceArray -LogType 'AzureResourceProperty_CL'
+    }
 }
 Catch
 {
