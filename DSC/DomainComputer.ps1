@@ -11,6 +11,7 @@
     Import-DscResource -Module cNetworkAdapter
     Import-DscResource -Module cDisk
     Import-DscResource -Module xDisk
+    Import-DscResource -Module xWindowsUpdate
 
     $SourceDir = 'D:\Source'
     $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
@@ -108,6 +109,14 @@
             Name = 'EnableNPM'
             Ensure = 'Present'
         }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
+        }
     }
     Node MemberServerQA
     {
@@ -173,6 +182,14 @@
             Name = 'EnableNPM'
             Ensure = 'Present'
         }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
+        }
     }
     Node MemberServerProd
     {
@@ -237,6 +254,14 @@
         {
             Name = 'EnableNPM'
             Ensure = 'Present'
+        }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
         }
     }
     Node WebServerProd
@@ -326,6 +351,14 @@
             Name = 'EnableNPM'
             Ensure = 'Present'
         }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
+        }
     }
     Node ASR_ManagementServer
     {
@@ -407,6 +440,22 @@
         {
             DiskNumber = 2
             DriveLetter = 'F'
+        }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
+        }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
         }
     }
 }

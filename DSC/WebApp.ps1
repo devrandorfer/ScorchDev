@@ -10,6 +10,7 @@
     Import-DscResource -Module cNetworkAdapter
     Import-DscResource -Module cDisk
     Import-DscResource -Module xDisk
+    Import-DscResource -Module xWindowsUpdate
 
     $SourceDir = 'D:\Source'
     $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
@@ -249,7 +250,15 @@
              Ensure = 'Present'
              ProductID = '93ED58D2-1180-40C2-8E96-B90D57AC3A11'
              DependsOn = "[xRemoteFile]iisnode-core-download"
-        }       
+        }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
+        }
     }
     Node SQL
     {
@@ -314,6 +323,14 @@
         {
             Name = 'EnableNPM'
             Ensure = 'Present'
+        }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
         }
     }
 }

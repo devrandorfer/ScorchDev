@@ -11,6 +11,7 @@
     Import-DscResource -Module cAzureAutomation
     Import-DscResource -Module xDSCDomainjoin -ModuleVersion 1.1
     Import-DscResource -Module cInternetExplorerESC
+    Import-DscResource -Module xWindowsUpdate
 
     $SourceDir = 'c:\Source'
 
@@ -275,6 +276,14 @@
              Ensure = 'Present'
              ProductID = 'D7334D5D-0FA2-4DA9-8D8A-883F8C0BD41B'
              DependsOn = '[xRemoteFile]DownloadSkypeOnlinePowershell'
+        }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
         }
     }
 }

@@ -7,7 +7,8 @@ configuration DomainController
                                    xPSDesiredStateConfiguration,
                                    PSDesiredStateConfiguration,
                                    cWindowscomputer,
-                                   cAzureAutomation
+                                   cAzureAutomation,
+                                   xWindowsUpdate
 
     Import-DscResource -ModuleName xActiveDirectory -ModuleVersion 2.13.0.0
 
@@ -150,6 +151,14 @@ configuration DomainController
             Name = 'EnableNPM'
             Ensure = 'Present'
         }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
+        }
     }
     Node BDC
     {
@@ -243,6 +252,14 @@ configuration DomainController
         {
             Name = 'EnableNPM'
             Ensure = 'Present'
+        }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
         }
     }
 } 
