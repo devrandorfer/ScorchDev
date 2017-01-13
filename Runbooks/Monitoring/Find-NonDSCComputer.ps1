@@ -48,8 +48,10 @@ Try
     $VirtualMachine = Get-AzureRmVM
     Foreach($VM in $VirtualMachine)
     {
+        $IndividualCompleted = Write-StartingMessage -CommandName 'Checking Machine for DSC Extension' -String $VM.Name
         if(($VM | ConvertTo-Json) -notlike '*Microsoft.Powershell.DSC*')
         {
+            $Status = 'No DSC Extension Found.'
             Foreach($Nic in $VM.NetworkInterfaceIDs)
             {
                 $_Nic = Get-AzureRmResource -ResourceId $Nic
@@ -57,14 +59,30 @@ Try
                 {
                     if(($_Nic.Properties.ipConfigurations | ConvertTo-Json) -like "*$_Vnet*")
                     {
-                        Register-AzureRmAutomationDscNode -AzureVMName $VM.Name `
-                                                          -AutomationAccountName $GlobalVars.AutomationAccountName `
-                                                          -ResourceGroupName $GlobalVars.ResourceGroupName `
-                                                          -NodeConfigurationName $Vars.NodeConfigurationName
+                        Try
+                        {
+                            Register-AzureRmAutomationDscNode -AzureVMName $VM.Name `
+                                                              -AutomationAccountName $GlobalVars.AutomationAccountName `
+                                                              -ResourceGroupName $GlobalVars.ResourceGroupName `
+                                                              -NodeConfigurationName $Vars.NodeConfigurationName
+                            $Status = 'Registered as DSC node'
+                        }
+                        Catch
+                        {
+                            $Status = 'Error Registering'
+                            Write-Exception -Exception $_ -Stream Warning
+                        }
+                        
+                    }
+                    else
+                    {
+                        $Status = "$Status - No nic on $_Vnet"
                     }
                 }
             }
         }
+        else { $Status = 'DSC Enabled' }
+        Write-CompletedMessage @IndividualCompleted -Status $Status
     }
 }
 Catch
