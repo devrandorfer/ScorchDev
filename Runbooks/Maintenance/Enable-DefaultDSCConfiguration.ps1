@@ -24,7 +24,7 @@ $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                                 'SubscriptionAccessCredentialName',
                                                 'ResourceGroupName',
                                                 'SubscriptionAccessTenant',
-                                                'AutomationAccountName',
+                                                'AutomationAccountName'
 
 $Vars = Get-BatchAutomationVariable -Prefix 'DSCComputer' `
                                     -Name @(
