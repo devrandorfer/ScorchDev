@@ -23,7 +23,8 @@ $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
                                                 'SubscriptionAccessCredentialName',
                                                 'ResourceGroupName',
-                                                'SubscriptionAccessTenant'
+                                                'SubscriptionAccessTenant',
+                                                'AutomationAccountName'
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
 
