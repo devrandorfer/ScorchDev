@@ -55,21 +55,10 @@ Try
                 {
                     if(($_Nic.Properties.ipConfigurations | ConvertTo-Json) -like "*$_Vnet*")
                     {
-                        Try
-                        {
-                            Register-AzureRmAutomationDscNode -AzureVMName $VM.Name `
-                                                              -AzureVMResourceGroup $VM.ResourceGroupName `
-                                                              -AutomationAccountName $GlobalVars.AutomationAccountName `
-                                                              -ResourceGroupName $GlobalVars.ResourceGroupName `
-                                                              -NodeConfigurationName $Vars.NodeConfigurationName
-                            $Status = 'Registered as DSC node'
+                        Invoke-AutomationWatcherAction -Properties @{
+                            'VMName' = $VM.Name
+                            'VMResourceGroup' = $VM.ResourceGroupName
                         }
-                        Catch
-                        {
-                            $Status = 'Error Registering'
-                            Write-Exception -Exception $_ -Stream Warning
-                        }
-                        
                     }
                     else
                     {
