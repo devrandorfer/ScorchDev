@@ -58,6 +58,7 @@ Try
                         Try
                         {
                             Register-AzureRmAutomationDscNode -AzureVMName $VM.Name `
+                                                              -AzureVMResourceGroup $VM.ResourceGroupName `
                                                               -AutomationAccountName $GlobalVars.AutomationAccountName `
                                                               -ResourceGroupName $GlobalVars.ResourceGroupName `
                                                               -NodeConfigurationName $Vars.NodeConfigurationName
