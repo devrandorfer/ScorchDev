@@ -33,7 +33,6 @@ $Vars = Get-BatchAutomationVariable -Prefix 'DSCComputer' `
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
 
-
 Try
 {
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
