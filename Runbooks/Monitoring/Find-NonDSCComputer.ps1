@@ -14,9 +14,6 @@ Import-Module SCOrchDev-Utility -Verbose:$False
 Import-Module SCOrchDev-Exception -Verbose:$False
 Import-Module SCOrchDev-File -Verbose:$False
 Import-Module SCOrchDev-GitIntegration -Verbose:$False
-Import-Module AzureRM.Profile -Verbose:$False
-Import-Module AzureRM.Resources -Verbose:$False
-Import-Module AzureRM.Automation -Verbose:$False
 
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
 $CompletedParameters = Write-StartingMessage -CommandName Find-NonDSCComputer.ps1
