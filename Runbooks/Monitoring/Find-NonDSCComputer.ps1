@@ -55,7 +55,7 @@ Try
                 {
                     if(($_Nic.Properties.ipConfigurations | ConvertTo-Json) -like "*$_Vnet*")
                     {
-                        Invoke-AutomationWatcherAction -Properties @{
+                        Invoke-AutomationWatcherAction -CustomProperties @{
                             'VMName' = $VM.Name
                             'VMResourceGroup' = $VM.ResourceGroupName
                         }

@@ -565,7 +565,7 @@ Function Select-LocalDevWorkspace
 Function Invoke-AutomationWatcherAction
 {
     Param(
-        [hashtable] $Properties,
+        [hashtable] $CustomProperties,
         [string] $Message
     )
 
