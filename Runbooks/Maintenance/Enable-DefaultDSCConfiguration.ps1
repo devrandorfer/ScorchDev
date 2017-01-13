@@ -1,9 +1,9 @@
 ﻿<#
     .SYNOPSIS
-       Add a synopsis here to explain the PSScript. 
+        Enrolls a machine into Azure Automation DSC with a default configuration.
 
     .Description
-        Give a description of the Script.
+        Designed to be triggered from a watcher task. 
 
 #>
 Param(
