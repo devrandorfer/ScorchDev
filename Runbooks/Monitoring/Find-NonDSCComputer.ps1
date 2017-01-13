@@ -1,9 +1,9 @@
 ﻿<#
     .SYNOPSIS
-       Add a synopsis here to explain the PSScript. 
+       Finds machines connected to a list of VNets that currently have no DSC extension applied.
 
     .Description
-        Give a description of the Script.
+        Designed to be run as a watcher task
 
 #>
 Param(
