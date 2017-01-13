@@ -574,7 +574,7 @@ Function Invoke-AutomationWatcherAction
         'InvocationId' = New-Guid
         'EventProperties' = @{
             'TimeStamp' = (Get-Date)
-            'PropertyBag' = $Properties
+            'PropertyBag' = $CustomProperties
         }
         'Message' = $Message
         'WatcherName' = 'WatcherName'
