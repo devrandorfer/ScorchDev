@@ -44,7 +44,12 @@ Try
                                       -AzureVMResourceGroup $EventData.EventProperties.PropertyBag.VMResourceGroup `
                                       -AutomationAccountName $GlobalVars.AutomationAccountName `
                                       -ResourceGroupName $GlobalVars.ResourceGroupName `
-                                      -NodeConfigurationName $Vars.NodeConfigurationName
+                                      -NodeConfigurationName $Vars.NodeConfigurationName `
+                                      -ConfigurationMode ApplyAndAutocorrect `
+                                      -RebootNodeIfNeeded $True `
+                                      -ActionAfterReboot ContinueConfiguration `
+                                      -ConfigurationModeFrequencyMins 15 `
+                                      -RefreshFrequencyMins 30
 }
 Catch
 {
