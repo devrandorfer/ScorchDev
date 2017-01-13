@@ -21,14 +21,11 @@ $CompletedParameters = Write-StartingMessage -CommandName Find-NonDSCComputer.ps
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
                                                 'SubscriptionAccessCredentialName',
-                                                'ResourceGroupName',
-                                                'AutomationAccountName',
                                                 'SubscriptionAccessTenant'
 
 $Vars = Get-BatchAutomationVariable -Prefix 'DSCComputer' `
                                     -Name @(
-    'TargetVNet',
-    'NodeConfigurationName'
+    'TargetVNet'
 )
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
