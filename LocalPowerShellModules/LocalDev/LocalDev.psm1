@@ -562,4 +562,22 @@ Function Select-LocalDevWorkspace
 
     }
 }
+Function Invoke-AutomationWatcherAction
+{
+    Param(
+        [hashtable] $CustomProperties,
+        [string] $Message
+    )
+
+    Return @{
+        'Type' = 'WatcherEvent'
+        'InvocationId' = New-Guid
+        'EventProperties' = @{
+            'TimeStamp' = (Get-Date)
+            'PropertyBag' = $CustomProperties
+        }
+        'Message' = $Message
+        'WatcherName' = 'WatcherName'
+    }
+}
 Export-ModuleMember -Function * -Verbose:$false

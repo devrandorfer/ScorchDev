@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "DSCComputer-TargetVNet":  {
+                                                     "isEncrypted":  false,
+                                                     "Description":  "",
+                                                     "Value":  "[\"useast2\"]"
+                                                 },
+                      "DSCComputer-NodeConfigurationName":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  "DomainComputer.MemberServerProd"
+                                                            }
+                  }
+}

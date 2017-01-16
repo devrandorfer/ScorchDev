@@ -55,14 +55,6 @@ configuration DomainController
             Name = "DNS"
         }
 
-        xDnsServerAddress DnsServerAddress 
-        { 
-            Address        = '127.0.0.1' 
-            InterfaceAlias = 'Ethernet'
-            AddressFamily  = 'IPv4'
-            DependsOn = "[WindowsFeature]DNS"
-        }
-
         xWaitforDisk Disk2
         {
              DiskNumber = 2
