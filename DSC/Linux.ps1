@@ -1,4 +1,4 @@
-# DSC configuration CronJob
+﻿# DSC configuration CronJob
 configuration CronJob
 {
     # Import the DSC module nx
