@@ -33,7 +33,7 @@ Try
     Add-AzureRmAccount -Credential $SubscriptionAccessCredential `
                        -SubscriptionName $GlobalVars.SubscriptionName `
                        -TenantId $GlobalVars.SubscriptionAccessTenant `
-                       -ServicePrincipal
+                       -ServicePrincipal | Out-Null
 }
 Catch
 {
