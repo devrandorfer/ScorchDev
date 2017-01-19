@@ -30,9 +30,10 @@ $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.Sub
 
 Try
 {
-    Connect-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                           -SubscriptionName $GlobalVars.SubscriptionName `
-                           -Tenant $GlobalVars.SubscriptionAccessTenant
+    Add-AzureRmAccount -Credential $SubscriptionAccessCredential `
+                       -SubscriptionName $GlobalVars.SubscriptionName `
+                       -TenantId $GlobalVars.SubscriptionAccessTenant `
+                       -ServicePrincipal
 }
 Catch
 {
