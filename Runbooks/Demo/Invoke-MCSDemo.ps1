@@ -31,7 +31,6 @@ $Vars = Get-BatchAutomationVariable -Prefix 'MCSDemo' `
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
 
-$DemoCred = Get-AutomationPSCredential -Name 'manderson@microsoft.com'
 Try
 {
     Add-AzureRmAccount -Credential $SubscriptionAccessCredential `
