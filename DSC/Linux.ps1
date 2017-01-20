@@ -1,5 +1,4 @@
-﻿# DSC configuration CronJob
-configuration CronJob
+﻿configuration Linux
 {
 
     $Vars = Get-BatchAutomationVariable -Prefix LogAnalytics `
@@ -10,7 +9,7 @@ configuration CronJob
     # Import the DSC module nx
     Import-DSCResource -Module nx
     # Node name or IP
-    node linux.ubuntu.localdomain
+    node ubuntu
     {
         # Use the nxScript resource to create a cronjob.
         nxScript CronJob{
