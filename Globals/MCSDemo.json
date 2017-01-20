@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "MCSDemo-People":  {
+                                             "isEncrypted":  false,
+                                             "Description":  "",
+                                             "Value":  "Ryan"
+                                         },
+                      "MCSDemo-Person":  {
+                                             "isEncrypted":  false,
+                                             "Description":  "",
+                                             "Value":  "Michael"
+                                         }
+                  }
+}
