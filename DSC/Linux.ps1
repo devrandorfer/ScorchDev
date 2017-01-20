@@ -1,25 +1,32 @@
 ﻿# DSC configuration CronJob
 configuration CronJob
 {
+
+    $Vars = Get-BatchAutomationVariable -Prefix LogAnalytics `
+                                        -Name WorkspaceId
+    $Key = (Get-AutomationPSCredential -Name $Vars.WorkspaceId).GetNetworkCredential().Password
+
+    $AgentVersion = '1.1.1.316'
     # Import the DSC module nx
     Import-DSCResource -Module nx
     # Node name or IP
-    node linux.localdomain
+    node linux.ubuntu.localdomain
     {
         # Use the nxScript resource to create a cronjob.
         nxScript CronJob{
         GetScript = @'
 #!/bin/bash
-crontab -l | grep -q "powershell -c /tmp/Send-Login.ps1" && echo 'Job exists' || echo 'Job does not exist'
+dpkg --list omsconfig | grep  1.1.1.316 && echo "agent exists" || echo "agent doesn't exist"
 '@
-        SetScript = @'
+        SetScript = @"
 #!/bin/bash
-(crontab -l | grep -v -F "powershell -c /tmp/Send-Login.ps1" ; echo "*/5 * * * * powershell -c /tmp/Send-Login.ps1" ) | crontab
-'@
-        TestScript = @'
+wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh
+sudo sh ./omsagent-1.3.0-1.universal.x64.sh --upgrade -w $($Vars.WorkspaceId) -s $Key
+"@
+        TestScript = @"
 #!/bin/bash
-crontab -l | grep -q "powershell -c /tmp/Send-Login.ps1" && exit 0 || exit 1
-'@
+dpkg --list omsconfig | grep $AgentVersion && exit 0 || exit 1
+"@
         }
     }
 }
