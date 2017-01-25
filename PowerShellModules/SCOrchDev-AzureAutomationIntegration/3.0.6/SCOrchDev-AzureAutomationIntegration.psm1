@@ -1910,7 +1910,11 @@ Function Connect-AzureRmAccount
         [PSCredential]
         $Credential,
         
-        [Parameter(Mandatory = $True)]
+        [Parameter(Mandatory = $False)]
+        [String]
+        $SubscriptionId,
+
+        [Parameter(Mandatory = $False)]
         [String]
         $SubscriptionName,
 
@@ -1921,25 +1925,21 @@ Function Connect-AzureRmAccount
 
     $CompletedParams = Write-StartingMessage -String $SubscriptionName
     $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
+    if(-not (Get-Module -Name AzureRM.profile)) { $Null = Import-Module -Name AzureRM.profile -Verbose:$False }
 
     Try
     {
-        $SPNParams = @{
-            'ServicePrincipal' = $True
-            'Tenant' = $Tenant
-        }
-        if(-not (Get-Module -Name AzureRM.profile)) { $Null = Import-Module -Name AzureRM.profile *>&1 }
-        if(-not (Test-AzureRMConnection -Credential $Credential -SubscriptionName $SubscriptionName))
+        $Params = @{ 'Credential' = $Credential }
+
+        if($SubscriptionId -as [bool]) { $Params.Add('SubscriptionId', $SubscriptionId) | Out-Null }
+        elseif($SubscriptionName -as [bool]) { $Params.Add('SubscriptionId', $SubscriptionName) | Out-Null }
+        
+        $Connected = Test-AzureRMConnection @Params
+        if($Tenant -as [bool]) { $Params.Add('ServicePrincipal',$True) | Out-Null; $Params.Add('Tenant', $Tenant) | Out-Null }
+
+        if(-not $Connected)
         {
-            Write-Verbose -Message 'Establishing new connection'
-            if($Tenant -as [bool])
-            {
-                $Null = Add-AzureRmAccount -Credential $Credential -SubscriptionName $SubscriptionName @SPNParams
-            }
-            else
-            {
-                $Null = Add-AzureRmAccount -Credential $Credential -SubscriptionName $SubscriptionName
-            }
+            Add-AzureRmAccount @Params | Out-Null
         }
         else
         {
@@ -1959,25 +1959,54 @@ Function Test-AzureRMConnection
         [PSCredential]
         $Credential,
         
-        [Parameter(Mandatory = $True)]
+        [Parameter(Mandatory = $False)]
+        [String]
+        $SubscriptionId,
+
+        [Parameter(Mandatory = $False)]
         [String]
         $SubscriptionName
+
     )
     $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
     $CompletedParams = Write-StartingMessage
     Try
     {
         $AzureContext = Get-AzureRmContext
-        if(
-            ($AzureContext.Account.Id -eq $Credential.UserName) -and
-            ($AzureContext.Subscription.SubscriptionName-eq $SubscriptionName)
-           )
+        if($SubscriptionId -as [bool])
         {
-            $Connected = $True
+            if(($AzureContext.Account.Id -eq $Credential.UserName) -and
+               ($AzureContext.Subscription.SubscriptionId -eq $SubscriptionId))
+            {
+                $Connected = $True
+            }
+            else
+            {
+                $Connected = $False
+            }
+        }
+        elseif($SubscriptionName -as [bool])
+        {
+            if(($AzureContext.Account.Id -eq $Credential.UserName) -and
+               ($AzureContext.Subscription.SubscriptionName-eq $SubscriptionName))
+            {
+                $Connected = $True
+            }
+            else
+            {
+                $Connected = $False
+            }
         }
         else
         {
-            $Connected = $False
+            if($AzureContext.Account.Id -eq $Credential.UserName)
+            {
+                $Connected = $True
+            }
+            else
+            {
+                $Connected = $False
+            }
         }
     }
     Catch
