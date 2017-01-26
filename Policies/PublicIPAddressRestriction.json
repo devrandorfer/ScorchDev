@@ -1,0 +1,17 @@
+{
+  "properties": {
+    "displayName": "Public IP Address Restriction",
+    "description": "This policy restricts the creation of the public IP address type to subnets with the proper tag",
+    "policyRule": {
+      "if": {
+        "not": {
+          "field": "location",
+          "in": "[parameters('listOfAllowedLocations')]"
+        }
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "Name": "Spoke Contributor",
+  "IsCustom": true,
+  "Description": "Contributor rights to a spoke subscription.",
+  "Actions": [
+    "*"
+  ],
+  "NotActions": [
+    "Microsoft.Authorization/*/Delete",
+    "Microsoft.Authorization/*/Write",
+    "Microsoft.Authorization/elevateAccess/Action"
+  ],
+  "AssignableScopes": [
+  ]
+}

@@ -43,6 +43,8 @@ Try
             Write-Exception -Exception $_
         }
     }
+
+    Get-AzureRmRoleDefinition -Custom | % { try { Remove-AzureRmRoleDefinition -Id $_.Id -Force } catch {} }
 }
 Catch
 {

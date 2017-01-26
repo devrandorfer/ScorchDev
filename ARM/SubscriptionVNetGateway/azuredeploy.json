@@ -112,7 +112,7 @@
       "properties": {
         "securityRules": [
           {
-            "name": "Block_RDP_Internet",
+            "name": "Block_Internet",
             "properties": {
               "description": "Block RDP",
               "protocol": "Tcp",
