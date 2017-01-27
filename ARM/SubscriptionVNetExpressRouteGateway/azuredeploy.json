@@ -9,32 +9,39 @@
         "description": "Subscription prefix"
       }
     },
-    "vnetAddressPrefix": {
+    "VnetAddressPrefix": {
       "type": "string",
       "defaultValue": "10.0.0.0/16",
       "metadata": {
         "description": "Address prefix"
       }
     },
-    "gatewaySubnetPrefix": {
+    "GatewaySubnetPrefix": {
       "type": "string",
-      "defaultValue": "10.0.0.0/24",
+      "defaultValue": "10.0.0.0/25",
       "metadata": {
-        "description": "Public Subnet Prefix"
+        "description": "Gateway Subnet Prefix"
       }
     },
-    "publicSubnetPrefix": {
+    "SecuritySubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.128/25",
+      "metadata": {
+        "description": "Security Subnet Prefix"
+      }
+    },
+    "FrontendSubnetPrefix": {
       "type": "string",
       "defaultValue": "10.0.1.0/24",
       "metadata": {
-        "description": "Public Subnet Prefix"
+        "description": "Frontend Subnet Prefix"
       }
     },
-    "privateSubnetPrefix": {
+    "BackendSubnetPrefix": {
       "type": "string",
       "defaultValue": "10.0.2.0/24",
       "metadata": {
-        "description": "Private Subnet Prefix"
+        "description": "Backend Subnet Prefix"
       }
     }
   },
@@ -42,62 +49,64 @@
     "apiVersion": "2016-10-01",
     "Location": "[resourceGroup().location]",
     "vnetName": "[concat(parameters('SubscriptionPrefix'),'-',variables('Location'),'-vnet')]",
-    "publicSubnetNSGName": "[concat(variables('vnetName'),'-public')]",
-    "privateSubnetNSGName": "[concat(variables('vnetName'),'-private')]",
+    "SecuritySubnetNSGName": "[concat(variables('vnetName'),'-security')]",
+    "FrontendSubnetNSGName": "[concat(variables('vnetName'),'-frontend')]",
+    "BackendSubnetNSGName": "[concat(variables('vnetName'),'-backend')]",
     "gatewayName": "[concat(variables('vnetName'),'-gateway')]",
     "gatewayPublicIPAdressName": "[concat(variables('vnetName'),'-gateway-pip')]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetName'))]",
+    "securitySubnetID": "[concat(variables('vnetID'),'/subnets/security')]",
     "gatewaySubnetRef": "[concat(variables('vnetID'),'/subnets/GatewaySubnet')]",
-    "routingWeight": 3
+    "applicationGatewayName": "[concat(variables('SecuritySubnetNSGName'),'-agw')]",
+    "applicationGatewayPublicIPAddressName": "[concat(variables('applicationGatewayName'),'-pip')]",
+    "applicationGatewayPublicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses',variables('applicationGatewayPublicIPAddressName'))]",
+    "applicationGatewaySkuName": "WAF_Medium",
+    "applicationGatewayCapacity": 2
   },
   "resources": [
     {
       "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[variables('publicSubnetNSGName')]",
+      "name": "[variables('SecuritySubnetNSGName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+        ]
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVersion')]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('FrontendSubnetNSGName')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": [
           {
-            "name": "rdp_rule",
+            "name": "Block_Internet",
             "properties": {
-              "description": "Allow RDP",
+              "description": "Block Internet Traffic",
               "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "3389",
+              "destinationPortRange": "*",
               "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 1000,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "http_rule",
-            "properties": {
-              "description": "Allow HTTP",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "80",
-              "sourceAddressPrefix": "Internet",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
+              "access": "Deny",
               "priority": 1001,
               "direction": "Inbound"
             }
           },
           {
-            "name": "https_rule",
+            "name": "Block_Internet_Outbound",
             "properties": {
-              "description": "Allow HTTPS",
-              "protocol": "Tcp",
+              "description": "Block Internet",
+              "protocol": "*",
               "sourcePortRange": "*",
-              "destinationPortRange": "443",
-              "sourceAddressPrefix": "Internet",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 1002,
-              "direction": "Inbound"
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "Internet",
+              "access": "Deny",
+              "priority": 2000,
+              "direction": "Outbound"
             }
           }
         ]
@@ -106,17 +115,17 @@
     {
       "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[variables('privateSubnetNSGName')]",
+      "name": "[variables('BackendSubnetNSGName')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": [
           {
             "name": "Block_Internet",
             "properties": {
-              "description": "Block RDP",
+              "description": "Block Internet traffic",
               "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "3389",
+              "destinationPortRange": "*",
               "sourceAddressPrefix": "Internet",
               "destinationAddressPrefix": "*",
               "access": "Deny",
@@ -147,8 +156,9 @@
       "name": "[variables('vnetName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('publicSubnetNSGName'))]",
-        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('privateSubnetNSGName'))]"
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('SecuritySubnetNSGName'))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('BackendSubnetNSGName'))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('FrontendSubnetNSGName'))]"
       ],
       "properties": {
         "addressSpace": {
@@ -164,20 +174,29 @@
             }
           },
           {
-            "name": "public",
+            "name": "security",
             "properties": {
-              "addressPrefix": "[parameters('publicSubnetPrefix')]",
+              "addressPrefix": "[parameters('SecuritySubnetPrefix')]",
               "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('publicSubnetNSGName'))]"
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('SecuritySubnetNSGName'))]"
               }
             }
           },
           {
-            "name": "private",
+            "name": "frontend",
             "properties": {
-              "addressPrefix": "[parameters('privateSubnetPrefix')]",
+              "addressPrefix": "[parameters('FrontendSubnetPrefix')]",
               "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('privateSubnetNSGName'))]"
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('FrontendSubnetNSGName'))]"
+              }
+            }
+          },
+          {
+            "name": "backend",
+            "properties": {
+              "addressPrefix": "[parameters('BackendSubnetPrefix')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('BackendSubnetNSGName'))]"
               }
             }
           }
@@ -223,6 +242,111 @@
           "tier": "HighPerformance",
           "capacity": 2
         }
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVersion')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('applicationGatewayPublicIPAddressName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic"
+      }
+    },
+    {
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('applicationGatewayName')]",
+      "type": "Microsoft.Network/applicationGateways",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]",
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('applicationGatewayPublicIPAddressName'))]"
+      ],
+      "properties": {
+        "sku": {
+          "name": "[variables('applicationGatewaySkuName')]",
+          "tier": "WAF",
+          "capacity": "[variables('applicationGatewayCapacity')]"
+        },
+        "gatewayIPConfigurations": [
+          {
+            "name": "appGatewayIpConfig",
+            "properties": {
+              "subnet": {
+                "id": "[variables('securitySubnetID')]"
+              }
+            }
+          }
+        ],
+        "frontendIPConfigurations": [
+          {
+            "name": "appGatewayFrontendIP",
+            "properties": {
+              "PublicIPAddress": {
+                "id": "[variables('applicationGatewayPublicIPRef')]"
+              }
+            }
+          }
+        ],
+        "frontendPorts": [
+          {
+            "name": "appGatewayFrontendPort",
+            "properties": {
+              "Port": 80
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "appGatewayBackendPool",
+            "properties": {
+              "BackendAddresses": [
+              ]
+            }
+          }
+        ],
+        "backendHttpSettingsCollection": [
+          {
+            "name": "appGatewayBackendHttpSettings",
+            "properties": {
+              "Port": "80",
+              "Protocol": "Http",
+              "CookieBasedAffinity": "Disabled"
+            }
+          }
+        ],
+        "httpListeners": [
+          {
+            "name": "appGatewayHttpListener",
+            "properties": {
+              "FrontendIpConfiguration": {
+                "Id": "[concat(resourceId('Microsoft.Network/applicationGateways', variables('applicationGatewayName')), '/frontendIPConfigurations/appGatewayFrontendIP')]"
+              },
+              "FrontendPort": {
+                "Id": "[concat(resourceId('Microsoft.Network/applicationGateways', variables('applicationGatewayName')), '/frontendPorts/appGatewayFrontendPort')]"
+              },
+              "Protocol": "Http",
+              "SslCertificate": null
+            }
+          }
+        ],
+        "requestRoutingRules": [
+          {
+            "Name": "rule1",
+            "properties": {
+              "RuleType": "Basic",
+              "httpListener": {
+                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', variables('applicationGatewayName')), '/httpListeners/appGatewayHttpListener')]"
+              },
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', variables('applicationGatewayName')), '/backendAddressPools/appGatewayBackendPool')]"
+              },
+              "backendHttpSettings": {
+                "id": "[concat(resourceId('Microsoft.Network/applicationGateways', variables('applicationGatewayName')), '/backendHttpSettingsCollection/appGatewayBackendHttpSettings')]"
+              }
+            }
+          }
+        ]
       }
     }
   ]
