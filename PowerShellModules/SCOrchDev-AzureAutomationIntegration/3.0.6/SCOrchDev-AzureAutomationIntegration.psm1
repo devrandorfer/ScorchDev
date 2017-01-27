@@ -1932,7 +1932,7 @@ Function Connect-AzureRmAccount
         $Params = @{ 'Credential' = $Credential }
 
         if($SubscriptionId -as [bool]) { $Params.Add('SubscriptionId', $SubscriptionId) | Out-Null }
-        elseif($SubscriptionName -as [bool]) { $Params.Add('SubscriptionId', $SubscriptionName) | Out-Null }
+        elseif($SubscriptionName -as [bool]) { $Params.Add('SubscriptionName', $SubscriptionName) | Out-Null }
         
         $Connected = Test-AzureRMConnection @Params
         if($Tenant -as [bool]) { $Params.Add('ServicePrincipal',$True) | Out-Null; $Params.Add('Tenant', $Tenant) | Out-Null }

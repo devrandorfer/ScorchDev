@@ -48,7 +48,16 @@ $Location = $Location.ToLower()
 Try
 {
     Add-AzureRmAccount -Credential $SubscriptionAccessCredential `
-                       -SubscriptionId $SubscriptionId
+                       -SubscriptionId $HubSubscriptionId
+
+    $Workspace = Get-AzureRmOperationalInsightsWorkspace
+    # Configure audit logs to go to central Workspace
+    New-AzureRmOperationalInsightsAzureAuditDataSource -WorkspaceName $Workspace.Name `
+                                                       -ResourceGroupName $Workspace.ResourceGroupName `
+                                                       -SubscriptionId $SubscriptionId `
+                                                       -Name $SubscriptionId -Force
+
+    Select-AzureRmSubscription -SubscriptionId $SubscriptionId
 
     Register-AzureRmProviderFeature -FeatureName AllowVnetPeering -ProviderNamespace Microsoft.Network | Out-Null
     Register-AzureRmResourceProvider -ProviderNamespace Microsoft.Network | Out-Null
