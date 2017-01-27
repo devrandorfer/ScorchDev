@@ -9,10 +9,11 @@
     $HubSubscriptionId = 'cf514085-da15-4bc6-9a3d-11b32ef4f33b'
     $Location = 'EastUS2'
     $VnetAddressPrefix = '10.1.0.0/16'
-    $PublicSubnetPrefix = '10.1.0.0/24'
-    $PrivateSubnetPrefix = '10.1.1.0/24'
-    $CompanyPrefix = 'scoa'
+    $FrontendSubnetPrefix = '10.1.0.0/24'
+    $BackendSubnetPrefix = '10.1.1.0/24'
+    $SubscriptionPrefix = 'devops'
     $OwnerGroup = 'DevOpsTeam'
+    $NetworkGroup = 'NetworkingTeam'
 
 #>
 Param(
@@ -23,9 +24,10 @@ Param(
     $GatewaySubnetPrefix  = '10.0.0.0/24',
     $PublicSubnetPrefix  = '10.0.1.0/24',
     $PrivateSubnetPrefix = '10.0.2.0/24',
-    $CompanyPrefix = 'sco',
+    $SubscriptionPrefix = 'sco',
     $Type,
-    $OwnerGroup
+    $OwnerGroup,
+    $NetworkGroup
 )
 
 Import-Module SCOrchDev-Utility -Verbose:$False
@@ -42,7 +44,7 @@ $GlobalVars = Get-BatchAutomationVariable -Prefix 'altGlobal' `
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
 
-$ManagementResourceGroupName = 'Management'
+$Location = $Location.ToLower()
 Try
 {
     Add-AzureRmAccount -Credential $SubscriptionAccessCredential `
@@ -50,71 +52,68 @@ Try
 
     Register-AzureRmProviderFeature -FeatureName AllowVnetPeering -ProviderNamespace Microsoft.Network | Out-Null
     Register-AzureRmResourceProvider -ProviderNamespace Microsoft.Network | Out-Null
-    Register-AzureRmResourceProvider -ProviderNamespace Microsoft.RecoveryServices
+    Register-AzureRmResourceProvider -ProviderNamespace Microsoft.RecoveryServices | Out-Null
 
-    $MgmtGroup = Find-AzureRmResourceGroup | Where-Object { $_.ResourceGroupName -eq $ManagementResourceGroupName }
+    $ManagementResourceGroupName = "$SubscriptionPrefix-management-rg"
+    $MgmtGroup = $ResourceGroup | Where-Object { $_.Name -eq $ManagementResourceGroupName }
     if(-not $MgmtGroup)
     {
-        New-AzureRmResourceGroup -Name 'Management' -Location $Location -Force
+        New-AzureRmResourceGroup -Name $ManagementResourceGroupName -Location $Location -Force
+        $WorkspaceName = "$($SubscriptionPrefix)-loganalytics"
         New-AzureRmOperationalInsightsWorkspace -ResourceGroupName $ManagementResourceGroupName `
                                                 -Name $WorkspaceName `
                                                 -Location EastUS `
                                                 -Sku standard `
                                                 -Force
 
-        $WorkspaceName = "$($CompanyPrefix)LogAnalytics"
         $LogAnalyticsResouce = Get-AzureRmResource -ResourceName $WorkspaceName `
                                                    -ResourceGroupName $ManagementResourceGroupName `
                                                    -ResourceType "Microsoft.OperationalInsights/workspaces"
 
         $LogAnalyticsResouce.Properties.sku.name = 'pernode'
-        $LogAnalyticsResouce.Properties.retentionInDays = 31
+        $LogAnalyticsResouce.Properties.retentionInDays = 30
         $LogAnalyticsResouce | Set-AzureRmResource -Force
 
         
         New-AzureRmAutomationAccount -ResourceGroupName $ManagementResourceGroupName `
-                                     -Name "$($CompanyPrefix)-automation" `
+                                     -Name "$($SubscriptionPrefix)-automation" `
                                      -Location eastus2 `
                                      -Plan Basic
     
         New-AzureRmRecoveryServicesVault -ResourceGroupName $ManagementResourceGroupName `
-                                         -Name "$($CompanyPrefix)-$($Location)-vault" `
+                                         -Name "$($SubscriptionPrefix)-$($Location)-vault" `
                                          -Location $Location
     }
 
-    New-AzureRmResourceGroup -Name 'Networking' -Location $Location -Force
-    New-AzureRmResourceGroupDeployment -Name 'InitialDeployment' `
-                                       -ResourceGroupName 'Networking' `
+    $NetworkingResourceGroupName = "$SubscriptionPrefix-$Location-networking-rg"
+    New-AzureRmResourceGroup -Name $NetworkingResourceGroupName -Location $Location -Force
+    New-AzureRmResourceGroupDeployment -Name "$([guid]::NewGuid())" `
+                                       -ResourceGroupName $NetworkingResourceGroupName `
                                        -Mode Incremental `
                                        -TemplateFile 'C:\git\ScorchDev\ARM\SubscriptionVNet\azuredeploy.json' `
                                        -Force `
-                                       -companyPrefix $CompanyPrefix `
-                                       -vnetAddressPrefix $VnetAddressPrefix `
-                                       -publicSubnetPrefix $PublicSubnetPrefix `
-                                       -privateSubnetPrefix $PrivateSubnetPrefix
+                                       -SubscriptionPrefix $SubscriptionPrefix `
+                                       -VnetAddressPrefix $VnetAddressPrefix `
+                                       -FrontendSubnetPrefix $PublicSubnetPrefix `
+                                       -BackendSubnetPrefix $PrivateSubnetPrefix
     
     # Setup peering relationships
-    $spokeVNet = Get-AzureRMVirtualNetwork -ResourceGroupName 'Networking' -Name "$CompanyPrefix-$Location"
+    $spokeVNet = Get-AzureRMVirtualNetwork -ResourceGroupName $NetworkingResourceGroupName -Name "$SubscriptionPrefix-$Location-vnet"
     Select-AzureRmSubscription -SubscriptionId $HubSubscriptionId
-    $hubVNet = Get-AzureRMVirtualNetwork -ResourceGroupName 'Networking' | Where-Object { $_.Location -eq $Location }
+    $hubVNet = Get-AzureRMVirtualNetwork | Where-Object { $_.Location -eq $Location }
     Add-AzureRmVirtualNetworkPeering -Name "$($hubVNet.Name)-to-$($spokeVNet.Name)" -VirtualNetwork $hubVNet -RemoteVirtualNetworkId $spokeVNet.Id -AllowGatewayTransit
 
     Select-AzureRmSubscription -SubscriptionId $SubscriptionId
     Add-AzureRmVirtualNetworkPeering -Name "$($spokeVNet.Name)-to-$($hubVNet.Name)" -VirtualNetwork $spokeVNet -RemoteVirtualNetworkId $hubVNet.Id -UseRemoteGateways -AllowForwardedTraffic
     
-    # Setup public subnet next hop
-    $route = New-AzureRmRouteConfig -Name TestNVA -AddressPrefix $PublicSubnetPrefix -NextHopType VirtualAppliance -NextHopIpAddress 10.0.0.4
-    $routeTable = New-AzureRmRouteTable -ResourceGroupName 'Networking' -Location brazilsouth -Name TestRT -Route $route
-    Set-AzureRmVirtualNetworkSubnetConfig -VirtualNetwork $spokeVNet -Name Public -AddressPrefix 10.1.1.0/24 -RouteTable $routeTable
-    Set-AzureRmVirtualNetwork -VirtualNetwork $vnet1
-
     # Lock deployed network resource group
     New-AzureRmResourceLock -LockName 'NetworkResourceGroupLock' `
                             -LockLevel ReadOnly `
                             -ResourceGroupName 'Networking' `
                             -Force
 
-    # Add this subscription to assignable scope for all custom roles
+    Select-AzureRmSubscription -SubscriptionId $HubSubscriptionId
+    # Add this subscription to assignable scope for all custom roles in hub subscription
     $Roles = Get-AzureRmRoleDefinition -Custom
     Foreach($Role in $Roles)
     {
@@ -125,10 +124,17 @@ Try
         }
     }
 
-    # Give owner group access to spoke-owner role
-    $SpokeOwnerRole = $Roles | ? { $_.Name -eq 'Spoke Contributor'  }
-    $SpokeOwnerGroup = Get-AzureRmADGroup -SearchString $OwnerGroup
+    Select-AzureRmSubscription -SubscriptionId $SubscriptionId
+    
+    # Give owner group access to spoke-contributor role
+    $SpokeOwnerRole = $Roles | ? { $_.Name -eq 'Spoke-Contributor'  }
+    $SpokeOwnerGroup = Get-AzureRmADGroup -SearchString $OwnerGroup | Where-Object { $_.DisplayName -eq $OwnerGroup }
     New-AzureRmRoleAssignment -ObjectId $SpokeOwnerGroup.Id -RoleDefinitionId $SpokeOwnerRole.Id -Scope "/subscriptions/$SubscriptionId"
+
+    # Give network team access to networking resource group
+    $ContributorRole = Get-AzureRmRoleDefinition -Name 'Contributor'
+    $SpokeNetworkGroup = Get-AzureRmADGroup -SearchString $NetworkGroup | Where-Object { $_.DisplayName -eq $NetworkGroup }
+    New-AzureRmRoleAssignment -ObjectId $SpokeNetworkGroup.Id -RoleDefinitionId $ContributorRole.Id -Scope "/subscriptions/$SubscriptionId/ResourceGroups/$NetworkingResourceGroupName"
 }
 Catch
 {

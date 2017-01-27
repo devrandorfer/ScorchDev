@@ -8,20 +8,23 @@
     $SubscriptionId = 'cf514085-da15-4bc6-9a3d-11b32ef4f33b'
     $Location = 'EastUS2'
     $VnetAddressPrefix = '10.0.0.0/16'
-    $GatewaySubnetPrefix = '10.0.0.0/24'
-    $PublicSubnetPrefix = '10.0.1.0/24'
-    $PrivateSubnetPrefix = '10.0.2.0/24'
-    $CompanyPrefix = 'sco'
-
+    $GatewaySubnetPrefix = '10.0.0.0/25'
+    $SecuritySubnetPrefix = '10.0.0.128/25'
+    $FrontendSubnetPrefix = '10.0.1.0/24'
+    $BackendSubnetPrefix = '10.0.2.0/24'
+    $SubscriptionPrefix = 'sco'
+    $ExpressRoute = $False
 #>
 Param(
     $SubscriptionId,
     $Location = 'EastUS2',
     $VnetAddressPrefix = '10.0.0.0/16',
-    $GatewaySubnetPrefix  = '10.0.0.0/24',
-    $PublicSubnetPrefix  = '10.0.1.0/24',
-    $PrivateSubnetPrefix = '10.0.2.0/24',
-    $CompanyPrefix = 'sco'
+    $GatewaySubnetPrefix  = '10.0.0.0/25',
+    $SecuritySubnetPrefix  = '10.0.0.128/25',
+    $FrontendSubnetPrefix  = '10.0.1.0/24',
+    $BackendSubnetPrefix = '10.0.2.0/24',
+    $SubscriptionPrefix = 'sco',
+    $ExpressRoute = $True
 )
 
 Import-Module SCOrchDev-Utility -Verbose:$False
@@ -37,8 +40,7 @@ $GlobalVars = Get-BatchAutomationVariable -Prefix 'altGlobal' `
                                           -Name 'SubscriptionAccessCredentialName'
 
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
-
-$ManagementResourceGroupName = 'Management'
+$Location = $Location.ToLower()
 Try
 {
     Add-AzureRmAccount -Credential $SubscriptionAccessCredential `
@@ -47,37 +49,48 @@ Try
     Register-AzureRmProviderFeature -FeatureName AllowVnetPeering -ProviderNamespace Microsoft.Network | Out-Null
     Register-AzureRmResourceProvider -ProviderNamespace Microsoft.Network | Out-Null
     
-    $MgmtGroup = Find-AzureRmResourceGroup | Where-Object { $_.ResourceGroupName -eq $ManagementResourceGroupName }
+    $ManagementResourceGroupName = "$SubscriptionPrefix-management-rg"
+    $MgmtGroup = $ResourceGroup | Where-Object { $_.Name -eq $ManagementResourceGroupName }
     if(-not $MgmtGroup)
     {
-        New-AzureRmResourceGroup -Name 'Management' -Location $Location -Force
+        $WorkspaceName = "$($CompanyPrefix)-loganalytics"
+        New-AzureRmResourceGroup -Name $ManagementResourceGroupName -Location $Location -Force
         New-AzureRmOperationalInsightsWorkspace -ResourceGroupName $ManagementResourceGroupName `
-                                                -Name "$($CompanyPrefix)LogAnalytics" `
+                                                -Name $WorkspaceName `
                                                 -Location EastUS `
                                                 -Sku standard `
                                                 -Force
     
+        $LogAnalyticsResouce = Get-AzureRmResource -ResourceName $WorkspaceName `
+                                                   -ResourceGroupName $ManagementResourceGroupName `
+                                                   -ResourceType "Microsoft.OperationalInsights/workspaces"
+
+        $LogAnalyticsResouce.Properties.sku.name = 'pernode'
+        $LogAnalyticsResouce.Properties.retentionInDays = 30
+        $LogAnalyticsResouce | Set-AzureRmResource -Force
+
+        $AutomationAccountName = "$($CompanyPrefix)-automation"
         New-AzureRmAutomationAccount -ResourceGroupName $ManagementResourceGroupName `
-                                     -Name "$($CompanyPrefix)-automation" `
+                                     -Name $AutomationAccountName `
                                      -Location eastus2 `
                                      -Plan Basic
-    
-        New-AzureRmRecoveryServicesVault -ResourceGroupName $ManagementResourceGroupName `
-                                         -Name "$($CompanyPrefix)-$($Location)-vault" `
-                                         -Location $Location
     }
 
-    New-AzureRmResourceGroup -Name 'Networking' -Location $Location -Force
-    New-AzureRmResourceGroupDeployment -Name 'InitialDeployment' `
-                                       -ResourceGroupName 'Networking' `
-                                       -Mode Incremental `
-                                       -TemplateFile 'C:\git\ScorchDev\ARM\SubscriptionVNetGateway\azuredeploy.json' `
-                                       -Force `
-                                       -companyPrefix $CompanyPrefix `
-                                       -vnetAddressPrefix $VnetAddressPrefix `
-                                       -gatewaySubnetPrefix $GatewaySubnetPrefix `
-                                       -publicSubnetPrefix $PublicSubnetPrefix `
-                                       -privateSubnetPrefix $PrivateSubnetPrefix
+    $NetworkingResourceGroupName = "$SubscriptionPrefix-$Location-networking-rg"
+    New-AzureRmResourceGroup -Name $NetworkingResourceGroupName -Location $Location -Force
+    if($ExpressRoute) { $TemplateFile = 'C:\git\ScorchDev\ARM\SubscriptionVNetExpressRouteGateway\azuredeploy.json' }
+    else              { $TemplateFile = 'C:\git\ScorchDev\ARM\SubscriptionVNetGateway\azuredeploy.json' }
+    New-AzureRmResourceGroupDeployment -Name "$([guid]::NewGuid())" `
+                                        -ResourceGroupName $NetworkingResourceGroupName `
+                                        -Mode Incremental `
+                                        -TemplateFile $TemplateFile `
+                                        -Force `
+                                        -SubscriptionPrefix $SubscriptionPrefix `
+                                        -VnetAddressPrefix $VnetAddressPrefix `
+                                        -GatewaySubnetPrefix $GatewaySubnetPrefix `
+                                        -SecuritySubnetPrefix $SecuritySubnetPrefix `
+                                        -FrontendSubnetPrefix $FrontendSubnetPrefix `
+                                        -BackendSubnetPrefix $PrivateSubnetPrefix
 
     Foreach($RoleFile in (Get-ChildItem -Path C:\git\SCOrchDev\Roles))
     {
@@ -88,11 +101,26 @@ Try
             New-AzureRmRoleDefinition -Role $Role
         }
         Catch 
-        { 
-            $CurrentRole = Get-AzureRmRoleDefinition -Name $Role.Name
-            $CurrentScopes = $CurrentRole.AssignableScopes
-            $Role.AssignableScopes = $CurrentScopes
-            Set-AzureRmRoleDefinition -Role $Role
+        {
+            $E = $_
+            if($E.Exception.Message -eq 'RoleDefinitionWithSameNameExists: A role definition cannot be updated with a name that already exists.')
+            {
+                Try
+                {
+                    $CurrentRole = Get-AzureRmRoleDefinition -Name $Role.Name
+                    $CurrentRole.Actions = $Role.Actions
+                    $CurrentRole.NotActions = $Role.NotActions
+                    Set-AzureRmRoleDefinition -Role $CurrentRole
+                }
+                Catch
+                {
+                    Write-Exception -Exception $_
+                }
+            }
+            else
+            {
+                Write-Exception -Exception $E -Stream Warning
+            }
         }
     }   
 }

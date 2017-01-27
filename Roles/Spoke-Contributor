@@ -1,5 +1,5 @@
 {
-  "Name": "Spoke Contributor",
+  "Name": "Spoke-Contributor",
   "IsCustom": true,
   "Description": "Contributor rights to a spoke subscription.",
   "Actions": [
@@ -8,7 +8,16 @@
   "NotActions": [
     "Microsoft.Authorization/*/Delete",
     "Microsoft.Authorization/*/Write",
-    "Microsoft.Authorization/elevateAccess/Action"
+    "Microsoft.Authorization/elevateAccess/Action",
+    "Microsoft.ClassicCompute/*",
+    "Microsoft.ClassicNetwork/*",
+    "Microsoft.ClassicStorage/*",
+    "Microsoft.Network/publicIPAddresses/*",
+    "Microsoft.Network/virtualNetworks/*/write",
+    "Microsoft.Network/virtualNetworks/write",
+    "Microsoft.Network/virtualNetworks/peer/action",
+    "Microsoft.Security/*/write",
+    "Microsoft.Security/tasks/dismiss/action"
   ],
   "AssignableScopes": [
   ]
