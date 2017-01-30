@@ -13,6 +13,7 @@
     $FrontendSubnetPrefix = '10.0.1.0/24'
     $BackendSubnetPrefix = '10.0.2.0/24'
     $SubscriptionPrefix = 'sco'
+    $NetworkGroup = 'NetworkingTeam'
     $ExpressRoute = $False
 #>
 Param(
@@ -24,6 +25,7 @@ Param(
     $FrontendSubnetPrefix  = '10.0.1.0/24',
     $BackendSubnetPrefix = '10.0.2.0/24',
     $SubscriptionPrefix = 'sco',
+    $NetworkGroup = 'NetworkingTeam',
     $ExpressRoute = $True
 )
 
@@ -50,26 +52,32 @@ Try
     Register-AzureRmResourceProvider -ProviderNamespace Microsoft.Network | Out-Null
     
     $ManagementResourceGroupName = "$SubscriptionPrefix-management-rg"
+    $ResourceGroup = Find-AzureRmResourceGroup
     $MgmtGroup = $ResourceGroup | Where-Object { $_.Name -eq $ManagementResourceGroupName }
     if(-not $MgmtGroup)
     {
-        $WorkspaceName = "$($CompanyPrefix)-loganalytics"
+        $WorkspaceName = "$($SubscriptionPrefix)-loganalytics"
         New-AzureRmResourceGroup -Name $ManagementResourceGroupName -Location $Location -Force
-        New-AzureRmOperationalInsightsWorkspace -ResourceGroupName $ManagementResourceGroupName `
-                                                -Name $WorkspaceName `
-                                                -Location EastUS `
-                                                -Sku standard `
-                                                -Force
+        $Workspace = New-AzureRmOperationalInsightsWorkspace -ResourceGroupName $ManagementResourceGroupName `
+                                                             -Name $WorkspaceName `
+                                                             -Location EastUS `
+                                                             -Sku standard `
+                                                             -Force
+
+        New-AzureRmOperationalInsightsAzureAuditDataSource -WorkspaceName $Workspace.Name `
+                                                    -ResourceGroupName $Workspace.ResourceGroupName `
+                                                    -SubscriptionId $SubscriptionId `
+                                                    -Name $SubscriptionId -Force
     
         $LogAnalyticsResouce = Get-AzureRmResource -ResourceName $WorkspaceName `
                                                    -ResourceGroupName $ManagementResourceGroupName `
                                                    -ResourceType "Microsoft.OperationalInsights/workspaces"
 
         $LogAnalyticsResouce.Properties.sku.name = 'pernode'
-        $LogAnalyticsResouce.Properties.retentionInDays = 30
+        $LogAnalyticsResouce.Properties.retentionInDays = 720
         $LogAnalyticsResouce | Set-AzureRmResource -Force
 
-        $AutomationAccountName = "$($CompanyPrefix)-automation"
+        $AutomationAccountName = "$($SubscriptionPrefix)-automation"
         New-AzureRmAutomationAccount -ResourceGroupName $ManagementResourceGroupName `
                                      -Name $AutomationAccountName `
                                      -Location eastus2 `
@@ -90,7 +98,7 @@ Try
                                         -GatewaySubnetPrefix $GatewaySubnetPrefix `
                                         -SecuritySubnetPrefix $SecuritySubnetPrefix `
                                         -FrontendSubnetPrefix $FrontendSubnetPrefix `
-                                        -BackendSubnetPrefix $PrivateSubnetPrefix
+                                        -BackendSubnetPrefix $BackendSubnetPrefix
 
     Foreach($RoleFile in (Get-ChildItem -Path C:\git\SCOrchDev\Roles))
     {
@@ -122,7 +130,12 @@ Try
                 Write-Exception -Exception $E -Stream Warning
             }
         }
-    }   
+    } 
+    
+    # Give network team access to networking resource group
+    $ContributorRole = Get-AzureRmRoleDefinition -Name 'Contributor'
+    $SpokeNetworkGroup = Get-AzureRmADGroup -SearchString $NetworkGroup | Where-Object { $_.DisplayName -eq $NetworkGroup }
+    New-AzureRmRoleAssignment -ObjectId $SpokeNetworkGroup.Id -RoleDefinitionId $ContributorRole.Id -Scope "/subscriptions/$SubscriptionId/ResourceGroups/$NetworkingResourceGroupName"  
 }
 Catch
 {
