@@ -574,9 +574,9 @@ function Write-CompletedMessage
         $Status = $Null,
 
         [Parameter(Mandatory=$False)]
-        [ValidateSet('Debug', 'Error', 'Verbose', 'Warning', 'Automation')]
+        [ValidateSet('Debug', 'Error', 'Verbose', 'Warning', 'Automation', 'Output')]
         [String]
-        $Stream = 'Debug',
+        $Stream = 'Output',
 
         [Parameter(Mandatory=$False)]
         [switch]
@@ -632,7 +632,7 @@ function Write-StartingMessage
         [Parameter(Mandatory=$False)]
         [ValidateSet('Debug', 'Error', 'Verbose', 'Warning', 'Automation', 'Output')]
         [String]
-        $Stream = 'Verbose'
+        $Stream = 'Output'
     )
     
     $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
