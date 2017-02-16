@@ -7,7 +7,7 @@
 
 #>
 Param(
-
+    $WebhookData
 )
 
 Import-Module SCOrchDev-Utility -Verbose:$False
@@ -17,7 +17,7 @@ Import-Module SCOrchDev-GitIntegration -Verbose:$False
 Import-Module AzureRM.Profile -Verbose:$False
 
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-$CompletedParameters = Write-StartingMessage -CommandName Find-AzureRMVMToShutdown.ps1
+$CompletedParameters = Write-StartingMessage -CommandName Stop-IndividualAzureRMVM.ps1
 
 $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                           -Name 'SubscriptionName',
@@ -35,9 +35,7 @@ Try
                        -TenantId $GlobalVars.SubscriptionAccessTenant `
                        -ServicePrincipal | Out-Null
 
-    # Find all Azure VMs with Autoshutdown tag
-
-    $VirtualMachine = Find-AzureRmResource -Tag @{ 'Autoshutdown' = 'True' } | ? { $_.ResourceType -eq 'Microsoft.Compute/virtualMachines' }
+    $WebhookData
 }
 Catch
 {
