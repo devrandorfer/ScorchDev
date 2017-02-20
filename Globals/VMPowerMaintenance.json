@@ -1,0 +1,9 @@
+﻿{
+    "Variables":  {
+                      "VMPowerMaintenance-ShutdownRunbookUri":  {
+                                                                    "isEncrypted":  false,
+                                                                    "Description":  "",
+                                                                    "Value":  "https://s1events.azure-automation.net/webhooks?token=feUi0MvCKl3%2fw74%2bXuwqe%2boTU%2fxe1VjTmmHOhktvCUA%3d"
+                                                                }
+                  }
+}

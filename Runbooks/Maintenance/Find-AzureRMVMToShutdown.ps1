@@ -25,6 +25,9 @@ $GlobalVars = Get-BatchAutomationVariable -Prefix 'zzGlobal' `
                                                 'ResourceGroupName',
                                                 'SubscriptionAccessTenant'
 
+$Vars = Get-BatchAutomationVariable -Prefix 'VMPowerMaintenance' `
+                                    -Name 'ShutdownRunbookUri'
+
 $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
 
 
@@ -38,6 +41,11 @@ Try
     # Find all Azure VMs with Autoshutdown tag
 
     $VirtualMachine = Find-AzureRmResource -Tag @{ 'Autoshutdown' = 'True' } | ? { $_.ResourceType -eq 'Microsoft.Compute/virtualMachines' }
+
+    Foreach($_VirtualMachine in $VirtualMachine)
+    {
+        Invoke-RestMethod -Method Post -Uri $Vars.ShutdownRunbookUri -Body "{`"ResourceGroupName`":`"$($_VirtualMachine.ResourceGroupName)`",`"Name`":`"$($_VirtualMachine.Name)`",`"SubscriptionId`":`"$($_VirtualMachine.SubscriptionId)`"}"
+    }
 }
 Catch
 {
