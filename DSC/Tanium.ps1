@@ -63,7 +63,7 @@ Configuration Tanium
         }
         xPackage InstallSqlServer2012CLI
         {
-            Name = 'Microsoft SQL Server 2012 Native Client'
+            Name = 'Microsoft SQL Server 2012 Native Client '
             Path = "$($SourceDir)\$($SqlServer2012CLI)" 
             Arguments = '/qn'
             Ensure = 'Present'
@@ -81,7 +81,7 @@ Configuration Tanium
         }
         xPackage InstallSqlServer2012CmdUtils
         {
-            Name = 'Microsoft SQL Server 2012 Command Line Utilities'
+            Name = 'Microsoft SQL Server 2012 Command Line Utilities '
             Path = "$($SourceDir)\$($SqlServer2012CmdUtils)" 
             Arguments = '/qn'
             Ensure = 'Present'
