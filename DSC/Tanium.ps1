@@ -10,6 +10,15 @@ Configuration Tanium
 
     $SourceDir = 'D:\Source'
 
+    $SqlServer2012CLIURI = 'http://go.microsoft.com/fwlink/?LinkID=239648&clcid=0x409'
+    $SqlServer2012CLI = 'sqlncli.msi'
+
+    $SqlServer2012CmdUtilsURI = 'http://go.microsoft.com/fwlink/?LinkID=239650&clcid=0x409'
+    $SqlServer2012CmdUtils = 'SQLCmdLnUtils.msi'
+    
+    $SqlExprWTURI = 'https://download.microsoft.com/download/8/D/D/8DD7BDBA-CEF7-4D8E-8C16-D9F69527F909/ENU/x64/SQLEXPRWT_x64_ENU.exe'
+    $SqlExprWT = 'SQLEXPRWT_x64_ENU.exe'
+
     $TaniumVersion = '7.0.314.6319'
     $TaniumSetupExeURI = "https://content.tanium.com/files/install/$TaniumVersion/SetupServer.exe"
     $TaniumServerExe = 'SetupServer.exe'
@@ -46,6 +55,60 @@ Configuration Tanium
             DriveLetter = 'F'
             DependsOn = '[xWaitforDisk]Disk2'
         }
+        xRemoteFile DownloadSqlServer2012CLI
+        {
+            Uri = $SqlServer2012CLIURI
+            DestinationPath = "$($SourceDir)\$($SqlServer2012CLI)"
+            MatchSource = $False
+        }
+        xPackage InstallSqlServer2012CLI
+        {
+            Name = 'SqlServer2012CLI'
+            Path = "$($SourceDir)\$($SqlServer2012CLI)" 
+            Arguments = '/qn'
+            Ensure = 'Present'
+            DependsOn = @(
+                '[xRemoteFile]DownloadSqlServer2012CLI'
+                '[cDiskNoRestart]DataDisk'
+            )
+            ProductId = ''
+        }
+        xRemoteFile DownloadSqlServer2012CmdUtilsURI
+        {
+            Uri = $SqlServer2012CmdUtilsURI
+            DestinationPath = "$($SourceDir)\$($SqlServer2012CmdUtils)"
+            MatchSource = $False
+        }
+        xPackage InstallSqlServer2012CmdUtils
+        {
+            Name = 'SqlServer2012CmdUtilsURI'
+            Path = "$($SourceDir)\$($SqlServer2012CmdUtilsURI)" 
+            Arguments = '/qn'
+            Ensure = 'Present'
+            DependsOn = @(
+                '[xRemoteFile]DownloadSqlServer2012CmdUtilsURI'
+                '[cDiskNoRestart]DataDisk'
+            )
+            ProductId = ''
+        }
+        xRemoteFile DownloadSqlExprWT
+        {
+            Uri = $SqlExprWTURI
+            DestinationPath = "$($SourceDir)\$($SqlExprWT)"
+            MatchSource = $False
+        }
+        xPackage InstallSqlExprWT
+        {
+            Name = 'SqlExprWT'
+            Path = "$($SourceDir)\$($SqlExprWT)" 
+            Arguments = '/S'
+            Ensure = 'Present'
+            DependsOn = @(
+                '[xRemoteFile]DownloadSqlExprWT'
+                '[cDiskNoRestart]DataDisk'
+            )
+            ProductId = ''
+        }
         xRemoteFile DownloadTaniumServerSetup
         {
             Uri = $TaniumSetupExeURI
@@ -60,6 +123,9 @@ Configuration Tanium
             Ensure = 'Present'
             DependsOn = @(
                 '[xRemoteFile]DownloadTaniumServerSetup'
+                '[xPackage]InstallSqlServer2012CLI',
+                '[xPackage]InstallSqlServer2012CmdUtils',
+                '[xPackage]InstallSqlExprWT',
                 '[cDiskNoRestart]DataDisk'
             )
             ProductId = ''
