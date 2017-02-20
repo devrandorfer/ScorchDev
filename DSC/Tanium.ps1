@@ -63,7 +63,7 @@ Configuration Tanium
         }
         xPackage InstallSqlServer2012CLI
         {
-            Name = 'SqlServer2012CLI'
+            Name = 'Microsoft SQL Server 2012 Native Client'
             Path = "$($SourceDir)\$($SqlServer2012CLI)" 
             Arguments = '/qn'
             Ensure = 'Present'
@@ -71,7 +71,7 @@ Configuration Tanium
                 '[xRemoteFile]DownloadSqlServer2012CLI'
                 '[cDiskNoRestart]DataDisk'
             )
-            ProductId = ''
+            ProductId = '{49D665A2-4C2A-476E-9AB8-FCC425F526FC}'
         }
         xRemoteFile DownloadSqlServer2012CmdUtilsURI
         {

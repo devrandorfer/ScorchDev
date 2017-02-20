@@ -187,7 +187,7 @@
         {
             Uri = $ADMRemotSetupExeURI
             DestinationPath = "$($SourceDir)\$($ADMSetupExe)"
-            MatchSource = $False
+            MatchSource = $True
         }
         xPackage InstallAppDependencyMonitor
         {
