@@ -71,7 +71,7 @@ Configuration Tanium
                 '[xRemoteFile]DownloadSqlServer2012CLI'
                 '[cDiskNoRestart]DataDisk'
             )
-            ProductId = '{49D665A2-4C2A-476E-9AB8-FCC425F526FC}'
+            ProductId = '49D665A2-4C2A-476E-9AB8-FCC425F526FC'
         }
         xRemoteFile DownloadSqlServer2012CmdUtilsURI
         {
@@ -81,7 +81,7 @@ Configuration Tanium
         }
         xPackage InstallSqlServer2012CmdUtils
         {
-            Name = 'SqlServer2012CmdUtilsURI'
+            Name = 'Microsoft SQL Server 2012 Command Line Utilities'
             Path = "$($SourceDir)\$($SqlServer2012CmdUtils)" 
             Arguments = '/qn'
             Ensure = 'Present'
@@ -89,7 +89,7 @@ Configuration Tanium
                 '[xRemoteFile]DownloadSqlServer2012CmdUtilsURI'
                 '[cDiskNoRestart]DataDisk'
             )
-            ProductId = ''
+            ProductId = '9D573E71-1077-4C7E-B4DB-4E22A5D2B48B'
         }
         xRemoteFile DownloadSqlExprWT
         {
