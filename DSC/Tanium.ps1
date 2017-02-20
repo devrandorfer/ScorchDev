@@ -101,7 +101,7 @@ Configuration Tanium
         {
             Name = 'SqlExprWT'
             Path = "$($SourceDir)\$($SqlExprWT)" 
-            Arguments = '/S'
+            Arguments = '/q /Action=Install /Hideconsole /Features=SQL,Tools/InstanceName=SQLExpress /SQLSYSADMINACCOUNTS="Builtin\Administrators"'
             Ensure = 'Present'
             DependsOn = @(
                 '[xRemoteFile]DownloadSqlExprWT'
