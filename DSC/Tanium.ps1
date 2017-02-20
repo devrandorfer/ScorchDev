@@ -82,7 +82,7 @@ Configuration Tanium
         xPackage InstallSqlServer2012CmdUtils
         {
             Name = 'SqlServer2012CmdUtilsURI'
-            Path = "$($SourceDir)\$($SqlServer2012CmdUtilsURI)" 
+            Path = "$($SourceDir)\$($SqlServer2012CmdUtils)" 
             Arguments = '/qn'
             Ensure = 'Present'
             DependsOn = @(
@@ -115,6 +115,7 @@ Configuration Tanium
             DestinationPath = "$($SourceDir)\$($TaniumServerExe)"
             MatchSource = $False
         }
+        <#
         xPackage InstallTaniumServer
         {
             Name = 'TaniumServer'
@@ -129,7 +130,7 @@ Configuration Tanium
                 '[cDiskNoRestart]DataDisk'
             )
             ProductId = ''
-        }
+        }#>
         cAzureNetworkPerformanceMonitoring EnableAzureNPM
         {
             Name = 'EnableNPM'
