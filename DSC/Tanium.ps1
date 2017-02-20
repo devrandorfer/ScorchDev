@@ -23,6 +23,9 @@ Configuration Tanium
         "/KeyPath=`"$InstallDir\Tanium\Tanium Server\tanium.pub`"" +
         "/PHPDir=`"$InstallDir\PHP`""
 
+    $RetryCount = 20
+    $RetryIntervalSec = 30
+
     Node Server
     {
         File SourceFolder
@@ -51,15 +54,15 @@ Configuration Tanium
         }
         xPackage InstallTaniumServer
         {
-             Name = 'TaniumServer'
-             Path = "$($SourceDir)\$($TaniumServerExe)" 
-             Arguments = $TaniumServerCommandLineArgs 
-             Ensure = 'Present'
-             DependsOn = @(
+            Name = 'TaniumServer'
+            Path = "$($SourceDir)\$($TaniumServerExe)" 
+            Arguments = $TaniumServerCommandLineArgs 
+            Ensure = 'Present'
+            DependsOn = @(
                 '[xRemoteFile]DownloadTaniumServerSetup'
                 '[cDiskNoRestart]DataDisk'
             )
-             ProductId = ''
+            ProductId = ''
         }
         cAzureNetworkPerformanceMonitoring EnableAzureNPM
         {
