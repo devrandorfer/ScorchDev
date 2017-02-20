@@ -4,6 +4,9 @@ Configuration Tanium
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module xWindowsUpdate
+    Import-DscResource -Module cWindowscomputer
+    Import-DscResource -Module cDisk
+    Import-DscResource -Module xDisk
 
     $SourceDir = 'D:\Source'
 
@@ -11,7 +14,7 @@ Configuration Tanium
     $TaniumSetupExeURI = "https://content.tanium.com/files/install/$TaniumVersion/SetupServer.exe"
     $TaniumServerExe = 'SetupServer.exe'
     
-    $InstallDir = 'e:\Program Files'
+    $InstallDir = 'F:\Program Files'
 
     $TaniumServerCommandLineArgs = 
         '/S /UseHTTPS=true ' +
@@ -28,6 +31,18 @@ Configuration Tanium
             Type = 'Directory'
             Ensure = 'Present'
         }
+        xWaitforDisk Disk2
+        {
+                DiskNumber = 2
+                RetryIntervalSec =$RetryIntervalSec
+                RetryCount = $RetryCount
+        }
+        cDiskNoRestart DataDisk
+        {
+            DiskNumber = 2
+            DriveLetter = 'F'
+            DependsOn = '[xWaitforDisk]Disk2'
+        }
         xRemoteFile DownloadTaniumServerSetup
         {
             Uri = $TaniumSetupExeURI
@@ -40,8 +55,24 @@ Configuration Tanium
              Path = "$($SourceDir)\$($TaniumServerExe)" 
              Arguments = $TaniumServerCommandLineArgs 
              Ensure = 'Present'
-             DependsOn = '[xRemoteFile]DownloadTaniumServerSetup'
+             DependsOn = @(
+                '[xRemoteFile]DownloadTaniumServerSetup'
+                '[cDiskNoRestart]DataDisk'
+            )
              ProductId = ''
+        }
+        cAzureNetworkPerformanceMonitoring EnableAzureNPM
+        {
+            Name = 'EnableNPM'
+            Ensure = 'Present'
+        }
+        xWindowsUpdateAgent MuSecurityImportant
+        {
+            IsSingleInstance = 'Yes'
+            UpdateNow        = $true
+            Category         = @('Security','Important')
+            Source           = 'MicrosoftUpdate'
+            Notifications    = 'Disabled'
         }
     }
 }
