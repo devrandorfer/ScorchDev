@@ -13,6 +13,7 @@
     Import-DscResource -ModuleName cDomainComputer
     Import-DscResource -ModuleName xPSDesiredStateConfiguration
 
+    #Load Vars
     $Vars = Get-BatchAutomationVariable -Prefix 'EnterpriseApplication' `
                                         -Name @(
                                             'FileShareAccessCredentialName'

@@ -32,7 +32,7 @@ Try
                                                               -AutomationAccountName $GlobalVars.AutomationAccountName
 
     
-    $ResourceGroupName = 'StorageSpace'
+    $ResourceGroupName = 'CHS-Web'
 
     New-AzureRmResourcegroup -Name $ResourceGroupName `
                              -Location 'eastus2' `
@@ -40,7 +40,7 @@ Try
                              -Force
     foreach($i in @(1..3))
     {
-        $VMName = "sco-storage-$i"
+        $VMName = "sco-web-$i"
         New-AzureRmResourceGroupDeployment -Name InitialDeployment `
                                            -TemplateFile 'C:\git\ScorchDev\ARM\Iaas-WindowsVM-DSC\azuredeploy.json' `
                                            -adminUsername $RunbookWorkerAccessCredential.UserName `
@@ -50,8 +50,8 @@ Try
                                            -registrationUrl $RegistrationInfo.Endpoint `
                                            -registrationKey ($RegistrationInfo.PrimaryKey | ConvertTo-SecureString -AsPlainText -Force) `
                                            -serverConfiguration 'DomainComputer.MemberServerProd' `
-                                           -AvailabilitySetName 'storagespaces' `
-                                           -VMSize 'Standard_DS2' `
+                                           -AvailabilitySetName 'web01' `
+                                           -VMSize 'Standard_DS3' `
                                            -Verbose
     }
 }
