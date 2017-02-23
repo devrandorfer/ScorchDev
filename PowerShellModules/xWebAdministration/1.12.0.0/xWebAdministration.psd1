@@ -1,5 +1,5 @@
 @{
-# Version number of this module.
+# Version number of this module
 ModuleVersion = '1.12.0.0'
 
 # ID used to uniquely identify this module
