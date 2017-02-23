@@ -31,25 +31,29 @@ Try
     $RegistrationInfo = Get-AzureRmAutomationRegistrationInfo -ResourceGroupName $GlobalVars.ResourceGroupName `
                                                               -AutomationAccountName $GlobalVars.AutomationAccountName
 
-    $VMName = "$(New-RandomString -MinLength 5 -MaxLength 5 -InputString 'abcdefghijklmnopqrstuvwxyz')"
-    $ResourceGroupName = 'runbookworker'
+    
+    $ResourceGroupName = 'StorageSpace'
 
     New-AzureRmResourcegroup -Name $ResourceGroupName `
                              -Location 'eastus2' `
                              -Verbose `
                              -Force
-
-    New-AzureRmResourceGroupDeployment -Name InitialDeployment `
-                                       -TemplateFile 'C:\git\ScorchDev\ARM\Iaas-WindowsVM-DSC\azuredeploy.json' `
-                                       -adminUsername $RunbookWorkerAccessCredential.UserName `
-                                       -adminPassword $RunbookWorkerAccessCredential.Password `
-                                       -vmName $VMName `
-                                       -ResourceGroupName $ResourceGroupName `
-                                       -registrationUrl $RegistrationInfo.Endpoint `
-                                       -registrationKey ($RegistrationInfo.PrimaryKey | ConvertTo-SecureString -AsPlainText -Force) `
-                                       -serverConfiguration 'AzureAutomation.HybridRunbookWorker' `
-                                       -AvailabilitySetName 'hybridRunbookWorkers' `
-                                       -Verbose
+    foreach($i in @(1..3))
+    {
+        $VMName = "sco-storage-$i"
+        New-AzureRmResourceGroupDeployment -Name InitialDeployment `
+                                           -TemplateFile 'C:\git\ScorchDev\ARM\Iaas-WindowsVM-DSC\azuredeploy.json' `
+                                           -adminUsername $RunbookWorkerAccessCredential.UserName `
+                                           -adminPassword $RunbookWorkerAccessCredential.Password `
+                                           -vmName $VMName `
+                                           -ResourceGroupName $ResourceGroupName `
+                                           -registrationUrl $RegistrationInfo.Endpoint `
+                                           -registrationKey ($RegistrationInfo.PrimaryKey | ConvertTo-SecureString -AsPlainText -Force) `
+                                           -serverConfiguration 'DomainComputer.MemberServerProd' `
+                                           -AvailabilitySetName 'storagespaces' `
+                                           -VMSize 'Standard_DS2' `
+                                           -Verbose
+    }
 }
 Catch
 {
