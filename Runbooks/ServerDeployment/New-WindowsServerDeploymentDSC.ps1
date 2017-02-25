@@ -32,16 +32,16 @@ Try
                                                               -AutomationAccountName $GlobalVars.AutomationAccountName
 
     
-    $ResourceGroupName = 'CHS-Web'
+    $ResourceGroupName = 'RunbookWorker'
 
     New-AzureRmResourcegroup -Name $ResourceGroupName `
                              -Location 'eastus2' `
                              -Verbose `
                              -Force
-    foreach($i in @(1..3))
+    foreach($i in @(2..2))
     {
-        $VMName = "sco-web-$i"
-        New-AzureRmResourceGroupDeployment -Name InitialDeployment `
+        $VMName = "sco-rw-$i"
+        New-AzureRmResourceGroupDeployment -Name InitialDeployment2 `
                                            -TemplateFile 'C:\git\ScorchDev\ARM\Iaas-WindowsVM-DSC\azuredeploy.json' `
                                            -adminUsername $RunbookWorkerAccessCredential.UserName `
                                            -adminPassword $RunbookWorkerAccessCredential.Password `
@@ -49,9 +49,9 @@ Try
                                            -ResourceGroupName $ResourceGroupName `
                                            -registrationUrl $RegistrationInfo.Endpoint `
                                            -registrationKey ($RegistrationInfo.PrimaryKey | ConvertTo-SecureString -AsPlainText -Force) `
-                                           -serverConfiguration 'DomainComputer.MemberServerProd' `
-                                           -AvailabilitySetName 'web01' `
-                                           -VMSize 'Standard_DS3' `
+                                           -serverConfiguration 'AzureAutomation.HybridRunbookWorker' `
+                                           -AvailabilitySetName 'hybridRunbookWorkers' `
+                                           -VMSize 'Standard_A2m_v2' `
                                            -Verbose
     }
 }
