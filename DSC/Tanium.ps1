@@ -7,6 +7,7 @@ Configuration Tanium
     Import-DscResource -Module cWindowscomputer
     Import-DscResource -Module cDisk
     Import-DscResource -Module xDisk
+    Import-DscResource -Module xNetworking
 
     $SourceDir = 'D:\Source'
 
@@ -145,6 +146,32 @@ Configuration Tanium
             Category         = @('Security','Important')
             Source           = 'MicrosoftUpdate'
             Notifications    = 'Disabled'
+        }
+        xFirewall TaniumRecieverInbound
+        {
+            Name                  = "TaniumRecieverInboundRules"
+            DisplayName           = "Firewall Rule for TaniumReciever.exe"
+            Group                 = "Tanium Firewall Group"
+            Ensure                = "Present"
+            Enabled               = "True"
+            Direction             = "Inbound"
+            LocalPort             = ("443", "17472")
+            Protocol              = "TCP"
+            Description           = "Firewall Rule for TaniumReciever.exe"
+            Program               = "$InstallDir\Tanium\Tanium Server\TaniumReceiver.exe"
+        }
+        xFirewall TaniumModuleServerInbound
+        {
+            Name                  = "TaniumModuleServerInboundRules"
+            DisplayName           = "Firewall Rule for TaniumModuleServer.exe"
+            Group                 = "Tanium Firewall Group"
+            Ensure                = "Present"
+            Enabled               = "True"
+            Direction             = "Inbound"
+            LocalPort             = ("17477")
+            Protocol              = "TCP"
+            Description           = "Firewall Rule for TaniumModuleServer.exe"
+            Program               = "$InstallDir\Tanium\Tanium Module Server\TaniumModuleServer.exe"
         }
     }
 }
