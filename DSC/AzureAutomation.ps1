@@ -3,7 +3,7 @@
     Param(
     )
 
-    # Import the required modules
+    # Import the required modules.
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module cGit -ModuleVersion 0.1.3
