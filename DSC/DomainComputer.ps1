@@ -127,7 +127,7 @@
             DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
             MatchSource = $False
         }
-        xPackage InstallMicrosoftManagementAgent
+        xPackage InstallTaniumClient
         {
              Name = "Tanium Client"
              Path = "$($SourceDir)\$($MMASetupExE)" 
@@ -218,7 +218,7 @@
             DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
             MatchSource = $False
         }
-        xPackage InstallMicrosoftManagementAgent
+        xPackage InstallTaniumClient
         {
              Name = "Tanium Client"
              Path = "$($SourceDir)\$($MMASetupExE)" 
@@ -423,7 +423,7 @@
             DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
             MatchSource = $False
         }
-        xPackage InstallMicrosoftManagementAgent
+        xPackage InstallTaniumClient
         {
              Name = "Tanium Client"
              Path = "$($SourceDir)\$($MMASetupExE)" 
@@ -531,7 +531,7 @@
             DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
             MatchSource = $False
         }
-        xPackage InstallMicrosoftManagementAgent
+        xPackage InstallTaniumClient
         {
              Name = "Tanium Client"
              Path = "$($SourceDir)\$($MMASetupExE)" 

@@ -295,7 +295,7 @@
             DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
             MatchSource = $False
         }
-        xPackage InstallMicrosoftManagementAgent
+        xPackage InstallTaniumClient
         {
              Name = "Tanium Client"
              Path = "$($SourceDir)\$($MMASetupExE)" 
@@ -306,6 +306,6 @@
              InstalledCheckRegValueData = '6.0.314.1540'
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadTaniumAgent"
-        }s
+        }
     }
 }
