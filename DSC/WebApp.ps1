@@ -44,7 +44,7 @@
     # Tanium DL information
     $TaniumClientDownloadCredential = Get-AutomationPSCredential -Name 'scotaniumsas'
     $TaniumClientDownloadURI = "https://scotanium.blob.core.windows.net/files/10.0.1.4.17472.6.0.314.1540.0..exe$($TaniumClientDownloadCredential.GetNetworkCredential().password)"
-    $TaniumClientExe = '10.0.1.4.17472.6.0.314.1540.0..exe'
+    $TaniumClientExe = 'SetupClient.exe'
 
     Node FrontEnd
     {   
@@ -280,11 +280,16 @@
             DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
             MatchSource = $False
         }
+        xRemoteFile DownloadTaniumPub
+        {
+            Uri = $TaniumClientDownloadURI
+            DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
+            MatchSource = $False
+        }
         xPackage InstallTaniumClient
         {
              Name = "Tanium Client"
              Path = "$($SourceDir)\$($TaniumClientExe)" 
-             Arguments = '/S'
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
              InstalledCheckRegValueName = 'DisplayVersion'
