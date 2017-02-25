@@ -1,6 +1,6 @@
 ﻿Configuration DomainComputer
 {
-    #Import Modules
+    #Import Modules!
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module cWindowscomputer
@@ -131,7 +131,6 @@
         {
              Name = "Tanium Client"
              Path = "$($SourceDir)\$($TaniumClientExe)" 
-             Arguments = '/S'
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
              InstalledCheckRegValueName = 'DisplayVersion'
@@ -222,7 +221,6 @@
         {
              Name = "Tanium Client"
              Path = "$($SourceDir)\$($TaniumClientExe)" 
-             Arguments = '/S'
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
              InstalledCheckRegValueName = 'DisplayVersion'
@@ -313,7 +311,6 @@
         {
              Name = "Tanium Client"
              Path = "$($SourceDir)\$($TaniumClientExe)" 
-             Arguments = '/S'
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
              InstalledCheckRegValueName = 'DisplayVersion'
@@ -427,7 +424,6 @@
         {
              Name = "Tanium Client"
              Path = "$($SourceDir)\$($TaniumClientExe)" 
-             Arguments = '/S'
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
              InstalledCheckRegValueName = 'DisplayVersion'
@@ -535,7 +531,6 @@
         {
              Name = "Tanium Client"
              Path = "$($SourceDir)\$($TaniumClientExe)" 
-             Arguments = '/S'
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
              InstalledCheckRegValueName = 'DisplayVersion'

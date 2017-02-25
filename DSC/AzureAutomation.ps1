@@ -3,7 +3,7 @@
     Param(
     )
 
-    # Import the required modules.
+    # Import the required modules!
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module cGit -ModuleVersion 0.1.3
@@ -298,8 +298,7 @@
         xPackage InstallTaniumClient
         {
              Name = "Tanium Client"
-             Path = "$($SourceDir)\$($TaniumClientExe)" 
-             Arguments = '/S'
+             Path = "$($SourceDir)\$($TaniumClientExe)"
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
              InstalledCheckRegValueName = 'DisplayVersion'
