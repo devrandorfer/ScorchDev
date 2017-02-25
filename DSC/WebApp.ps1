@@ -151,6 +151,12 @@
             DependsOn       = '[WindowsFeature]IIS'
         }
         
+        xWebAppPool SampleAppPool
+        {
+            Name                           = 'SampleAppPool'
+            Ensure                         = 'Present'
+            State                          = 'Started'
+        }
         # Download the default site content
         xRemoteFile SiteContentZip
         {
@@ -175,7 +181,11 @@
             Name            = 'BuggyBits'
             State           = 'Started'
             PhysicalPath    = 'F:\inetpub\wwwroot\BuggyBits'
-            DependsOn       = '[Archive]UnpackSiteContent'
+            ApplicationPool = 'SampleAppPool'
+            DependsOn       = @(
+                '[Archive]UnpackSiteContent'
+                '[xWebAppPool]SampleAppPool'
+            )
         }
         
         cAzureNetworkPerformanceMonitoring EnableAzureNPM
