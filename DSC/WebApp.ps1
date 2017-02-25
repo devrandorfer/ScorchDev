@@ -41,6 +41,7 @@
     $RetryCount = 20
     $RetryIntervalSec = 30
 
+    # Tanium DL information
     $TaniumClientDownloadCredential = Get-AutomationPSCredential -Name 'scotaniumsas'
     $TaniumClientDownloadURI = "https://scotanium.blob.core.windows.net/files/10.0.1.4.17472.6.0.314.1540.0..exe$($TaniumClientDownloadCredential.GetNetworkCredential().password)"
     $TaniumClientExe = '10.0.1.4.17472.6.0.314.1540.0..exe'
