@@ -61,7 +61,7 @@ $Null = $(
         {
             if($_Process.Path)
             {
-                $SB.AppendLine(("$($_Process.Name)|$($_Process.Path)|$($_Process.Id)|$(Get-FileHash -Path $_Process.Path -Algorithm $Algorithm)")) | Out-Null
+                $SB.AppendLine(("$($env:COMPUTERNAME)|$($_Process.Name)|$($_Process.Path)|$($_Process.Id)|$(Get-FileHash -Path $_Process.Path -Algorithm $Algorithm)")) | Out-Null
             }
         }
         Catch
