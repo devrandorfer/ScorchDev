@@ -16,9 +16,17 @@ function Get-TargetResource
 	    [string] $Key
   	)
     
-    if(Test-Path -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker')
+    $RootPath = 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker'
+    if(Test-Path -Path $RootPath)
     {
-        $LocalGroup = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker' -Name 'RunbookWorkerGroup').RunbookWorkerGroup
+        # Get Sub Keys
+        Get-ChildItem -Path $RootPath | 
+            % { 
+                $TestLocalGroup = $_.GetSubkeyNames();
+                if( $LocalGroup -eq $Null -or $TestLocalGroup -eq $RunbookWorkerGroup ) { 
+                    $LocalGroup = $TestLocalGroup 
+                }
+            }
     }
     else
     {
@@ -93,9 +101,17 @@ function Test-TargetResource
 	    [string] $Key
 	)
     
-    if(Test-Path -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker')
+    $RootPath = 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker'
+    if(Test-Path -Path $RootPath)
     {
-        $LocalGroup = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker' -Name 'RunbookWorkerGroup').RunbookWorkerGroup
+        # Get Sub Keys
+        Get-ChildItem -Path $RootPath | 
+            % { 
+                $TestLocalGroup = $_.GetSubkeyNames();
+                if( $LocalGroup -eq $Null -or $TestLocalGroup -eq $RunbookWorkerGroup ) { 
+                    $LocalGroup = $TestLocalGroup 
+                }
+            }
     }
     else
     {
