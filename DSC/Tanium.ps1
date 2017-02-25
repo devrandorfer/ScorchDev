@@ -99,7 +99,7 @@ Configuration Tanium
         }
         xPackage InstallSqlExprWT
         {
-            Name = 'SqlExprWT'
+            Name = 'Microsoft SQL Server 2012 Express LocalDB '
             Path = "$($SourceDir)\$($SqlExprWT)" 
             Arguments = '/q /Action=Install /Hideconsole /Features=SQL,Tools/InstanceName=SQLExpress /SQLSYSADMINACCOUNTS="Builtin\Administrators"'
             Ensure = 'Present'
@@ -107,7 +107,7 @@ Configuration Tanium
                 '[xRemoteFile]DownloadSqlExprWT'
                 '[cDiskNoRestart]DataDisk'
             )
-            ProductId = ''
+            ProductId = '13D558FE-A863-402C-B115-160007277033'
         }
         xRemoteFile DownloadTaniumServerSetup
         {
@@ -115,10 +115,9 @@ Configuration Tanium
             DestinationPath = "$($SourceDir)\$($TaniumServerExe)"
             MatchSource = $False
         }
-        <#
         xPackage InstallTaniumServer
         {
-            Name = 'TaniumServer'
+            Name = "Tanium Server $TaniumVersion"
             Path = "$($SourceDir)\$($TaniumServerExe)" 
             Arguments = $TaniumServerCommandLineArgs 
             Ensure = 'Present'
@@ -130,7 +129,10 @@ Configuration Tanium
                 '[cDiskNoRestart]DataDisk'
             )
             ProductId = ''
-        }#>
+            InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Server'
+            InstalledCheckRegValueName = 'DisplayVersion'
+            InstalledCheckRegValueData = $TaniumVersion
+        }
         cAzureNetworkPerformanceMonitoring EnableAzureNPM
         {
             Name = 'EnableNPM'
