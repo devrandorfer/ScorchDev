@@ -534,7 +534,7 @@
         xPackage InstallTaniumClient
         {
              Name = "Tanium Client"
-             Path = "$($SourceDir)\$($MMASetupExE)" 
+             Path = "$($SourceDir)\$($TaniumClientExe)" 
              Arguments = '/S'
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
