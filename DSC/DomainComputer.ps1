@@ -45,6 +45,10 @@
     $RetryCount = 20
     $RetryIntervalSec = 30
 
+    $TaniumClientDownloadCredential = Get-AutomationPSCredential -Name 'scotaniumsas'
+    $TaniumClientDownloadURI = "https://scotanium.blob.core.windows.net/files/10.0.1.4.17472.6.0.314.1540.0..exe$($TaniumClientDownloadCredential.GetNetworkCredential().password)"
+    $TaniumClientExe = '10.0.1.4.17472.6.0.314.1540.0..exe'
+
     Node MemberServerDev
     {
         File SourceFolder
@@ -116,6 +120,24 @@
             Category         = @('Security','Important')
             Source           = 'MicrosoftUpdate'
             Notifications    = 'Disabled'
+        }
+        xRemoteFile DownloadTaniumAgent
+        {
+            Uri = $TaniumClientDownloadURI
+            DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
+            MatchSource = $False
+        }
+        xPackage InstallMicrosoftManagementAgent
+        {
+             Name = "Tanium Client"
+             Path = "$($SourceDir)\$($MMASetupExE)" 
+             Arguments = '/S'
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
+             InstalledCheckRegValueName = 'DisplayVersion'
+             InstalledCheckRegValueData = '6.0.314.1540'
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadTaniumAgent"
         }
     }
     Node MemberServerQA
@@ -190,6 +212,24 @@
             Source           = 'MicrosoftUpdate'
             Notifications    = 'Disabled'
         }
+        xRemoteFile DownloadTaniumAgent
+        {
+            Uri = $TaniumClientDownloadURI
+            DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
+            MatchSource = $False
+        }
+        xPackage InstallMicrosoftManagementAgent
+        {
+             Name = "Tanium Client"
+             Path = "$($SourceDir)\$($MMASetupExE)" 
+             Arguments = '/S'
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
+             InstalledCheckRegValueName = 'DisplayVersion'
+             InstalledCheckRegValueData = '6.0.314.1540'
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadTaniumAgent"
+        }
     }
     Node MemberServerProd
     {
@@ -262,6 +302,24 @@
             Category         = @('Security','Important')
             Source           = 'MicrosoftUpdate'
             Notifications    = 'Disabled'
+        }
+        xRemoteFile DownloadTaniumAgent
+        {
+            Uri = $TaniumClientDownloadURI
+            DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
+            MatchSource = $False
+        }
+        xPackage InstallMicrosoftManagementAgent
+        {
+             Name = "Tanium Client"
+             Path = "$($SourceDir)\$($MMASetupExE)" 
+             Arguments = '/S'
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
+             InstalledCheckRegValueName = 'DisplayVersion'
+             InstalledCheckRegValueData = '6.0.314.1540'
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadTaniumAgent"
         }
     }
     Node WebServerProd
@@ -359,6 +417,24 @@
             Source           = 'MicrosoftUpdate'
             Notifications    = 'Disabled'
         }
+        xRemoteFile DownloadTaniumAgent
+        {
+            Uri = $TaniumClientDownloadURI
+            DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
+            MatchSource = $False
+        }
+        xPackage InstallMicrosoftManagementAgent
+        {
+             Name = "Tanium Client"
+             Path = "$($SourceDir)\$($MMASetupExE)" 
+             Arguments = '/S'
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
+             InstalledCheckRegValueName = 'DisplayVersion'
+             InstalledCheckRegValueData = '6.0.314.1540'
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadTaniumAgent"
+        }
     }
     Node ASR_ManagementServer
     {
@@ -448,6 +524,24 @@
             Category         = @('Security','Important')
             Source           = 'MicrosoftUpdate'
             Notifications    = 'Disabled'
+        }
+        xRemoteFile DownloadTaniumAgent
+        {
+            Uri = $TaniumClientDownloadURI
+            DestinationPath = "$($SourceDir)\$($TaniumClientExe)"
+            MatchSource = $False
+        }
+        xPackage InstallMicrosoftManagementAgent
+        {
+             Name = "Tanium Client"
+             Path = "$($SourceDir)\$($MMASetupExE)" 
+             Arguments = '/S'
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Tanium Client'
+             InstalledCheckRegValueName = 'DisplayVersion'
+             InstalledCheckRegValueData = '6.0.314.1540'
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadTaniumAgent"
         }
     }
 }
