@@ -4,8 +4,8 @@
 #>
 
 # Should be escaped
-$Path = '||Path||'
-$Algorithm = '||Algorithm||'
+$Path = [System.Web.HttpUtility]::UrlDecode('||Path||')
+$Algorithm = [System.Web.HttpUtility]::UrlDecode('||Algorithm||')
 
 #Tanium doesn't use param blocks
 <#
@@ -36,7 +36,7 @@ $Null = $(
         }
     }
     
-    $file = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open , [System.IO.FileAccess]::Read)
+    $file = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read)
     $SB = New-Object System.Text.StringBuilder
         $operator.ComputeHash($file) | %{
         $SB.Append($_.ToString("x2")) | Out-Null
