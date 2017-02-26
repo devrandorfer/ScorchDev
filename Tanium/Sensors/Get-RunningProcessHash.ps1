@@ -51,7 +51,7 @@ Function Get-FileHash
     
     $file = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open , [System.IO.FileAccess]::Read)
     $SB = New-Object System.Text.StringBuilder
-    $operator.ComputeHash($file) | %{
+    $operator.ComputeHash($file) | %{
         $SB.Append($_.ToString("x2")) | Out-Null
     }
     $file.Dispose()
