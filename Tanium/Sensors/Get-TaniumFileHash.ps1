@@ -4,6 +4,7 @@
 #>
 
 # Should be escaped
+[Reflection.Assembly]::LoadWithPartialName("System.Web") | out-null
 $Path = [System.Web.HttpUtility]::UrlDecode('||Path||')
 $Algorithm = [System.Web.HttpUtility]::UrlDecode('||Algorithm||')
 
@@ -30,9 +31,21 @@ $Null = $(
         {
             $operator = New-Object System.Security.Cryptography.SHA256Managed
         }
+        'SHA384'
+        {
+            $operator = New-Object System.Security.Cryptography.SHA384Managed
+        }
+        'SHA512'
+        {
+            $operator = New-Object System.Security.Cryptography.SHA512Managed
+        }
         'MD5'
         {
-            $operator = [System.Security.Cryptography.MD5]::Create()
+            $operator = New-Object System.Security.Cryptography.MD5
+        }
+        default
+        {
+            $operator = New-Object System.Security.Cryptography.SHA1Managed
         }
     }
     

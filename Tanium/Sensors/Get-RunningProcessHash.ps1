@@ -1,15 +1,11 @@
 <#
 .Synopsis
-    
+    Get Hash of running processes
 #>
-Param(
-    $ProcessName,
-    [ValidateSet(
-            'SHA1',
-            'SHA256',
-            'MD5'
-    )][string] $Algorithm = 'SHA1'
-)
+
+# Should be escaped
+[Reflection.Assembly]::LoadWithPartialName("System.Web") | out-null
+$Algorithm = [System.Web.HttpUtility]::UrlDecode('||Algorithm||')
 
 Function Get-FileHash
 {
@@ -18,6 +14,8 @@ Function Get-FileHash
         [ValidateSet(
             'SHA1',
             'SHA256',
+            'SHA384',
+            'SHA512',
             'MD5'
         )][string] $Algorithm = 'SHA1'
     )
@@ -33,9 +31,21 @@ Function Get-FileHash
         {
             $operator = New-Object System.Security.Cryptography.SHA256Managed
         }
+        'SHA384'
+        {
+            $operator = New-Object System.Security.Cryptography.SHA384Managed
+        }
+        'SHA512'
+        {
+            $operator = New-Object System.Security.Cryptography.SHA512Managed
+        }
         'MD5'
         {
-            $operator = [System.Security.Cryptography.MD5]::Create()
+            $operator = New-Object System.Security.Cryptography.MD5
+        }
+        default
+        {
+            $operator = New-Object System.Security.Cryptography.SHA1Managed
         }
     }
     
@@ -50,8 +60,7 @@ Function Get-FileHash
 }
 
 $Null = $(
-    if($ProcessName) { $Process = Get-Process -Name $ProcessName }
-    else { $Process = Get-Process }
+    $Process = Get-WmiObject -Class Win32_Process
 
     $SB = New-Object System.Text.StringBuilder
     $ErrorProcesses = New-Object System.Collections.ArrayList
@@ -59,9 +68,9 @@ $Null = $(
     {
         Try
         {
-            if($_Process.Path)
+            if($_Process.ExecutablePath)
             {
-                $SB.AppendLine(("$($env:COMPUTERNAME)|$($_Process.Name)|$($_Process.Path)|$($_Process.Id)|$(Get-FileHash -Path $_Process.Path -Algorithm $Algorithm)")) | Out-Null
+                $SB.AppendLine(("$($env:COMPUTERNAME)|$($_Process.Caption)|$($_Process.ExecutablePath)|$($_Process.ProcessId)|$(Get-FileHash -Path $_Process.ExecutablePath -Algorithm $Algorithm)")) | Out-Null
             }
         }
         Catch
