@@ -70,7 +70,7 @@ $Null = $(
         {
             if($_Process.ExecutablePath)
             {
-                $SB.AppendLine(("$($env:COMPUTERNAME)|$($_Process.Caption)|$($_Process.ExecutablePath)|$($_Process.ProcessId)|$(Get-FileHash -Path $_Process.ExecutablePath -Algorithm $Algorithm)")) | Out-Null
+                $SB.AppendLine(("$($_Process.Caption)|$($_Process.ExecutablePath)|$(Get-FileHash -Path $_Process.ExecutablePath -Algorithm $Algorithm)")) | Out-Null
             }
         }
         Catch
