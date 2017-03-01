@@ -36,6 +36,13 @@ Configuration Tanium
     $RetryCount = 20
     $RetryIntervalSec = 30
 
+    $SysmonZipUri = 'https://download.sysinternals.com/files/Sysmon.zip'
+    $SysmonZip = 'Sysmon.zip'
+    $SysmonExe = 'Sysmon.exe'
+    $SysmonConfigUri = 'https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml'
+    $SysmonConfigXML = 'sysmonconfig-export.xml'
+    $SysmonArgs = "-accepteula -i $($SourceDir)\$($SysmonConfigXML)"
+
     Node Server
     {
         File SourceFolder
@@ -172,6 +179,42 @@ Configuration Tanium
             Protocol              = "TCP"
             Description           = "Firewall Rule for TaniumModuleServer.exe"
             Program               = "$InstallDir\Tanium\Tanium Module Server\TaniumModuleServer.exe"
+        }
+        xRemoteFile SysmonZip
+        {
+            Uri = $SysmonZipUri
+            DestinationPath = "$($SourceDir)\$($SysmonZip)"
+            MatchSource = $False
+        }
+        
+        # Unpack Sysmon
+        Archive UnpackSysmon
+        {
+            Path = "$($SourceDir)\$($SysmonZip)"
+            Destination = $SourceDir
+            Ensure = 'Present'
+            DependsOn = '[xRemoteFile]SysmonZip'
+        }
+
+        xRemoteFile SysmonConfig
+        {
+            Uri = $SysmonConfigUri
+            DestinationPath = "$($SourceDir)\$($SysmonConfigXML)"
+            MatchSource = $False
+        }
+
+        xPackage InstallSysmon
+        {
+             Name = "Sysmon"
+             Path = "$($SourceDir)\$($SysmonExe)" 
+             Arguments = $SysmonArgs
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Sysmon/Operational'
+             ProductID = ''
+             DependsOn = @(
+                '[Archive]UnpackSysmon'
+                '[xRemoteFile]SysmonConfig'
+             )
         }
     }
 }
