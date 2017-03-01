@@ -192,6 +192,8 @@ configuration DomainController
              Arguments = $SysmonArgs
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Sysmon/Operational'
+             InstalledCheckRegValueName = 'Enabled'
+             InstalledCheckRegValueData = 1
              ProductID = ''
              DependsOn = @(
                 '[Archive]UnpackSysmon'
@@ -330,6 +332,8 @@ configuration DomainController
              Arguments = $SysmonArgs
              Ensure = 'Present'
              InstalledCheckRegKey = 'SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Sysmon/Operational'
+             InstalledCheckRegValueName = 'Enabled'
+             InstalledCheckRegValueData = 1
              ProductID = ''
              DependsOn = @(
                 '[Archive]UnpackSysmon'
