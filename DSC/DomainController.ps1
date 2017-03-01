@@ -89,7 +89,7 @@ configuration DomainController
             DatabasePath = "F:\NTDS"
             LogPath = "F:\NTDS"
             SysvolPath = "F:\SYSVOL"
-            DependsOn = "[WindowsFeature]ADDSInstall","[xDnsServerAddress]DnsServerAddress","[cDiskNoRestart]ADDataDisk"
+            DependsOn = "[WindowsFeature]ADDSInstall","[cDiskNoRestart]ADDataDisk"
         }
 
         xWaitForADDomain DscForestWait
