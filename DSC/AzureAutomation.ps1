@@ -78,7 +78,7 @@
 
     $SysmonZipUri = 'https://download.sysinternals.com/files/Sysmon.zip'
     $SysmonZip = 'Sysmon.zip'
-    $SysmonExe = 'Sysmon.exe'
+    $SysmonExe = 'Sysmon64.exe'
     $SysmonConfigUri = 'https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml'
     $SysmonConfigXML = 'sysmonconfig-export.xml'
     $SysmonArgs = "-accepteula -i $($SourceDir)\$($SysmonConfigXML)"
