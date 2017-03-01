@@ -46,6 +46,13 @@
     $TaniumClientDownloadURI = "https://scotanium.blob.core.windows.net/files/10.0.1.4.17472.6.0.314.1540.0..exe$($TaniumClientDownloadCredential.GetNetworkCredential().password)"
     $TaniumClientExe = 'SetupClient.exe'
 
+    $SysmonZipUri = 'https://download.sysinternals.com/files/Sysmon.zip'
+    $SysmonZip = 'Sysmon.zip'
+    $SysmonExe = 'Sysmon64.exe'
+    $SysmonConfigUri = 'https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml'
+    $SysmonConfigXML = 'sysmonconfig-export.xml'
+    $SysmonArgs = "-accepteula -i $($SourceDir)\$($SysmonConfigXML)"
+
     Node FrontEnd
     {   
         xWaitforDisk DataDisk
@@ -297,6 +304,43 @@
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadTaniumAgent"
         }
+
+         xRemoteFile SysmonZip
+        {
+            Uri = $SysmonZipUri
+            DestinationPath = "$($SourceDir)\$($SysmonZip)"
+            MatchSource = $False
+        }
+        
+        # Unpack Sysmon
+        Archive UnpackSysmon
+        {
+            Path = "$($SourceDir)\$($SysmonZip)"
+            Destination = $SourceDir
+            Ensure = 'Present'
+            DependsOn = '[xRemoteFile]SysmonZip'
+        }
+
+        xRemoteFile SysmonConfig
+        {
+            Uri = $SysmonConfigUri
+            DestinationPath = "$($SourceDir)\$($SysmonConfigXML)"
+            MatchSource = $False
+        }
+
+        xPackage InstallSysmon
+        {
+             Name = "Sysmon"
+             Path = "$($SourceDir)\$($SysmonExe)" 
+             Arguments = $SysmonArgs
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Sysmon/Operational'
+             ProductID = ''
+             DependsOn = @(
+                '[Archive]UnpackSysmon'
+                '[xRemoteFile]SysmonConfig'
+             )
+        }
     }
     Node SQL
     {
@@ -369,6 +413,43 @@
             Category         = @('Security','Important')
             Source           = 'MicrosoftUpdate'
             Notifications    = 'Disabled'
+        }
+
+         xRemoteFile SysmonZip
+        {
+            Uri = $SysmonZipUri
+            DestinationPath = "$($SourceDir)\$($SysmonZip)"
+            MatchSource = $False
+        }
+        
+        # Unpack Sysmon
+        Archive UnpackSysmon
+        {
+            Path = "$($SourceDir)\$($SysmonZip)"
+            Destination = $SourceDir
+            Ensure = 'Present'
+            DependsOn = '[xRemoteFile]SysmonZip'
+        }
+
+        xRemoteFile SysmonConfig
+        {
+            Uri = $SysmonConfigUri
+            DestinationPath = "$($SourceDir)\$($SysmonConfigXML)"
+            MatchSource = $False
+        }
+
+        xPackage InstallSysmon
+        {
+             Name = "Sysmon"
+             Path = "$($SourceDir)\$($SysmonExe)" 
+             Arguments = $SysmonArgs
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Sysmon/Operational'
+             ProductID = ''
+             DependsOn = @(
+                '[Archive]UnpackSysmon'
+                '[xRemoteFile]SysmonConfig'
+             )
         }
     }
 }
