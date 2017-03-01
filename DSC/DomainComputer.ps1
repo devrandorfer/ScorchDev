@@ -49,6 +49,12 @@
     $TaniumClientDownloadURI = "https://scotanium.blob.core.windows.net/files/10.0.1.4.17472.6.0.314.1540.0..exe$($TaniumClientDownloadCredential.GetNetworkCredential().password)"
     $TaniumClientExe = '10.0.1.4.17472.6.0.314.1540.0..exe'
 
+    $SysmonZipUri = 'https://download.sysinternals.com/files/Sysmon.zip'
+    $SysmonZip = 'Sysmon.zip'
+    $SysmonExe = 'Sysmon.exe'
+    $SysmonConfigUri = 'https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml'
+    $SysmonConfigXML = 'sysmonconfig-export.xml'
+
     Node MemberServerDev
     {
         File SourceFolder
@@ -137,6 +143,44 @@
              InstalledCheckRegValueData = '6.0.314.1540'
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadTaniumAgent"
+        }
+        xRemoteFile SysmonZip
+        {
+            Uri = $SysmonZipUri
+            DestinationPath = "$($SourceDir)\$($SysmonZip)"
+            MatchSource = $False
+        }
+        
+        # Unpack Sysmon
+        Archive UnpackSysmon
+        {
+            Path = "$($SourceDir)\$($SysmonZip)"
+            Destination = $SourceDir
+            Ensure = 'Present'
+            DependsOn = '[xRemoteFile]SysmonZip'
+        }
+
+        xRemoteFile SysmonConfig
+        {
+            Uri = $SysmonConfigUri
+            DestinationPath = "$($SourceDir)\$($SysmonConfigXML)"
+            MatchSource = $False
+        }
+
+        xPackage InstallSysmon
+        {
+             Name = "Sysmon"
+             Path = "$($SourceDir)\$($SysmonExe)" 
+             Arguments = "-i -accepteula $($SourceDir)\$($SysmonConfigXML)"
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup'
+             InstalledCheckRegValueName = 'Product'
+             InstalledCheckRegValueData = 'Microsoft Monitoring Agent'
+             ProductID = ''
+             DependsOn = @(
+                '[Archive]UnpackSysmon'
+                '[xRemoteFile]SysmonConfig'
+             )
         }
     }
     Node MemberServerQA
@@ -228,6 +272,37 @@
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadTaniumAgent"
         }
+        # Unpack Sysmon
+        Archive UnpackSysmon
+        {
+            Path = "$($SourceDir)\$($SysmonZip)"
+            Destination = $SourceDir
+            Ensure = 'Present'
+            DependsOn = '[xRemoteFile]SysmonZip'
+        }
+
+        xRemoteFile SysmonConfig
+        {
+            Uri = $SysmonConfigUri
+            DestinationPath = "$($SourceDir)\$($SysmonConfigXML)"
+            MatchSource = $False
+        }
+
+        xPackage InstallSysmon
+        {
+             Name = "Sysmon"
+             Path = "$($SourceDir)\$($SysmonExe)" 
+             Arguments = "-i -accepteula $($SourceDir)\$($SysmonConfigXML)"
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup'
+             InstalledCheckRegValueName = 'Product'
+             InstalledCheckRegValueData = 'Microsoft Monitoring Agent'
+             ProductID = ''
+             DependsOn = @(
+                '[Archive]UnpackSysmon'
+                '[xRemoteFile]SysmonConfig'
+             )
+        }
     }
     Node MemberServerProd
     {
@@ -317,6 +392,37 @@
              InstalledCheckRegValueData = '6.0.314.1540'
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadTaniumAgent"
+        }
+        # Unpack Sysmon
+        Archive UnpackSysmon
+        {
+            Path = "$($SourceDir)\$($SysmonZip)"
+            Destination = $SourceDir
+            Ensure = 'Present'
+            DependsOn = '[xRemoteFile]SysmonZip'
+        }
+
+        xRemoteFile SysmonConfig
+        {
+            Uri = $SysmonConfigUri
+            DestinationPath = "$($SourceDir)\$($SysmonConfigXML)"
+            MatchSource = $False
+        }
+
+        xPackage InstallSysmon
+        {
+             Name = "Sysmon"
+             Path = "$($SourceDir)\$($SysmonExe)" 
+             Arguments = "-i -accepteula $($SourceDir)\$($SysmonConfigXML)"
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup'
+             InstalledCheckRegValueName = 'Product'
+             InstalledCheckRegValueData = 'Microsoft Monitoring Agent'
+             ProductID = ''
+             DependsOn = @(
+                '[Archive]UnpackSysmon'
+                '[xRemoteFile]SysmonConfig'
+             )
         }
     }
     Node WebServerProd
@@ -431,6 +537,37 @@
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadTaniumAgent"
         }
+        # Unpack Sysmon
+        Archive UnpackSysmon
+        {
+            Path = "$($SourceDir)\$($SysmonZip)"
+            Destination = $SourceDir
+            Ensure = 'Present'
+            DependsOn = '[xRemoteFile]SysmonZip'
+        }
+
+        xRemoteFile SysmonConfig
+        {
+            Uri = $SysmonConfigUri
+            DestinationPath = "$($SourceDir)\$($SysmonConfigXML)"
+            MatchSource = $False
+        }
+
+        xPackage InstallSysmon
+        {
+             Name = "Sysmon"
+             Path = "$($SourceDir)\$($SysmonExe)" 
+             Arguments = "-i -accepteula $($SourceDir)\$($SysmonConfigXML)"
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup'
+             InstalledCheckRegValueName = 'Product'
+             InstalledCheckRegValueData = 'Microsoft Monitoring Agent'
+             ProductID = ''
+             DependsOn = @(
+                '[Archive]UnpackSysmon'
+                '[xRemoteFile]SysmonConfig'
+             )
+        }
     }
     Node ASR_ManagementServer
     {
@@ -537,6 +674,37 @@
              InstalledCheckRegValueData = '6.0.314.1540'
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadTaniumAgent"
+        }
+        # Unpack Sysmon
+        Archive UnpackSysmon
+        {
+            Path = "$($SourceDir)\$($SysmonZip)"
+            Destination = $SourceDir
+            Ensure = 'Present'
+            DependsOn = '[xRemoteFile]SysmonZip'
+        }
+
+        xRemoteFile SysmonConfig
+        {
+            Uri = $SysmonConfigUri
+            DestinationPath = "$($SourceDir)\$($SysmonConfigXML)"
+            MatchSource = $False
+        }
+
+        xPackage InstallSysmon
+        {
+             Name = "Sysmon"
+             Path = "$($SourceDir)\$($SysmonExe)" 
+             Arguments = "-i -accepteula $($SourceDir)\$($SysmonConfigXML)"
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\Microsoft\Microsoft Operations Manager\3.0\Setup'
+             InstalledCheckRegValueName = 'Product'
+             InstalledCheckRegValueData = 'Microsoft Monitoring Agent'
+             ProductID = ''
+             DependsOn = @(
+                '[Archive]UnpackSysmon'
+                '[xRemoteFile]SysmonConfig'
+             )
         }
     }
 }
