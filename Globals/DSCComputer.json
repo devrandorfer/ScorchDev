@@ -8,7 +8,7 @@
                       "DSCComputer-NodeConfigurationName":  {
                                                                 "isEncrypted":  false,
                                                                 "Description":  "",
-                                                                "Value":  "DomainComputer.MemberServerProd"
+                                                                "Value":  "DomainComputer.MemberServer-1.0"
                                                             }
                   }
 }
