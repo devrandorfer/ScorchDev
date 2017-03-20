@@ -1,4 +1,4 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-        "terminal.integrated.shell.windows": "c:\\WINDOWS\\sysnative\\WindowsPowerShell\\v1.0\\powershell.exe"
+    "python.pythonPath": "c:/python27/python.exe"    
 }
