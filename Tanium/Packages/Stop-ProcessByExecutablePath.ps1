@@ -11,7 +11,6 @@ $Path = [System.Web.HttpUtility]::UrlDecode($ExecutablePath)
 
 $Null = $(
     Get-WmiObject -Class Win32_Process `
-                  | ? { $_.ExecutablePath -eq $Path } `
-                  | % { Stop-Process -Id $_.ProcessId -Force }
-    
+        | Where-Object { $_.ExecutablePath -eq $Path } `
+            | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
 )

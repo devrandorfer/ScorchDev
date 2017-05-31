@@ -8,17 +8,6 @@
 $Path = [System.Web.HttpUtility]::UrlDecode('||Path||')
 $Algorithm = [System.Web.HttpUtility]::UrlDecode('||Algorithm||')
 
-#Tanium doesn't use param blocks
-<#
-param(
-    $Path,
-    [ValidateSet(
-        'SHA1',
-        'SHA256',
-        'MD5'
-    )][string] $Algorithm = 'SHA1'
-)
-#>
 $Null = $(
     [Reflection.Assembly]::LoadWithPartialName("System.Security") | out-null
     Switch($Algorithm)
@@ -51,9 +40,9 @@ $Null = $(
     
     $file = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read)
     $SB = New-Object System.Text.StringBuilder
-        $operator.ComputeHash($file) | %{
-        $SB.Append($_.ToString("x2")) | Out-Null
+        $operator.ComputeHash($file) | ForEach-Object {
+        $SB.Append($_.ToString("x2")) | Out-Null
     }
-        $file.Dispose()
+    $file.Dispose()
 )
 $SB.ToString()

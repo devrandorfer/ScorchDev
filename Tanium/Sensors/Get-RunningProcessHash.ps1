@@ -3,7 +3,6 @@
     Get Hash of running processes
 #>
 
-# Should be escaped
 [Reflection.Assembly]::LoadWithPartialName("System.Web") | out-null
 $Algorithm = [System.Web.HttpUtility]::UrlDecode('||Algorithm||')
 
@@ -19,7 +18,7 @@ Function Get-FileHash
             'MD5'
         )][string] $Algorithm = 'SHA1'
     )
- 
+
     [Reflection.Assembly]::LoadWithPartialName("System.Security") | out-null
     Switch($Algorithm)
     {
@@ -52,9 +51,9 @@ Function Get-FileHash
     $file = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open , [System.IO.FileAccess]::Read)
     $SB = New-Object System.Text.StringBuilder
     $operator.ComputeHash($file) | %{
-        $SB.Append($_.ToString("x2")) | Out-Null
+        $SB.Append($_.ToString("x2")) | Out-Null
     }
-    $file.Dispose()
+    $file.Dispose()
 
     $SB.ToString()
 }
