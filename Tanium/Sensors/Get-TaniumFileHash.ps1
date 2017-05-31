@@ -4,9 +4,8 @@
 #>
 
 # Should be escaped
-[Reflection.Assembly]::LoadWithPartialName("System.Web") | out-null
-$Path = [System.Web.HttpUtility]::UrlDecode('||Path||')
-$Algorithm = [System.Web.HttpUtility]::UrlDecode('||Algorithm||')
+$Path = [System.Uri]::UnescapeDataString('||Path||')
+$Algorithm = [System.Uri]::UnescapeDataString('||Algorithm||')
 
 $Null = $(
     [Reflection.Assembly]::LoadWithPartialName("System.Security") | out-null

@@ -4,9 +4,8 @@
 #>
 
 # escaped input parameters
-[Reflection.Assembly]::LoadWithPartialName("System.Web") | out-null
-$argument_1 = [System.Web.HttpUtility]::UrlDecode('||argument_1||')
-$argument_2 = [System.Web.HttpUtility]::UrlDecode('||argument_2||')
+$argument_1 = [System.Uri]::UnescapeDataString('||argument_1||')
+$argument_2 = [System.Uri]::UnescapeDataString('||argument_2||')
 
 <#
 .SYNOPSIS

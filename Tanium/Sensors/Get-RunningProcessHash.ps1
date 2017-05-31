@@ -3,8 +3,7 @@
     Get Hash of running processes
 #>
 
-[Reflection.Assembly]::LoadWithPartialName("System.Web") | out-null
-$Algorithm = [System.Web.HttpUtility]::UrlDecode('||Algorithm||')
+$Algorithm = [System.Uri]::UnescapeDataString('||Algorithm||')
 
 Function Get-FileHash
 {
