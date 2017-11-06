@@ -7,6 +7,8 @@
 $argument_1 = [System.Uri]::UnescapeDataString('||argument_1||')
 $argument_2 = [System.Uri]::UnescapeDataString('||argument_2||')
 
+Function Format-ObjectOutput
+{
 <#
 .SYNOPSIS
     Converts an object into a text-based represenation that can easily be written to logs.
@@ -24,8 +26,6 @@ $argument_2 = [System.Uri]::UnescapeDataString('||argument_2||')
 .PARAMETER Delimiter
     The delimiter character to use
 #>
-Function Format-ObjectOutput
-{
     [CmdletBinding()]
     [OutputType([string])]
     Param(
@@ -52,25 +52,18 @@ Function Format-ObjectOutput
 $Null = $(
     $SB = New-Object System.Text.StringBuilder
 
-    # Ignore PowerShell Errors
-    $ErrorActionPreference = [System.Management.Automation.ActionPreference]::SilentlyContinue
-    throw "exception"
-
     # Make PowerShell Errors behave how they do in other languages
     $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
     try
     {
-        throw "exception 123"
+        Get-ChildItem | ForEach-Object { $SB.AppendLine((
+            $_ | Format-ObjectOutput
+        ))}
     }
     catch
     {
         $Exception = $_
         $SB.AppendLine($Exception.exception.message)
     }
-    $SB.AppendLine('a')
-
-    Get-ChildItem | ForEach-Object { $SB.AppendLine((
-        $_ | Format-ObjectOutput
-    ))}
 )
 $SB.ToString()
